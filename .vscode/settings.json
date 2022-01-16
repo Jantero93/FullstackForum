@@ -7,6 +7,6 @@
   },
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
-  "eslint.workingDirectories": ["./frontend"],
+  "eslint.workingDirectories": ["./backend", "./frontend"],
   "cSpell.words": ["TTFB"]
 }
