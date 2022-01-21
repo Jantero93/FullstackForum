@@ -8,5 +8,5 @@
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "eslint.workingDirectories": ["./backend", "./frontend"],
-  "cSpell.words": ["TTFB"]
+  "cSpell.words": ["cpage", "TTFB"]
 }
