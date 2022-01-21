@@ -1,50 +1,64 @@
 /** React */
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
+/** Components */
+import LogInModal from '../layout/LogInModal';
+import SignUpModal from '../layout/SignUpModal';
 
 /** UI  */
 import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Link from '@mui/material/Link';
 
+/** Forum boards */
+import { boards } from '../../types/boards';
+
 const NavBar: React.FC = () => {
-  const forums: string[] = [
-    'Home',
-    'C++',
-    'Java',
-    'TypeScript',
-    'Cats',
-    'Misc'
-  ];
+  const [showSignUp, setShowSignUp] = useState<boolean>(false);
+  const [showLogIn, setShowLogIn] = useState<boolean>(false);
 
-  const navigate = useNavigate();
-
-  const forumNameClicked = (forumName: string): void => {
-    if (forumName === 'C++') navigate('c');
-    else if (forumName === 'Home') navigate('/');
-    else navigate(forumName.toLowerCase());
+  const urlParameter = (forumName: string): string => {
+    if (forumName === 'C++') return 'c';
+    else if (forumName === 'Home') return '/';
+    else return forumName.toLowerCase();
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ backgroundColor: '#0a1929' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {forums.map((forumName) => (
-            <Link
-              style={{ color: 'white', cursor: 'pointer' }}
-              key={forumName}
-              noWrap
-              sx={{ mr: 2, display: { xs: 'flex' } }}
-              id={forumName}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onClick={(e: any) => forumNameClicked(e.target.id)}
-            >
-              {forumName}
-            </Link>
-          ))}
-        </Toolbar>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="baseline"
+        >
+          <Toolbar disableGutters variant={'dense'}>
+            {boards.map((forumName) => (
+              <Link
+                key={forumName}
+                noWrap
+                sx={{ mr: 2, display: { xs: 'flex' } }}
+                style={{
+                  color: forumName === 'Home' ? 'whitesmoke' : '#66b2ff',
+                  cursor: 'pointer'
+                }}
+                href={urlParameter(forumName)}
+              >
+                {forumName}
+              </Link>
+            ))}
+          </Toolbar>
+          <div>
+            <Button onClick={() => setShowLogIn(true)}>Log in</Button>
+            <Button onClick={() => setShowSignUp(true)}>Sign up</Button>
+          </div>
+        </Grid>
       </Container>
+      <SignUpModal showSignUp={showSignUp} setShowSignUp={setShowSignUp} />
+      <LogInModal showLogIn={showLogIn} setShowLogIn={setShowLogIn} />
     </AppBar>
   );
 };
