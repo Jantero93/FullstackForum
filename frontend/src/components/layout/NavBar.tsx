@@ -16,18 +16,21 @@ import Link from '@mui/material/Link';
 /** Forum boards */
 import { boards } from '../../types/boards';
 
+/** Utils */
+import { boardNameToUrlParameter } from '../../utils/routerUtils';
+
 const NavBar: React.FC = () => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
 
-  const urlParameter = (forumName: string): string => {
-    if (forumName === 'C++') return 'c';
-    else if (forumName === 'Home') return '/';
-    else return forumName.toLowerCase();
-  };
-
   return (
-    <AppBar position="static" style={{ backgroundColor: '#0a1929' }}>
+    <AppBar
+      position="static"
+      style={{
+        backgroundColor: '#0a1929',
+        marginBottom: '0.5em'
+      }}
+    >
       <Container maxWidth="xl">
         <Grid
           container
@@ -35,19 +38,19 @@ const NavBar: React.FC = () => {
           justifyContent="space-between"
           alignItems="baseline"
         >
-          <Toolbar disableGutters variant={'dense'}>
-            {boards.map((forumName) => (
+          <Toolbar disableGutters variant={'regular'}>
+            {[{ name: 'Home', adjective: '' }, ...boards].map((board) => (
               <Link
-                key={forumName}
+                key={board.name}
                 noWrap
                 sx={{ mr: 2, display: { xs: 'flex' } }}
                 style={{
-                  color: forumName === 'Home' ? 'whitesmoke' : '#66b2ff',
+                  color: board.name === 'Home' ? 'whitesmoke' : '#66b2ff',
                   cursor: 'pointer'
                 }}
-                href={urlParameter(forumName)}
+                href={boardNameToUrlParameter(board.name)}
               >
-                {forumName}
+                {board.name}
               </Link>
             ))}
           </Toolbar>
