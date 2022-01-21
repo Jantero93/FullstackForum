@@ -1,9 +1,13 @@
 import React from 'react';
 
+/** Components */
+import NavBar from './components/layout/NavBar';
+
 const App: React.FC = () => {
   return (
-    <div id="App">
-      Edit <code>src/App.tsx</code> and save to reload.
+    <div>
+      <NavBar />
+      <p>App</p>
     </div>
   );
 };
