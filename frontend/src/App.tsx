@@ -1,10 +1,32 @@
 import React from 'react';
 
+/** Components */
+import NavBar from './components/layout/NavBar';
+
+/** Pages */
+import CatPage from './components/pages/CatPage';
+import CPage from './components/pages/CPage';
+import HomePage from './components/pages/HomePage';
+import JavaPage from './components/pages/JavaPage';
+import MiscPage from './components/pages/MiscPage';
+import TypeScriptPage from './components/pages/TypeScriptPage';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 const App: React.FC = () => {
   return (
-    <div id="App">
-      Edit <code>src/App.tsx</code> and save to reload.
-    </div>
+    <Router>
+      <NavBar />
+
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route path="/cats" element={<CatPage />} />
+        <Route path="/c" element={<CPage />} />
+        <Route path="/java" element={<JavaPage />} />
+        <Route path="/misc" element={<MiscPage />} />
+        <Route path="/typescript" element={<TypeScriptPage />} />
+      </Routes>
+    </Router>
   );
 };
 
