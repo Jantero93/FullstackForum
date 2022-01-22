@@ -1,5 +1,6 @@
 /** React */
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 /** Components */
 import LogInModal from '../layout/LogInModal';
@@ -41,6 +42,8 @@ const NavBar: React.FC = () => {
           <Toolbar disableGutters variant={'regular'}>
             {[{ name: 'Home', adjective: '' }, ...boards].map((board) => (
               <Link
+                component={RouterLink}
+                to={boardNameToUrlParameter(board.name)}
                 key={board.name}
                 noWrap
                 sx={{ mr: 2, display: { xs: 'flex' } }}
@@ -48,7 +51,6 @@ const NavBar: React.FC = () => {
                   color: board.name === 'Home' ? 'whitesmoke' : '#66b2ff',
                   cursor: 'pointer'
                 }}
-                href={boardNameToUrlParameter(board.name)}
               >
                 {board.name}
               </Link>

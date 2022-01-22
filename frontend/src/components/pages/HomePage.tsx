@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 /** UI */
 import Card from '@mui/material/Card';
@@ -26,11 +27,12 @@ const HomePage: React.FC = () => {
           key={board.name}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
-          <CardActionArea href={boardNameToUrlParameter(board.name)}>
+          <CardActionArea
+            component={RouterLink}
+            to={boardNameToUrlParameter(board.name)}
+          >
             <CardContent>
-              <Link variant="h5" component="div">
-                {board.name}
-              </Link>
+              <Link variant="h5">{board.name}</Link>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
                 {board.adjective}
               </Typography>
