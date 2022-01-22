@@ -55,8 +55,8 @@ const NavBar: React.FC = () => {
             ))}
           </Toolbar>
           <div>
-            <Button onClick={() => setShowLogIn(true)}>Log in</Button>
-            <Button onClick={() => setShowSignUp(true)}>Sign up</Button>
+            <Button onClick={() => setShowLogIn(true)}>Login</Button>
+            <Button onClick={() => setShowSignUp(true)}>Sign-up</Button>
           </div>
         </Grid>
       </Container>
