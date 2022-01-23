@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-/** UI */
+/** UI, CSS */
+import { modalStyle } from '../../utils/modalstyles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -8,19 +9,6 @@ import FormGroup from '@mui/material/FormGroup';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 300,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
-};
 
 type Props = {
   showSignUp: boolean;
@@ -32,6 +20,7 @@ const SignUpModal: React.FC<Props> = ({ showSignUp, setShowSignUp }: Props) => {
   const [password, setPassword] = useState<string>('');
 
   const handleSignInClick = (): void =>
+    // eslint-disable-next-line no-console
     console.log(`sign in ${username} ${password}`);
 
   return (
@@ -41,7 +30,7 @@ const SignUpModal: React.FC<Props> = ({ showSignUp, setShowSignUp }: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={modalStyle}>
         <FormGroup>
           <Typography variant="h6" gutterBottom component="div">
             Sign-in
@@ -50,14 +39,18 @@ const SignUpModal: React.FC<Props> = ({ showSignUp, setShowSignUp }: Props) => {
             id="outlined-error"
             label="Username"
             style={{ marginTop: '1em' }}
-            onChange={(e: any) => setUserName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserName(e.target.value)
+            }
           />
           <TextField
             id="outlined-error"
             label="Password"
             type="password"
             style={{ marginTop: '1em' }}
-            onChange={(e: any) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
           />
           <ButtonGroup
             disableElevation
