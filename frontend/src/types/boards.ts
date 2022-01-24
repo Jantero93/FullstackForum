@@ -1,9 +1,9 @@
-export type Board = {
+export type BoardName = {
   name: string;
   adjective: string;
 };
 
-export const boards: Board[] = [
+export const boards: BoardName[] = [
   { name: 'C++', adjective: 'C++ dinosauruksien kahvihuone' },
   { name: 'Java', adjective: 'OOP-koodareiden luola' },
   { name: 'TypeScript', adjective: 'Java ykä webbikoodareiden pieni pelastus' },
