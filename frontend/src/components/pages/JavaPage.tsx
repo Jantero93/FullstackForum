@@ -14,7 +14,7 @@ import { formatDate } from '../../utils/date';
 /** Mockup Data */
 import { javaTopics } from '../../mockupdata/mockupTopics';
 
-const JavaPage = (): JSX.Element => {
+const JavaPage: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   return (
@@ -24,6 +24,7 @@ const JavaPage = (): JSX.Element => {
       alignItems="stretch"
       spacing={1}
     >
+      {/* Create topics from API/Mockup Data*/}
       {javaTopics.map((topic) => (
         <Card
           sx={{ minWidth: 275 }}
@@ -32,7 +33,9 @@ const JavaPage = (): JSX.Element => {
         >
           <CardActionArea onClick={() => navigate(topic.id)}>
             <CardContent>
-              <Typography sx={{ mb: 1.5 }}>{topic.topic}</Typography>
+              <Typography variant={'h5'} sx={{ mb: 1.5 }}>
+                {topic.topic}
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {topic.userRef}
               </Typography>

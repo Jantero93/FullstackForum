@@ -1,12 +1,17 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+
+/** Components */
+import Post from './Post';
+
+/** Mockup Data (Posts) */
+import { javaObjectPosts } from '../../mockupdata/mockupPosts';
 
 const Topic: React.FC = (): JSX.Element => {
-  const urlParams = useParams();
-
   return (
     <div>
-      <p>Topic {urlParams.id}</p>
+      {javaObjectPosts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
   );
 };
