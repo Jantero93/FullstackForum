@@ -2,6 +2,7 @@ import React from 'react';
 
 /** Components */
 import NavBar from './components/layout/NavBar';
+import Topic from './components/forumitems/Topic';
 
 /** Pages */
 import CatPage from './components/pages/CatPage';
@@ -23,6 +24,7 @@ const App: React.FC = () => {
         <Route path="/cats" element={<CatPage />} />
         <Route path="/c" element={<CPage />} />
         <Route path="/java" element={<JavaPage />} />
+        <Route path="/java/:id" element={<Topic />} />
         <Route path="/misc" element={<MiscPage />} />
         <Route path="/typescript" element={<TypeScriptPage />} />
       </Routes>

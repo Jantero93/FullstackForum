@@ -3,7 +3,8 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    // override if setted per-language
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "eslint.format.enable": true,
   "editor.formatOnSave": true,

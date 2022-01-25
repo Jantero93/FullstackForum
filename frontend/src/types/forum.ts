@@ -1,5 +1,7 @@
 export type Board = {
   boardId: string;
+  board: string;
+  adjective: string;
   topics: Topic[];
 }
 

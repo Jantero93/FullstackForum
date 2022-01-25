@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 /** UI */
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
-import { CardContent, Typography, CardActionArea } from '@mui/material';
-import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 
 /** Boards */
 import { boards } from '../../types/boards';
@@ -14,6 +15,7 @@ import { boards } from '../../types/boards';
 import { boardNameToUrlParameter } from '../../utils/routerUtils';
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Stack
       direction="column"
@@ -28,12 +30,17 @@ const HomePage: React.FC = () => {
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
           <CardActionArea
-            component={RouterLink}
-            to={boardNameToUrlParameter(board.name)}
+            onClick={() => navigate(boardNameToUrlParameter(board.name))}
           >
             <CardContent>
-              <Link variant="h5">{board.name}</Link>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <Typography
+                sx={{ mb: 1 }}
+                variant="h5"
+                style={{ color: '#0066cc' }}
+              >
+                {board.name}
+              </Typography>
+              <Typography sx={{ mb: 0.5 }} color="text.secondary">
                 {board.adjective}
               </Typography>
               <Typography variant="body2">
