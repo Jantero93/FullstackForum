@@ -15,7 +15,10 @@ type Props = {
   setShowSignUp: Dispatch<SetStateAction<boolean>>;
 };
 
-const SignUpModal: React.FC<Props> = ({ showSignUp, setShowSignUp }: Props) => {
+const SignUpModal: React.FC<Props> = ({
+  showSignUp,
+  setShowSignUp
+}: Props): JSX.Element => {
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 

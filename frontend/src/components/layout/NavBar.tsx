@@ -20,7 +20,7 @@ import { boards } from '../../types/boards';
 /** Utils */
 import { boardNameToUrlParameter } from '../../utils/routerUtils';
 
-const NavBar: React.FC = () => {
+const NavBar: React.FC = (): JSX.Element => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
 

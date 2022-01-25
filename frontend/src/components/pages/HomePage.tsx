@@ -14,7 +14,7 @@ import { boards } from '../../types/boards';
 /** Utils */
 import { boardNameToUrlParameter } from '../../utils/routerUtils';
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   return (
     <Stack
