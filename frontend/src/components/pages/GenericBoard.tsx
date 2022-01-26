@@ -15,16 +15,21 @@ import TopicService from '../../services/topicService';
 /** Types */
 import { Topic } from '../../types/forum';
 
-const JavaPage: React.FC = (): JSX.Element => {
+type Props = {
+  boardId: string;
+};
+
+const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardId('boardId').then((response) =>
-      setTopics(response.topics)
-    );
-  }, []);
+    TopicService.getAllTopicsByBoardId(boardId).then((response) => {
+      console.log(response.topics);
+      setTopics(response.topics || []);
+    });
+  }, [boardId]);
 
   return (
     <Stack
@@ -33,7 +38,6 @@ const JavaPage: React.FC = (): JSX.Element => {
       alignItems="stretch"
       spacing={1}
     >
-      {/* Create topics from API/Mockup Data*/}
       {topics.map((topic) => (
         <Card
           sx={{ minWidth: 275 }}
@@ -62,4 +66,4 @@ const JavaPage: React.FC = (): JSX.Element => {
   );
 };
 
-export default JavaPage;
+export default GenericBoard;

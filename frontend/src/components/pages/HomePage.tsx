@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** UI */
@@ -8,14 +8,22 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-/** Boards */
-import { boards } from '../../types/boards';
+/** Types */
+import { Board as BoardType } from '../../types/forum';
 
 /** Utils */
 import { boardNameToUrlParameter } from '../../utils/routerUtils';
+import BoardService from '../../services/boardService';
 
 const HomePage: React.FC = (): JSX.Element => {
+  const [boards, setBoards] = React.useState<BoardType[]>([]);
+
+  useEffect(() => {
+    BoardService.getAllBoards().then((response) => setBoards(response));
+  }, []);
+
   const navigate = useNavigate();
+
   return (
     <Stack
       direction="column"
@@ -26,11 +34,11 @@ const HomePage: React.FC = (): JSX.Element => {
       {boards.map((board) => (
         <Card
           sx={{ minWidth: 275 }}
-          key={board.name}
+          key={board.board}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
           <CardActionArea
-            onClick={() => navigate(boardNameToUrlParameter(board.name))}
+            onClick={() => navigate(boardNameToUrlParameter(board.board))}
           >
             <CardContent>
               <Typography
@@ -38,7 +46,7 @@ const HomePage: React.FC = (): JSX.Element => {
                 variant="h5"
                 style={{ color: '#0066cc' }}
               >
-                {board.name}
+                {board.board}
               </Typography>
               <Typography sx={{ mb: 0.5 }} color="text.secondary">
                 {board.adjective}

@@ -6,7 +6,7 @@ const baseUrl = '/boards';
 
 const getAllBoards = async (): Promise<Board[]> => {
   const request = await axios.get(baseUrl);
-  return request.data;
+  return request.data.boards;
 };
 
 const BoardService = {
