@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 /** Components */
 import Post from './Post';
 
-/** Mockup Data (Posts) */
-import { javaObjectPosts } from '../../mockupdata/mockupPosts';
+/** Types */
+import { Post as PostType } from '../../types/forum';
+
+/** Utils */
+import PostService from '../../services/postService';
 
 const Topic: React.FC = (): JSX.Element => {
+  const [posts, setPosts] = React.useState<PostType[]>([]);
+
+  useEffect(() => {
+    PostService.getPostsByBoardId('boardId').then((response) =>
+      setPosts(response.posts)
+    );
+  }, []);
+
   return (
     <div>
-      {javaObjectPosts.map((post) => (
+      {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
     </div>

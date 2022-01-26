@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** UI */
@@ -10,12 +10,21 @@ import Typography from '@mui/material/Typography';
 
 /** Utils */
 import { formatDate } from '../../utils/date';
+import TopicService from '../../services/topicService';
 
-/** Mockup Data */
-import { javaTopics } from '../../mockupdata/mockupTopics';
+/** Types */
+import { Topic } from '../../types/forum';
 
 const JavaPage: React.FC = (): JSX.Element => {
+  const [topics, setTopics] = React.useState<Topic[]>([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    TopicService.getAllTopicsByBoardId('boardId').then((response) =>
+      setTopics(response.topics)
+    );
+  }, []);
 
   return (
     <Stack
@@ -25,7 +34,7 @@ const JavaPage: React.FC = (): JSX.Element => {
       spacing={1}
     >
       {/* Create topics from API/Mockup Data*/}
-      {javaTopics.map((topic) => (
+      {topics.map((topic) => (
         <Card
           sx={{ minWidth: 275 }}
           key={topic.id}

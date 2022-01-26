@@ -2,8 +2,7 @@ export type Board = {
   boardId: string;
   board: string;
   adjective: string;
-  topics: Topic[];
-}
+};
 
 /**
  * @type {created} ISO string
@@ -18,7 +17,7 @@ export type Post = {
   votes: number;
   boardRef: string;
   userRef: string;
-}
+};
 
 /**
  * @type {created} ISO string
@@ -29,13 +28,12 @@ export type Topic = {
   id: string;
   created: string;
   topic: string;
-  posts: Post[];
   boardRef: string;
   userRef: string;
-}
+};
 
 export type User = {
   id: string;
   user: string;
   password: string;
-}
+};

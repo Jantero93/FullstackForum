@@ -2,7 +2,6 @@ import React from 'react';
 
 /** UI */
 import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -15,7 +14,7 @@ type Props = {
   post: PostType;
 };
 
-const Post: React.FC<Props> = ({ post }: Props) => {
+const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
   return (
     <div>
       <Stack
