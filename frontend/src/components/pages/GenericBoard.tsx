@@ -19,16 +19,19 @@ type Props = {
   boardId: string;
 };
 
+/**
+ * This component forwards to /:forumPage/:topicId via Router
+ * Topic component is in /forumitems/Topic
+ */
 const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardId(boardId).then((response) => {
-      console.log(response.topics);
-      setTopics(response.topics || []);
-    });
+    TopicService.getAllTopicsByBoardId(boardId).then((response) =>
+      setTopics(response.topics || [])
+    );
   }, [boardId]);
 
   return (
