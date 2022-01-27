@@ -6,6 +6,16 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField/TextField';
 import Typography from '@mui/material/Typography';
 
+/** Types */
+import CSS from 'csstype';
+
+const textAreaMargin = '0.25em';
+const textAreaStyles: CSS.Properties = {
+  backgroundColor: 'white',
+  border: '1px solid black',
+  borderRadius: '10px'
+};
+
 type Props = {
   message: string;
   sendPostClicked: () => void;
@@ -25,7 +35,7 @@ const AnswerBox: React.FC<Props> = ({
       spacing={0.5}
       style={{ margin: '1.5em' }}
     >
-      <Typography style={{ color: 'whitesmoke', marginLeft: '0.25em' }}>
+      <Typography style={{ color: 'whitesmoke', marginLeft: textAreaMargin }}>
         Send a post
       </Typography>
       <TextField
@@ -35,11 +45,7 @@ const AnswerBox: React.FC<Props> = ({
         multiline
         placeholder="Message..."
         value={message}
-        style={{
-          backgroundColor: 'white',
-          border: '1px solid black',
-          borderRadius: '10px'
-        }}
+        style={textAreaStyles}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setMessage(e.target.value)
         }
@@ -47,7 +53,7 @@ const AnswerBox: React.FC<Props> = ({
       <Button
         size="large"
         variant="contained"
-        style={{ marginLeft: '0.25em', marginTop: '1em' }}
+        style={{ marginLeft: textAreaMargin, marginTop: '1em' }}
         onClick={() => sendPostClicked()}
       >
         Post
