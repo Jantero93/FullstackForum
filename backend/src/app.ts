@@ -1,9 +1,8 @@
 /** Express */
-import * as express from 'express';
-import { Application } from 'express';
+import express, { Application } from 'express';
 
 /** Utils */
-import * as cors from 'cors';
+import cors from 'cors';
 import { requestLogger } from './utils/requestLogger';
 
 const app: Application = express();
@@ -18,6 +17,6 @@ app.use(
 
 app.use(requestLogger);
 
-app.get('/', (req, res) => res.send('express rules!'));
+app.get('/', (_req, res) => res.send('express rules!'));
 
 export default app;
