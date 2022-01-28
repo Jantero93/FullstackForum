@@ -44,10 +44,10 @@ const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
       {topics.map((topic) => (
         <Card
           sx={{ minWidth: 275 }}
-          key={topic.id}
+          key={topic.topicId}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
-          <CardActionArea onClick={() => navigate(topic.id)}>
+          <CardActionArea onClick={() => navigate(topic.topicId)}>
             <CardContent>
               <Typography variant={'h5'} sx={{ mb: 1.5 }}>
                 {topic.topic}

@@ -26,7 +26,7 @@ const Topic: React.FC = (): JSX.Element => {
   return (
     <div>
       {posts.map((post) => (
-        <Post key={post.id} post={post} />
+        <Post key={post.postId} post={post} />
       ))}
       {posts.length && (
         <AnswerBox

@@ -10,7 +10,7 @@ export type Board = {
  * @type {userRef} parent User Id
  */
 export type Post = {
-  id: string;
+  postId: string;
   created: string;
   message: string;
   topicRef: string;
@@ -25,7 +25,7 @@ export type Post = {
  * @type {userRef} parent User Id
  */
 export type Topic = {
-  id: string;
+  topicId: string;
   created: string;
   topic: string;
   boardRef: string;
@@ -33,7 +33,7 @@ export type Topic = {
 };
 
 export type User = {
-  id: string;
+  userId: string;
   user: string;
   password: string;
 };
