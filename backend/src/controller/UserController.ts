@@ -1,26 +1,29 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+/** Repository */
+import { getRepository } from 'typeorm';
 
-export class UserController {
+/** Entity */
+import { User } from '../entity/User';
 
-    private userRepository = getRepository(User);
+/** Types */
+import { Response, Request } from 'express';
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
-    }
+export const getAll = async (_req: Request, res: Response) => {
+  const userRepository = getRepository(User);
+  const users = await userRepository.find();
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
-    }
+  res.send(users);
+};
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
+export const saveOne = async (req: Request, res: Response) => {
+  const userRepository = getRepository(User);
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
+  const { age, firstName, lastName } = req.body;
 
-}
+  //TODO: Check validation
+  const user = new User();
+  user.age = age;
+  user.firstName = firstName;
+  user.lastName = lastName;
+
+  res.send(await userRepository.save(user));
+};

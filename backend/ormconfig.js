@@ -1,10 +1,12 @@
-{
+const config = require('./src/utils/config').default;
+
+module.exports = {
   "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "postgres",
-  "password": "admin",
-  "database": "forum_DB",
+  "host": config.PG_HOST,
+  "port": config.PG_PORT,
+  "username": config.PG_USER,
+  "password": config.PG_PASSWORD,
+  "database": config.PG_DATABASE,
   "synchronize": true,
   "logging": false,
   "entities": ["src/entity/**/*.ts"],
