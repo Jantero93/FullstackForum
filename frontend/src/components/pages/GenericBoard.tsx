@@ -34,6 +34,8 @@ const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
     );
   }, [boardId]);
 
+  console.log('topics', topics);
+
   return (
     <Stack
       direction="column"
