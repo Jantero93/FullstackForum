@@ -9,5 +9,5 @@
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "eslint.workingDirectories": ["./backend", "./frontend"],
-  "cSpell.words": ["cpage", "forumitems", "TTFB"]
+  "cSpell.words": ["cpage", "forumitems", "TTFB", "typeorm"]
 }
