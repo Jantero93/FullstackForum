@@ -1,14 +1,21 @@
+/** TypeORM and Express */
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import express from 'express';
-import routes from './routes/index';
-import cors from 'cors';
 
-import Config from './utils/config';
+/** Routes */
+import routes from './routes/indexRoutes';
+
+/** Middleware */
+import cors from 'cors';
 import { requestLogger } from './utils/middleware';
 
+/** Utils */
+import Config from './utils/config';
+import logger from './utils/logger';
+
 createConnection()
-  .then(async (_connection) => {
+  .then(async () => {
     const app = express();
     app.use(
       express.urlencoded({
@@ -18,14 +25,15 @@ createConnection()
     app.use(cors());
     app.use(express.json());
 
-    /** Initialize routes */
     app.use(requestLogger);
+
+    /** Initialize routes */
     app.use('/', routes);
 
     app.listen(Config.PORT);
 
-    console.log(
-      `Express server has started on port ${Config.PORT}. Open http://localhost:${Config.PORT}/users to see results`
+    logger.info(
+      `Express server has started on port ${Config.PORT}. Open http://localhost:${Config.PORT}/api/user to see all users`
     );
   })
-  .catch((error) => console.log(error));
+  .catch((error) => logger.error(error));
