@@ -18,14 +18,15 @@ createConnection()
     app.use(cors());
     app.use(express.json());
 
-    /** Initialize routes */
     app.use(requestLogger);
+
+    /** Initialize routes */
     app.use('/', routes);
 
     app.listen(Config.PORT);
 
     console.log(
-      `Express server has started on port ${Config.PORT}. Open http://localhost:${Config.PORT}/user/ to see results`
+      `Express server has started on port ${Config.PORT}. Open http://localhost:${Config.PORT}/api/user to see all users`
     );
   })
   .catch((error) => console.log(error));

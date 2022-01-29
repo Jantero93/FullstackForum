@@ -1,8 +1,12 @@
 import { Router } from 'express';
-import user from './userRoutes';
+
+/** Routes */
+import userRoutes from './userRoutes';
+import boardRoutes from './boardRoutes';
 
 const routes = Router();
 
-routes.use('/api/user', user);
+routes.use('/api/user', userRoutes);
+routes.use('/api/board', boardRoutes);
 
 export default routes;
