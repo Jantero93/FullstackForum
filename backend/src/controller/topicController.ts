@@ -20,7 +20,7 @@ export const getAll = async (_req: Request, res: Response) => {
 export const saveOne = async (req: Request, res: Response) => {
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const { created, topic } = req.body;
+  const { created, topic, board } = req.body;
 
   const newTopic = new Topic();
 
@@ -28,6 +28,7 @@ export const saveOne = async (req: Request, res: Response) => {
 
   newTopic.created = created;
   newTopic.topic = topic;
+  newTopic.boardRef = board;
 
-  res.send(await topicRepository.save(topic));
+  res.send(await topicRepository.save(newTopic));
 };

@@ -1,8 +1,5 @@
 /** TypeORM */
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-
-/** Entities */
-import { Topic } from './Topic';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Board {
@@ -14,7 +11,4 @@ export class Board {
 
   @Column()
   adjective!: string;
-
-  @OneToMany(() => Topic, (topic) => topic.board)
-  topics!: Topic[];
 }

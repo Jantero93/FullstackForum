@@ -1,14 +1,5 @@
 /** TypeORM */
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn
-} from 'typeorm';
-
-/** Entities */
-import { Board } from './Board';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Topic {
@@ -21,7 +12,6 @@ export class Topic {
   @Column()
   topic!: string;
 
-  @ManyToOne(() => Board, (board) => board.topics)
-  @JoinColumn()
-  board!: Board;
+  @Column()
+  boardRef!: number;
 }

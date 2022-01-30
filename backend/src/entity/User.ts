@@ -1,7 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-/** Entities */
-//import { Post } from './Post';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -15,7 +13,4 @@ export class User {
 
   @Column()
   age!: number;
-
-  // @Column()
-  // posts!: Post[];
 }
