@@ -30,11 +30,9 @@ const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
 
   useEffect(() => {
     TopicService.getAllTopicsByBoardId(boardId).then((response) =>
-      setTopics(response.topics || [])
+      setTopics(response)
     );
   }, [boardId]);
-
-  console.log('topics', topics);
 
   return (
     <Stack
@@ -49,7 +47,7 @@ const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
           key={topic.topicId}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
-          <CardActionArea onClick={() => navigate(topic.topicId)}>
+          <CardActionArea onClick={() => navigate(topic.topicId.toString())}>
             <CardContent>
               <Typography variant={'h5'} sx={{ mb: 1.5 }}>
                 {topic.topic}

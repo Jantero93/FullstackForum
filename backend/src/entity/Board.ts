@@ -6,7 +6,7 @@ export class Board {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ unique: true })
   board!: string;
 
   @Column()

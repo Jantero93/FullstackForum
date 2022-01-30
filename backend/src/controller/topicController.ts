@@ -32,3 +32,8 @@ export const saveOne = async (req: Request, res: Response) => {
 
   res.send(await topicRepository.save(newTopic));
 };
+
+export const getAllByBoard = async (req: Request, res: Response) => {
+  const topicRepository = getCustomRepository(TopicRepository);
+  res.send(await topicRepository.findTopicsByBoardName(req.params.board));
+};

@@ -13,5 +13,5 @@ export class Topic {
   topic!: string;
 
   @Column()
-  boardRef!: number;
+  boardRef!: string;
 }

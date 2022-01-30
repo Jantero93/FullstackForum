@@ -17,9 +17,6 @@ import Link from '@mui/material/Link';
 /** Forum boards */
 import { boards } from '../../types/boards';
 
-/** Utils */
-import { boardNameToUrlParameter } from '../../utils/routerUtils';
-
 const NavBar: React.FC = (): JSX.Element => {
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
@@ -43,7 +40,7 @@ const NavBar: React.FC = (): JSX.Element => {
             {[{ name: 'Home', adjective: '' }, ...boards].map((board) => (
               <Link
                 component={RouterLink}
-                to={boardNameToUrlParameter(board.name)}
+                to={board.name === 'Home' ? '/' : board.name}
                 key={board.name}
                 noWrap
                 sx={{ mr: 2, display: { xs: 'flex' } }}
