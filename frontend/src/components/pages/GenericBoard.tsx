@@ -16,20 +16,20 @@ import TopicService from '../../services/topicService';
 import { Topic } from '../../types/forum';
 
 /**
- * This component forwards to /:forumPage/:topicId via Router
+ * This component forwards to /:boardName/:topicId via Router
  * Topic component is in /forumitems/Topic
  */
 const GenericBoard: React.FC = (): JSX.Element => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
 
-  const { forumPage } = useParams();
+  const { boardName } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardId(forumPage as string).then((response) =>
+    TopicService.getAllTopicsByBoardId(boardName as string).then((response) =>
       setTopics(response)
     );
-  }, [forumPage]);
+  }, [boardName]);
 
   return (
     <Stack

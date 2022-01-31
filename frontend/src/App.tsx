@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 /** Components */
 import NavBar from './components/layout/NavBar';
-import Topic from './components/forumitems/Topic';
+import Topic from './components/pages/Topic';
 
 /** Pages */
 import GenericBoard from './components/pages/GenericBoard';
@@ -16,8 +16,8 @@ const App: React.FC = (): JSX.Element => {
 
       <Routes>
         <Route index element={<HomePage />} />
-        <Route path="/:forumPage" element={<GenericBoard />} />
-        <Route path="/:forumPage/:id" element={<Topic />} />
+        <Route path="/:boardName" element={<GenericBoard />} />
+        <Route path="/:boardName/:id" element={<Topic />} />
       </Routes>
     </Router>
   );
