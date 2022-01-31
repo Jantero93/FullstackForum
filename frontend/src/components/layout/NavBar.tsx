@@ -1,5 +1,5 @@
 /** React */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 /** Components */
@@ -14,12 +14,20 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Link from '@mui/material/Link';
 
+/** Services */
+import BoardService from '../../services/boardService';
+
 /** Forum boards */
-import { boards } from '../../types/boards';
+import { Board } from '../../types/forum';
 
 const NavBar: React.FC = (): JSX.Element => {
+  const [boards, setBoards] = useState<Board[]>([]);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    BoardService.getAllBoards().then((response) => setBoards(response));
+  }, []);
 
   return (
     <AppBar
@@ -37,19 +45,19 @@ const NavBar: React.FC = (): JSX.Element => {
           alignItems="baseline"
         >
           <Toolbar disableGutters variant={'regular'}>
-            {[{ name: 'Home', adjective: '' }, ...boards].map((board) => (
+            {[{ board: 'Home', adjective: '' }, ...boards].map((board) => (
               <Link
                 component={RouterLink}
-                to={board.name === 'Home' ? '/' : board.name}
-                key={board.name}
+                to={board.board === 'Home' ? '/' : board.board}
+                key={board.board}
                 noWrap
                 sx={{ mr: 2, display: { xs: 'flex' } }}
                 style={{
-                  color: board.name === 'Home' ? 'whitesmoke' : '#66b2ff',
+                  color: board.board === 'Home' ? 'whitesmoke' : '#66b2ff',
                   cursor: 'pointer'
                 }}
               >
-                {board.name}
+                {board.board}
               </Link>
             ))}
           </Toolbar>

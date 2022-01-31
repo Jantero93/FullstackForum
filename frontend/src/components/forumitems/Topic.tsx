@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 /** Components */
 import AnswerBox from './AnswerBox';
@@ -9,7 +10,6 @@ import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
-import { useParams } from 'react-router-dom';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -28,7 +28,7 @@ const Topic: React.FC = (): JSX.Element => {
 
   // TODO: On new post create service utils
   const sendPostClicked = (): void => {
-    console.log(`Post send: ${message}`);
+    console.log(`Post send: ${message} ${params}`);
   };
 
   return (
