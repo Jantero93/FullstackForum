@@ -7,12 +7,7 @@ import LogInModal from '../layout/LogInModal';
 import SignUpModal from '../layout/SignUpModal';
 
 /** UI  */
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Toolbar from '@mui/material/Toolbar';
-import Link from '@mui/material/Link';
+import { AppBar, Button, Container, Grid, Link, Toolbar } from '@mui/material';
 
 /** Services */
 import BoardService from '../../services/boardService';

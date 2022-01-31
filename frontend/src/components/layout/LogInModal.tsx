@@ -1,14 +1,16 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 /** UI, CSS */
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FormGroup,
+  Modal,
+  TextField,
+  Typography
+} from '@mui/material';
 import { modalStyle } from '../../utils/modalstyles';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import FormGroup from '@mui/material/FormGroup';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 
 type Props = {
   showLogIn: boolean;

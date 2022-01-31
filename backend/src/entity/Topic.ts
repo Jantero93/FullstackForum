@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Topic {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   topicId!: number;
 
   @Column()
@@ -14,4 +14,7 @@ export class Topic {
 
   @Column()
   boardRef!: string;
+
+  @Column()
+  userRef!: string;
 }

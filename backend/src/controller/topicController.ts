@@ -21,15 +21,15 @@ export const getAll = async (_req: Request, res: Response) => {
 export const saveOne = async (req: Request, res: Response) => {
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const { created, topic, board } = req.body;
+  const { created, topic, boardRef, userRef } = req.body;
 
   const newTopic = new Topic();
 
   //TODO: Validation
-
   newTopic.created = created;
   newTopic.topic = topic;
-  newTopic.boardRef = board;
+  newTopic.boardRef = boardRef;
+  newTopic.userRef = userRef;
 
   res.send(await topicRepository.save(newTopic));
 };

@@ -1,10 +1,7 @@
 import React from 'react';
 
 /** UI */
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 
 /** Types */
 import { Post as PostType } from '../../types/forum';
@@ -29,7 +26,9 @@ const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
           <CardContent>
-            <Typography color="text.secondary">{post.userRef + ' anon poster'}</Typography>
+            <Typography color="text.secondary">
+              {post.userRef + ' anon poster'}
+            </Typography>
             <Typography sx={{ mb: 0.5 }} color="text.secondary">
               {`${formatDate('DD.MM.YYYY', post.created)} klo ${formatDate(
                 'HH:mm',

@@ -2,17 +2,19 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** UI */
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 /** Types */
 import { Board as BoardType } from '../../types/forum';
 
 /** Utils */
 import BoardService from '../../services/boardService';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Stack,
+  Typography
+} from '@mui/material';
 
 const HomePage: React.FC = (): JSX.Element => {
   const [boards, setBoards] = React.useState<BoardType[]>([]);

@@ -27,13 +27,3 @@ export const postNewPost = async (req: Request, res: Response) => {
 
   res.send(await postRepository.save(post));
 };
-
-/**
- * Expose service function to other controllers
- * @param post new post to save
- * @returns saved post
- */
-export const serviceSavePost = async (post: Post) => {
-  const postRepository = getCustomRepository(PostRepository);
-  return await postRepository.save(post);
-};

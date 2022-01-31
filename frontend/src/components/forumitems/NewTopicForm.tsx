@@ -15,14 +15,18 @@ const textAreaStyles: CSS.Properties = {
 
 type Props = {
   message: string;
-  sendPostClicked: () => void;
   setMessage: React.Dispatch<SetStateAction<string>>;
+  topicName: string;
+  setTopicName: React.Dispatch<SetStateAction<string>>;
+  postNewTopic: () => void;
 };
 
-const AnswerBox: React.FC<Props> = ({
+const NewTopicForm: React.FC<Props> = ({
   message,
-  sendPostClicked,
-  setMessage
+  setMessage,
+  topicName,
+  setTopicName,
+  postNewTopic
 }: Props): JSX.Element => {
   return (
     <Stack
@@ -32,6 +36,21 @@ const AnswerBox: React.FC<Props> = ({
       spacing={0.5}
       style={{ margin: '1.5em' }}
     >
+      <Typography style={{ color: 'whitesmoke', marginLeft: textAreaMargin }}>
+        Topic
+      </Typography>
+      <TextField
+        fullWidth
+        maxRows={1}
+        minRows={1}
+        multiline
+        placeholder="Topic"
+        value={topicName}
+        style={textAreaStyles}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setTopicName(e.target.value)
+        }
+      />
       <Typography style={{ color: 'whitesmoke', marginLeft: textAreaMargin }}>
         Send a post
       </Typography>
@@ -51,7 +70,7 @@ const AnswerBox: React.FC<Props> = ({
         size="large"
         variant="contained"
         style={{ marginLeft: textAreaMargin, marginTop: '1em' }}
-        onClick={() => sendPostClicked()}
+        onClick={() => postNewTopic()}
       >
         Post
       </Button>
@@ -59,4 +78,4 @@ const AnswerBox: React.FC<Props> = ({
   );
 };
 
-export default AnswerBox;
+export default NewTopicForm;

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
-import AnswerBox from '../forumitems/AnswerBox';
-import Post from '../forumitems/Post';
+import AnswerBox from '../forumItems/AnswerBox';
+import Post from '../forumItems/Post';
 
 /** Types */
 import { Post as PostType } from '../../types/forum';
