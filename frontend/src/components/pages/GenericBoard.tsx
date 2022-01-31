@@ -46,6 +46,10 @@ const GenericBoard: React.FC = (): JSX.Element => {
   }, [boardName]);
 
   const postNewTopic = async (): Promise<void> => {
+    setTopicName('');
+    setMessage('');
+    setToggleNewTopicForm(false);
+
     const createdTopic = await TopicService.postTopic({
       boardRef: boardName as string,
       created: formatISOdate(),

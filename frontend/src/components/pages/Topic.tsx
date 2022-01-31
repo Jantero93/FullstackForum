@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
-import AnswerBox from '../forumItems/AnswerBox';
+import AnswerBox from '../forumItems/NewPostForm';
 import Post from '../forumItems/Post';
 
 /** Types */
@@ -36,7 +36,7 @@ const Topic: React.FC = (): JSX.Element => {
 
     const postFromServer: PostType = await PostService.postNewPost(newPost);
     setPosts(posts.concat(postFromServer));
-    setMessage('')
+    setMessage('');
   };
 
   return (
