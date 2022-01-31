@@ -1,14 +1,10 @@
-/** TypeORM 
+/** TypeORM */
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-
-import { Topic } from './Topic';
-import { User } from './User';
 
 @Entity()
 export class Post {
-  @PrimaryGeneratedColumn()
-  postId!: string;
+  @PrimaryGeneratedColumn('uuid')
+  postId!: number;
 
   @Column()
   created!: string;
@@ -20,10 +16,8 @@ export class Post {
   votes!: number;
 
   @Column()
-  topic!: Topic;
-
+  topicRef!: string;
 
   @Column()
-  user!: User;
+  userRef!: string;
 }
-*/

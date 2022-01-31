@@ -10,25 +10,33 @@ import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
+import { formatISOdate } from '../../utils/date';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
   const [message, setMessage] = React.useState<string>('');
 
-  const params = useParams();
+  const { topicId } = useParams();
 
-  //! USE THIS TO DETERMINE CORRECT TOPIC AND BOARD
-  console.log('params', params);
-
+  /** Fetch all posts from topic */
   useEffect(() => {
-    PostService.getPostsByBoardId('boardId').then((response) =>
-      setPosts(response.posts)
+    PostService.getPostsByTopicId(topicId as string).then((response) =>
+      setPosts(response)
     );
-  }, []);
+  }, [topicId]);
 
-  // TODO: On new post create service utils
-  const sendPostClicked = (): void => {
-    console.log(`Post send: ${message} ${params}`);
+  const sendPostClicked = async (): Promise<void> => {
+    const newPost: PostType = {
+      created: formatISOdate(),
+      message: message,
+      votes: 0,
+      topicRef: topicId as string,
+      userRef: '-1'
+    };
+
+    const postFromServer: PostType = await PostService.postNewPost(newPost);
+    setPosts(posts.concat(postFromServer));
+    setMessage('')
   };
 
   return (

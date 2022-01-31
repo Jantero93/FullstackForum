@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -44,7 +45,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
           key={topic.topicId}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
-          <CardActionArea onClick={() => navigate(topic.topicId.toString())}>
+          <CardActionArea onClick={() => navigate(topic.topicId!.toString())}>
             <CardContent>
               <Typography variant={'h5'} sx={{ mb: 1.5 }}>
                 {topic.topic}

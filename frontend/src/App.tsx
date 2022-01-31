@@ -17,7 +17,7 @@ const App: React.FC = (): JSX.Element => {
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="/:boardName" element={<GenericBoard />} />
-        <Route path="/:boardName/:id" element={<Topic />} />
+        <Route path="/:boardName/:topicId" element={<Topic />} />
       </Routes>
     </Router>
   );
