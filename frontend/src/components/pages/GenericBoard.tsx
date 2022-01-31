@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /** UI */
 import Card from '@mui/material/Card';
@@ -15,24 +15,21 @@ import TopicService from '../../services/topicService';
 /** Types */
 import { Topic } from '../../types/forum';
 
-type Props = {
-  boardId: string;
-};
-
 /**
  * This component forwards to /:forumPage/:topicId via Router
  * Topic component is in /forumitems/Topic
  */
-const GenericBoard: React.FC<Props> = ({ boardId }: Props): JSX.Element => {
+const GenericBoard: React.FC = (): JSX.Element => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
 
+  const { forumPage } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardId(boardId).then((response) =>
+    TopicService.getAllTopicsByBoardId(forumPage as string).then((response) =>
       setTopics(response)
     );
-  }, [boardId]);
+  }, [forumPage]);
 
   return (
     <Stack

@@ -5,6 +5,7 @@ import { TopicRepository } from '../repositories/topicRepository';
 /** Types */
 import { Response, Request } from 'express';
 
+/** Entities */
 import { Topic } from '../entity/Topic';
 
 export const deleteOne = async (req: Request, res: Response) => {

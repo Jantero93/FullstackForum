@@ -6,7 +6,7 @@ import NavBar from './components/layout/NavBar';
 import Topic from './components/forumitems/Topic';
 
 /** Pages */
-import ForumPage from './components/pages/ForumPage';
+import GenericBoard from './components/pages/GenericBoard';
 import HomePage from './components/pages/HomePage';
 
 const App: React.FC = (): JSX.Element => {
@@ -16,7 +16,7 @@ const App: React.FC = (): JSX.Element => {
 
       <Routes>
         <Route index element={<HomePage />} />
-        <Route path="/:forumPage" element={<ForumPage />} />
+        <Route path="/:forumPage" element={<GenericBoard />} />
         <Route path="/:forumPage/:id" element={<Topic />} />
       </Routes>
     </Router>
