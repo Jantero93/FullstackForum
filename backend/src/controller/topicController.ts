@@ -1,12 +1,14 @@
 /** Repository */
 import { getCustomRepository } from 'typeorm';
 import { TopicRepository } from '../repositories/topicRepository';
+import { BoardRepository } from '../repositories/boardRepository';
+
+/** Entities */
+import { Board } from '../entity/Board';
+import { Topic } from '../entity/Topic';
 
 /** Types */
 import { Response, Request } from 'express';
-
-/** Entities */
-import { Topic } from '../entity/Topic';
 
 export const deleteOne = async (req: Request, res: Response) => {
   const topicRepository = getCustomRepository(TopicRepository);
@@ -19,22 +21,28 @@ export const getAll = async (_req: Request, res: Response) => {
 };
 
 export const saveOne = async (req: Request, res: Response) => {
+  const boardRepository = getCustomRepository(BoardRepository);
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const { created, topic, boardRef, userRef } = req.body;
+  const { created, topicName, boardRef } = req.body;
+
+  const board = (await boardRepository.findBoardByBoardName(boardRef)) as Board;
 
   const newTopic = new Topic();
-
-  //TODO: Validation
+  newTopic.board = board;
   newTopic.created = created;
-  newTopic.topic = topic;
-  newTopic.boardRef = boardRef;
-  newTopic.userRef = userRef;
+  newTopic.posts = [];
+  newTopic.topicName = topicName;
 
   res.send(await topicRepository.save(newTopic));
 };
 
 export const getAllByBoard = async (req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-  res.send(await topicRepository.findTopicsByBoardName(req.params.board));
+  const boardRepository = getCustomRepository(BoardRepository);
+
+  const board = (await boardRepository.findBoardWithTopics(
+    req.params.board
+  )) as Board;
+
+  res.send(board.topics);
 };

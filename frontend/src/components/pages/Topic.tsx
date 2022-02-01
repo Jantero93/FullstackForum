@@ -44,13 +44,12 @@ const Topic: React.FC = (): JSX.Element => {
       {posts.map((post) => (
         <Post key={post.postId} post={post} />
       ))}
-      {posts.length && (
-        <AnswerBox
-          message={message}
-          sendPostClicked={sendPostClicked}
-          setMessage={setMessage}
-        />
-      )}
+
+      <AnswerBox
+        message={message}
+        sendPostClicked={sendPostClicked}
+        setMessage={setMessage}
+      />
     </div>
   );
 };

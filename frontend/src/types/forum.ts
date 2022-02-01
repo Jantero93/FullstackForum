@@ -24,9 +24,9 @@ export type Post = {
  * @type {userRef} parent User Id
  */
 export type Topic = {
-  topicId?: string;
+  id?: string;
   created: string;
-  topic: string;
+  topicName: string;
   boardRef: string;
   userRef: string;
 };

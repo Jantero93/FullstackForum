@@ -1,13 +1,21 @@
 /** TypeORM */
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany
+} from 'typeorm';
+import { Topic } from './Topic';
+import { User } from './User';
 
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn('uuid')
-  postId!: number;
+  id!: number;
 
   @Column()
-  created!: string;
+  createdTime!: string;
 
   @Column()
   message!: string;
@@ -15,9 +23,9 @@ export class Post {
   @Column()
   votes!: number;
 
-  @Column()
-  topicRef!: string;
+  @ManyToOne(() => Topic, (topic) => topic.posts, { onDelete: 'CASCADE' })
+  topic!: Topic;
 
-  @Column()
-  userRef!: string;
+  @OneToMany(() => User, (user) => user.posts)
+  user!: User;
 }

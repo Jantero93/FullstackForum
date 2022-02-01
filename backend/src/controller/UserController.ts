@@ -2,10 +2,8 @@
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/userRepository';
 
-/** Entity */
 import { User } from '../entity/User';
 
-/** Types */
 import { Response, Request } from 'express';
 
 export const deleteOne = async (req: Request, res: Response) => {
@@ -22,7 +20,6 @@ export const replace = async (req: Request, res: Response) => {
   const userRepository = getCustomRepository(UserRepository);
 
   //TODO: Check validation
-  const { age, firstName, lasName } = req.body;
 
   const oldUser = await userRepository.findOne(req.params.id);
 
@@ -31,22 +28,14 @@ export const replace = async (req: Request, res: Response) => {
     return;
   }
 
-  oldUser.age = age;
-  oldUser.firstName = firstName;
-  oldUser.lastName = lasName;
-  res.send(await userRepository.save(oldUser as User));
+  res.send('kesken');
 };
 
-export const saveOne = async (req: Request, res: Response) => {
+export const saveOne = async (_req: Request, res: Response) => {
   const userRepository = getCustomRepository(UserRepository);
-
-  const { age, firstName, lastName } = req.body;
 
   //TODO: Check validation
   const user = new User();
-  user.age = age;
-  user.firstName = firstName;
-  user.lastName = lastName;
 
   res.send(await userRepository.save(user));
 };

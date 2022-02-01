@@ -3,8 +3,8 @@ import { Topic } from '../types/forum';
 
 const baseUrl = '/api/topic';
 
-const getAllTopicsByBoardId = async (boardId: string): Promise<Topic[]> => {
-  const request = await axios.get(`${baseUrl}/${boardId}`);
+const getAllTopicsByBoardName = async (boardName: string): Promise<Topic[]> => {
+  const request = await axios.get(`${baseUrl}/${boardName}`);
   return request.data;
 };
 
@@ -14,7 +14,7 @@ const postTopic = async (topic: Topic): Promise<Topic> => {
 }
 
 const TopicService = {
-  getAllTopicsByBoardId,
+  getAllTopicsByBoardName,
   postTopic
 };
 

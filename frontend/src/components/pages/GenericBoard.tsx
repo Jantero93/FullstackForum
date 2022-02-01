@@ -40,7 +40,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardId(boardName as string).then((response) =>
+    TopicService.getAllTopicsByBoardName(boardName as string).then((response) =>
       setTopics(response)
     );
   }, [boardName]);
@@ -53,7 +53,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
     const createdTopic = await TopicService.postTopic({
       boardRef: boardName as string,
       created: formatISOdate(),
-      topic: topicName,
+      topicName: topicName,
       userRef: '-1'
     });
 
@@ -62,7 +62,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
     await PostService.postNewPost({
       created: formatISOdate(),
       message: message,
-      topicRef: createdTopic.topicId as string,
+      topicRef: createdTopic.id as string,
       userRef: '-1',
       votes: 0
     });
@@ -79,13 +79,13 @@ const GenericBoard: React.FC = (): JSX.Element => {
         {topics.map((topic) => (
           <Card
             sx={{ minWidth: 275 }}
-            key={topic.topicId}
+            key={topic.id}
             style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
           >
-            <CardActionArea onClick={() => navigate(topic.topicId!.toString())}>
+            <CardActionArea onClick={() => navigate(topic.id!.toString())}>
               <CardContent>
                 <Typography variant={'h5'} sx={{ mb: 1.5 }}>
-                  {topic.topic}
+                  {topic.topicName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {topic.userRef}

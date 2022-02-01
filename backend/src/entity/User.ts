@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Post } from './Post';
+import { Topic } from './Topic';
 
 @Entity()
 export class User {
@@ -6,11 +8,14 @@ export class User {
   id!: number;
 
   @Column()
-  firstName!: string;
+  nickname!: string;
 
   @Column()
-  lastName!: string;
+  password!: string;
 
-  @Column()
-  age!: number;
+  @ManyToOne(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })
+  posts!: Post[];
+
+  @ManyToOne(() => Topic, (topic) => topic.user, { onDelete: 'NO ACTION' })
+  topics!: Topic[];
 }
