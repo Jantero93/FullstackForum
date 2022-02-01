@@ -8,12 +8,17 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.12",
+    "@types/jsonwebtoken": "^8.5.8",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
+    "class-validator": "^0.13.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^14.3.2",
     "express": "^4.15.4",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.41"

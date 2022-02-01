@@ -1,11 +1,6 @@
 /** TypeORM */
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany
-} from 'typeorm';
+import { MaxLength } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Topic } from './Topic';
 import { User } from './User';
 
@@ -18,6 +13,9 @@ export class Post {
   created!: string;
 
   @Column()
+  @MaxLength(1000, {
+    message: 'Message length can be max 1000 characters long'
+  })
   message!: string;
 
   @Column()
@@ -26,6 +24,6 @@ export class Post {
   @ManyToOne(() => Topic, (topic) => topic.posts, { onDelete: 'CASCADE' })
   topic!: Topic;
 
-  @OneToMany(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts)
   user!: User;
 }

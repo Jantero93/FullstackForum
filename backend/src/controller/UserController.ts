@@ -2,40 +2,36 @@
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/userRepository';
 
+/** Types */
 import { User } from '../entity/User';
-
 import { Response, Request } from 'express';
 
-export const deleteOne = async (req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-  res.send(await userRepository.delete(req.params.id));
-};
+/** bcrypt */
+import bcrypt from 'bcryptjs';
 
-export const getAll = async (_req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-  res.send(await userRepository.find());
-};
-
-export const replace = async (req: Request, res: Response) => {
+export const saveOne = async (req: Request, res: Response) => {
   const userRepository = getCustomRepository(UserRepository);
 
-  //TODO: Check validation
+  console.log('req.bodyfgddfgfd', req.body);
+  const { username, password } = req.body;
 
-  const oldUser = await userRepository.findOne(req.params.id);
+  console.log('username', username);
+  console.log('password', password);
 
-  if (!oldUser) {
-    res.send('Error not found');
-    return;
+  if ((password as string).length < 6) {
+    return res.status(422).send({
+      error: 'password minimum length 6'
+    });
   }
 
-  res.send('kesken');
-};
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
 
-export const saveOne = async (_req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-
-  //TODO: Check validation
   const user = new User();
+  user.username = username;
+  user.password = passwordHash;
+
+  console.log('user mega user', user);
 
   res.send(await userRepository.save(user));
 };
