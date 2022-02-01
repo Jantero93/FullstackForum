@@ -15,7 +15,7 @@ export class Post {
   id!: number;
 
   @Column()
-  createdTime!: string;
+  created!: string;
 
   @Column()
   message!: string;

@@ -8,7 +8,7 @@ export class User {
   id!: number;
 
   @Column()
-  nickname!: string;
+  username!: string;
 
   @Column()
   password!: string;

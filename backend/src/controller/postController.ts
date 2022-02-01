@@ -28,7 +28,7 @@ export const postNewPost = async (req: Request, res: Response) => {
   const post = new Post();
   post.message = message;
   post.votes = 0;
-  post.createdTime = created;
+  post.created = created;
   post.topic = parentTopic;
 
   res.send(await postRepository.save(post));
