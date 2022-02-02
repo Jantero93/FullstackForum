@@ -10,7 +10,6 @@ import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
-import { formatISOdate } from '../../utils/date';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -27,7 +26,6 @@ const Topic: React.FC = (): JSX.Element => {
 
   const sendPostClicked = async (): Promise<void> => {
     const newPost: PostType = {
-      created: formatISOdate(),
       message: message,
       votes: 0,
       topicRef: topicId as string,

@@ -21,14 +21,13 @@ export const postNewPost = async (req: Request, res: Response) => {
   const postRepository = getCustomRepository(PostRepository);
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const { created, message, topicRef } = req.body;
+  const { message, topicRef } = req.body;
 
   const parentTopic = (await topicRepository.findOne(topicRef)) as Topic;
 
   const post = new Post();
   post.message = message;
   post.votes = 0;
-  post.created = created;
   post.topic = parentTopic;
 
   res.send(await postRepository.save(post));

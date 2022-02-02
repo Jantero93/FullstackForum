@@ -24,13 +24,12 @@ export const saveOne = async (req: Request, res: Response) => {
   const boardRepository = getCustomRepository(BoardRepository);
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const { created, topicName, boardRef } = req.body;
+  const { topicName, boardRef } = req.body;
 
   const board = (await boardRepository.findBoardByBoardName(boardRef)) as Board;
 
   const newTopic = new Topic();
   newTopic.board = board;
-  newTopic.created = created;
   newTopic.posts = [];
   newTopic.topicName = topicName;
 

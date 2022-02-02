@@ -11,7 +11,7 @@ export type Board = {
  */
 export type Post = {
   id?: string;
-  created: string;
+  created?: string;
   message: string;
   topicRef: string;
   votes: number;
@@ -25,7 +25,7 @@ export type Post = {
  */
 export type Topic = {
   id?: string;
-  created: string;
+  created?: string;
   topicName: string;
   boardRef: string;
   userRef: string;

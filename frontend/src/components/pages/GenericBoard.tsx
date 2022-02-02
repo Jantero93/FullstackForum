@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 /** Utils */
-import { formatDate, formatISOdate } from '../../utils/date';
+import { formatDate } from '../../utils/date';
 import PostService from '../../services/postService';
 import TopicService from '../../services/topicService';
 
@@ -52,7 +52,6 @@ const GenericBoard: React.FC = (): JSX.Element => {
 
     const createdTopic = await TopicService.postTopic({
       boardRef: boardName as string,
-      created: formatISOdate(),
       topicName: topicName,
       userRef: '-1'
     });
@@ -60,7 +59,6 @@ const GenericBoard: React.FC = (): JSX.Element => {
     setTopics(topics.concat(createdTopic));
 
     await PostService.postNewPost({
-      created: formatISOdate(),
       message: message,
       topicRef: createdTopic.id as string,
       userRef: '-1',
