@@ -8,7 +8,7 @@ import routes from './routes/indexRoutes';
 
 /** Middleware */
 import cors from 'cors';
-import { requestLogger } from './utils/middleware';
+import { tokenExtractor, requestLogger } from './utils/middleware';
 
 /** Utils */
 import Config from './utils/config';
@@ -26,14 +26,13 @@ createConnection()
     app.use(express.json());
 
     app.use(requestLogger);
+    app.use(tokenExtractor);
 
-    /** Initialize routes */
+    /** All routes */
     app.use('/', routes);
 
     app.listen(Config.PORT);
 
-    logger.info(
-      `Express server has started on port ${Config.PORT}. Open http://localhost:${Config.PORT}/api/user to see all users`
-    );
+    logger.info(`Express server has started on port ${Config.PORT}`);
   })
   .catch((error) => logger.error(error));
