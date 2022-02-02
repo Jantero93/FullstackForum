@@ -14,14 +14,16 @@ import PostService from '../../services/postService';
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
   const [message, setMessage] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const { topicId } = useParams();
 
   /** Fetch all posts from topic */
   useEffect(() => {
-    PostService.getPostsByTopicId(topicId as string).then((response) =>
-      setPosts(response)
-    );
+    PostService.getPostsByTopicId(topicId as string).then((response) => {
+      setPosts(response);
+      setIsLoading(false);
+    });
   }, [topicId]);
 
   const sendPostClicked = async (): Promise<void> => {
@@ -39,15 +41,19 @@ const Topic: React.FC = (): JSX.Element => {
 
   return (
     <div>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {!isLoading && (
+        <>
+          {posts.map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
 
-      <AnswerBox
-        message={message}
-        sendPostClicked={sendPostClicked}
-        setMessage={setMessage}
-      />
+          <AnswerBox
+            message={message}
+            sendPostClicked={sendPostClicked}
+            setMessage={setMessage}
+          />
+        </>
+      )}
     </div>
   );
 };

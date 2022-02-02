@@ -31,6 +31,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
   const [toggleNewTopicForm, setToggleNewTopicForm] =
     React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   /** For new topic form */
   const [message, setMessage] = React.useState<string>('');
@@ -40,8 +41,11 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardName(boardName as string).then((response) =>
-      setTopics(response)
+    TopicService.getAllTopicsByBoardName(boardName as string).then(
+      (response) => {
+        setTopics(response);
+        setIsLoading(false);
+      }
     );
   }, [boardName]);
 
@@ -66,56 +70,63 @@ const GenericBoard: React.FC = (): JSX.Element => {
     });
   };
 
+  const renderTopics = (): JSX.Element[] =>
+    topics.map((topic) => (
+      <Card
+        sx={{ minWidth: 275 }}
+        key={topic.id}
+        style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
+      >
+        <CardActionArea onClick={() => navigate(topic.id!.toString())}>
+          <CardContent>
+            <Typography variant={'h5'} sx={{ mb: 1.5 }}>
+              {topic.topicName}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {topic.userRef}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {`${formatDate('DD.MM.YYYY', topic.created)} klo ${formatDate(
+                'HH:mm',
+                topic.created
+              )}`}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    ));
+
   return (
     <div>
-      <Stack
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        spacing={1}
-      >
-        {topics.map((topic) => (
-          <Card
-            sx={{ minWidth: 275 }}
-            key={topic.id}
-            style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
+      {!isLoading && (
+        <>
+          <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="stretch"
+            spacing={1}
           >
-            <CardActionArea onClick={() => navigate(topic.id!.toString())}>
-              <CardContent>
-                <Typography variant={'h5'} sx={{ mb: 1.5 }}>
-                  {topic.topicName}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {topic.userRef}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {`${formatDate('DD.MM.YYYY', topic.created)} klo ${formatDate(
-                    'HH:mm',
-                    topic.created
-                  )}`}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        ))}
-      </Stack>
+            {renderTopics()}
+          </Stack>
 
-      <Button
-        size={'large'}
-        variant={'contained'}
-        style={{ margin: '1em' }}
-        onClick={() => setToggleNewTopicForm(!toggleNewTopicForm)}
-      >
-        {toggleNewTopicForm ? 'Hide' : 'New Topic'}
-      </Button>
-      {toggleNewTopicForm && (
-        <NewTopicForm
-          message={message}
-          setMessage={setMessage}
-          topicName={topicName}
-          setTopicName={setTopicName}
-          postNewTopic={postNewTopic}
-        />
+          <Button
+            size={'large'}
+            variant={'contained'}
+            style={{ margin: '1em' }}
+            onClick={() => setToggleNewTopicForm(!toggleNewTopicForm)}
+          >
+            {toggleNewTopicForm ? 'Hide' : 'New Topic'}
+          </Button>
+          {toggleNewTopicForm && (
+            <NewTopicForm
+              message={message}
+              setMessage={setMessage}
+              topicName={topicName}
+              setTopicName={setTopicName}
+              postNewTopic={postNewTopic}
+            />
+          )}
+        </>
       )}
     </div>
   );

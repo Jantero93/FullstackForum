@@ -26,6 +26,6 @@ export class Board {
   adjective!: string;
 
   /** Topics in specific board */
-  @OneToMany(() => Topic, (topic) => topic.board, { cascade: true })
+  @OneToMany(() => Topic, (topic) => topic.board)
   topics!: Topic[];
 }
