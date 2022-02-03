@@ -6,7 +6,7 @@ import { Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Topic } from './Topic';
 
 /** Validation */
-import { MaxLength } from 'class-validator';
+import { Length } from 'class-validator';
 
 @Entity()
 export class Board {
@@ -15,12 +15,12 @@ export class Board {
 
   /** Board name */
   @Column({ unique: true, nullable: false })
-  @MaxLength(200)
+  @Length(1, 200)
   board!: string;
 
   /** Description of board, will be showed in forums */
   @Column()
-  @MaxLength(1000, {
+  @Length(1, 1000, {
     message: 'Description can be max 500 long'
   })
   adjective!: string;

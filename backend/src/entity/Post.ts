@@ -25,7 +25,7 @@ export class Post {
   updated!: Date;
 
   /** Post's content */
-  @Column()
+  @Column({ nullable: false })
   @Length(1, 1000, {
     message: 'Message length can be max 1000 characters long'
   })

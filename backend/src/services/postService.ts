@@ -8,16 +8,27 @@ import { Post } from '../entity/Post';
 /** Services */
 import * as TopicService from '../services/topicService';
 
+/**
+ * ! No error handling
+ * Get all posts related to topic id
+ * @param topicId id of Topic
+ * @returns Posts related to topic id
+ */
 export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
   await TopicService.findPostsByTopicId(topicId);
 
+/**
+ * ! No error handling
+ * Save post on specific topic
+ * @param message Post message
+ * @param topicId id of topic
+ * @returns Saved Post Entity
+ */
 export const saveOne = async (
   message: string,
   topicId: string
 ): Promise<Post> => {
   const postRepository = getCustomRepository(PostRepository);
-
-  console.log('sda');
 
   const parentTopic = await TopicService.findOne(topicId);
 

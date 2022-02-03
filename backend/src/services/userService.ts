@@ -10,22 +10,36 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 
+/**
+ * ! No error handling
+ * @param username username to find from DB
+ * @returns User Entity
+ */
 export const findUser = async (username: string): Promise<User> => {
   const userRepository = getCustomRepository(UserRepository);
   return await userRepository.findUserByUserName(username);
 };
 
+/**
+ * Generates token
+ */
 export const getToken = (username: string, id: string): string => {
   const userForToken = {
     username,
     id
   };
-  /** 60 s * 60 s = 1 h */
+  /** 60 s x 60 s = 1 h */
   const expirationTime = { expiresIn: 60 * 60 };
 
   return jwt.sign(userForToken, config.TOKEN_SECRET, expirationTime);
 };
 
+/**
+ * Save user in DB
+ * @param username Username to save
+ * @param password Password to save
+ * @returns Saved User Entity
+ */
 export const saveUser = async (
   username: string,
   password: string
@@ -42,12 +56,18 @@ export const saveUser = async (
   return await userRepository.save(user);
 };
 
+/**
+ * Verify login
+ * @param userFromDB Fetched user from DB
+ * @param password password to compare to with DB password
+ * @returns true/false based on is password correct
+ */
 export const verifyUser = async (
   userFromDB: User,
   password: string
 ): Promise<boolean> => {
   const passwordCorrect: boolean =
-    userFromDB === null
+    userFromDB === undefined
       ? false
       : await bcrypt.compare(password, userFromDB.passwordHash);
 
