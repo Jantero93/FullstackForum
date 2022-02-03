@@ -26,7 +26,7 @@ export class User {
 
   /** User's username */
   @Column({ unique: true, nullable: false })
-  @Length(3, 20, {
+  @Length(3, 30, {
     message: 'Username length must be 3 - 20'
   })
   username!: string;

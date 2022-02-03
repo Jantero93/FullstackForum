@@ -14,6 +14,7 @@ import { modalStyle } from '../../utils/modalstyles';
 
 /** Utils */
 import UserService from '../../services/userServices';
+import { User } from '../../types/forum';
 
 type Props = {
   showLogIn: boolean;
@@ -26,12 +27,17 @@ const LogInModal: React.FC<Props> = ({
 }: Props): JSX.Element => {
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showError, setShowError] = useState<boolean>(false);
 
   const handleLogInClick = (): void => {
-    UserService.loginUser(username, password).then((response) =>
-      console.log(response)
-    );
+    UserService.loginUser(username, password)
+      .then((response) => saveUserDataLocalStorage(response))
+      .then(() => setShowLogIn(false))
+      .catch(() => setShowError(true));
   };
+
+  const saveUserDataLocalStorage = (userData: User) =>
+    window.localStorage.setItem('userData', JSON.stringify(userData));
 
   return (
     <Modal
@@ -47,20 +53,26 @@ const LogInModal: React.FC<Props> = ({
           </Typography>
           <TextField
             id="outlined-error"
+            error={showError}
             label="Username"
+            required
             style={{ marginTop: '1em' }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUserName(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setUserName(e.target.value);
+              setShowError(false);
+            }}
           />
           <TextField
             id="outlined-error"
+            error={showError}
             label="Password"
+            required
             type="password"
             style={{ marginTop: '1em' }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
+              setShowError(false);
+            }}
           />
           <ButtonGroup
             disableElevation
@@ -70,13 +82,19 @@ const LogInModal: React.FC<Props> = ({
           >
             <Button
               style={{ margin: '1em' }}
-              onClick={() => handleLogInClick()}
+              onClick={() => {
+                setShowError(false);
+                handleLogInClick();
+              }}
             >
               Log in
             </Button>
             <Button
               style={{ margin: '1em' }}
-              onClick={() => setShowLogIn(false)}
+              onClick={() => {
+                setShowLogIn(false);
+                setShowError(false);
+              }}
             >
               Cancel
             </Button>

@@ -6,8 +6,12 @@ import { Response, Request } from 'express';
 
 export const saveOne = async (req: Request, res: Response) => {
   const { username, password } = req.body;
+  const savedUser = await UserService.saveUser(username, password);
 
-  res.send(await UserService.saveUser(username, password));
+  res.send({
+    id: savedUser.id,
+    username: savedUser.username
+  });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -15,9 +19,9 @@ export const login = async (req: Request, res: Response) => {
 
   const userFromDB = await UserService.findUser(username);
 
-  const userVerified = await UserService.verifyUser(userFromDB, password);
+  const isUserVerified = await UserService.verifyUser(userFromDB, password);
 
-  const token: string = userVerified
+  const token: string = isUserVerified
     ? await UserService.getToken(username, userFromDB.id)
     : 'Login failed';
 
