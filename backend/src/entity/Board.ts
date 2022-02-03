@@ -11,10 +11,10 @@ import { MaxLength } from 'class-validator';
 @Entity()
 export class Board {
   @PrimaryGeneratedColumn('uuid')
-  id!: number;
+  id!: string;
 
   /** Board name */
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   @MaxLength(200)
   board!: string;
 

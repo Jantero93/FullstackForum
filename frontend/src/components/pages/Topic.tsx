@@ -30,8 +30,8 @@ const Topic: React.FC = (): JSX.Element => {
     const newPost: PostType = {
       message: message,
       votes: 0,
-      topicRef: topicId as string,
-      userRef: '-1'
+      topicId: topicId as string,
+      userId: '-1'
     };
 
     const postFromServer: PostType = await PostService.postNewPost(newPost);

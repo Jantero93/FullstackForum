@@ -2,12 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** UI */
-
-/** Types */
-import { Board as BoardType } from '../../types/forum';
-
-/** Utils */
-import BoardService from '../../services/boardService';
 import {
   Card,
   CardActionArea,
@@ -15,6 +9,12 @@ import {
   Stack,
   Typography
 } from '@mui/material';
+
+/** Types */
+import { Board as BoardType } from '../../types/forum';
+
+/** Utils */
+import BoardService from '../../services/boardService';
 
 const HomePage: React.FC = (): JSX.Element => {
   const [boards, setBoards] = React.useState<BoardType[]>([]);

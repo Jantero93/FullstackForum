@@ -27,7 +27,7 @@ const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
         >
           <CardContent>
             <Typography color="text.secondary">
-              {post.userRef + ' anon poster'}
+              {post.userId + ' anon poster'}
             </Typography>
             <Typography sx={{ mb: 0.5 }} color="text.secondary">
               {`${formatDate('DD.MM.YYYY', post.created)} klo ${formatDate(
@@ -35,7 +35,9 @@ const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
                 post.created
               )}`}
             </Typography>
-            <Typography variant="h6">{post.message}</Typography>
+            <Typography variant="h6" style={{ wordWrap: 'break-word' }}>
+              {post.message}
+            </Typography>
           </CardContent>
         </Card>
       </Stack>

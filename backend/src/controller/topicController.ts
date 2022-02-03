@@ -1,47 +1,20 @@
-/** Repository */
-import { getCustomRepository } from 'typeorm';
-import { TopicRepository } from '../repositories/topicRepository';
-import { BoardRepository } from '../repositories/boardRepository';
-
-/** Entities */
-import { Board } from '../entity/Board';
-import { Topic } from '../entity/Topic';
+/** Services */
+import * as BoardService from '../services/boardService';
+import * as TopicService from '../services/topicService';
 
 /** Types */
 import { Response, Request } from 'express';
 
-export const deleteOne = async (req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-  res.send(await topicRepository.delete(req.params.id));
-};
+export const deleteOne = async (req: Request, res: Response) =>
+  res.send(await TopicService.deleteOne(req.params.id));
 
-export const getAll = async (_req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-  res.send(await topicRepository.find());
-};
+export const getAll = async (_req: Request, res: Response) =>
+  res.send(await TopicService.findAll());
 
 export const saveOne = async (req: Request, res: Response) => {
-  const boardRepository = getCustomRepository(BoardRepository);
-  const topicRepository = getCustomRepository(TopicRepository);
-
-  const { topicName, boardRef } = req.body;
-
-  const board = (await boardRepository.findBoardByBoardName(boardRef)) as Board;
-
-  const newTopic = new Topic();
-  newTopic.board = board;
-  newTopic.posts = [];
-  newTopic.topicName = topicName;
-
-  res.send(await topicRepository.save(newTopic));
+  const { topicName, boardName } = req.body;
+  res.send(await TopicService.saveOne(topicName, boardName));
 };
 
-export const getAllByBoard = async (req: Request, res: Response) => {
-  const boardRepository = getCustomRepository(BoardRepository);
-
-  const board = (await boardRepository.findBoardWithTopics(
-    req.params.board
-  )) as Board;
-
-  res.send(board.topics);
-};
+export const getAllByBoardName = async (req: Request, res: Response) =>
+  res.send(await BoardService.findTopicsByBoardName(req.params.boardName));

@@ -1,34 +1,14 @@
-/** Repository */
-import { getCustomRepository } from 'typeorm';
-import { PostRepository } from '../repositories/postRepository';
-import { TopicRepository } from '../repositories/topicRepository';
-
 /** Types */
 import { Response, Request } from 'express';
-import { Topic } from '../entity/Topic';
-import { Post } from '../entity/Post';
 
-export const getAllByTopicId = async (req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
+/** Services */
+import * as PostService from '../services/postService';
+import * as TopicService from '../services/topicService';
 
-  const topic = (await topicRepository.findTopicWithPosts(
-    req.params.topicId
-  )) as Topic;
-  res.send(topic.posts);
-};
+export const findAllByTopicId = async (req: Request, res: Response) =>
+  res.send(await TopicService.findPostsByTopicId(req.params.topicId));
 
-export const postNewPost = async (req: Request, res: Response) => {
-  const postRepository = getCustomRepository(PostRepository);
-  const topicRepository = getCustomRepository(TopicRepository);
-
-  const { message, topicRef } = req.body;
-
-  const parentTopic = (await topicRepository.findOne(topicRef)) as Topic;
-
-  const post = new Post();
-  post.message = message;
-  post.votes = 0;
-  post.topic = parentTopic;
-
-  res.send(await postRepository.save(post));
+export const saveOne = async (req: Request, res: Response) => {
+  const { message, topicId } = req.body;
+  res.send(await PostService.saveOne(message, topicId));
 };

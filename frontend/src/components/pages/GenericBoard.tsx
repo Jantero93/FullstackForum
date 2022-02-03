@@ -55,17 +55,19 @@ const GenericBoard: React.FC = (): JSX.Element => {
     setToggleNewTopicForm(false);
 
     const createdTopic = await TopicService.postTopic({
-      boardRef: boardName as string,
+      boardName: boardName as string,
       topicName: topicName,
-      userRef: '-1'
+      userId: '-1'
     });
 
     setTopics(topics.concat(createdTopic));
 
+    console.log('message %%%%%%%%', message);
+
     await PostService.postNewPost({
       message: message,
-      topicRef: createdTopic.id as string,
-      userRef: '-1',
+      topicId: createdTopic.id as string,
+      userId: '-1',
       votes: 0
     });
   };
@@ -83,7 +85,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
               {topic.topicName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {topic.userRef}
+              {topic.userId}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {`${formatDate('DD.MM.YYYY', topic.created)} klo ${formatDate(

@@ -4,7 +4,7 @@ import * as PostController from '../controller/postController';
 
 const router = Router();
 
-router.get('/:topicId', PostController.getAllByTopicId);
-router.post('/', PostController.postNewPost);
+router.get('/:topicId', PostController.findAllByTopicId);
+router.post('/', PostController.saveOne);
 
 export default router;
