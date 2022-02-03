@@ -11,7 +11,7 @@ import cors from 'cors';
 import { tokenExtractor, requestLogger } from './utils/middleware';
 
 /** Utils */
-import Config from './utils/config';
+import Config from './config/config';
 import logger from './utils/logger';
 
 createConnection()

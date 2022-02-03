@@ -32,10 +32,7 @@ export class User {
 
   /** Salted and hashed password */
   @Column()
-  @Length(6, 50, {
-    message: 'Password length must be at least 6 characters'
-  })
-  password!: string;
+  passwordHash!: string;
 
   /** Posts user has created */
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })

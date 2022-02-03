@@ -1,5 +1,4 @@
 /** Services */
-import * as BoardService from '../services/boardService';
 import * as TopicService from '../services/topicService';
 
 /** Types */
@@ -17,4 +16,4 @@ export const saveOne = async (req: Request, res: Response) => {
 };
 
 export const getAllByBoardName = async (req: Request, res: Response) =>
-  res.send(await BoardService.findTopicsByBoardName(req.params.boardName));
+  res.send(await TopicService.findAllByBoardName(req.params.boardName));

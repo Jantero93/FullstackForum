@@ -10,10 +10,10 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "strict": true,
-    "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true
   }
 }

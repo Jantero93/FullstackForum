@@ -19,6 +19,9 @@ export const findAll = async (): Promise<Topic[]> => {
   return await topicRepository.find();
 };
 
+export const findAllByBoardName = async (boardName: string): Promise<Topic[]> =>
+  await BoardService.findTopicsByBoardName(boardName);
+
 export const findOne = async (topicId: string): Promise<Topic> => {
   const topicRepository = getCustomRepository(TopicRepository);
   return (await topicRepository.findOne(topicId)) as Topic;

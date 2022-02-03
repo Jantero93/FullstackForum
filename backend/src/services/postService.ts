@@ -17,6 +17,8 @@ export const saveOne = async (
 ): Promise<Post> => {
   const postRepository = getCustomRepository(PostRepository);
 
+  console.log('sda');
+
   const parentTopic = await TopicService.findOne(topicId);
 
   const post = new Post();

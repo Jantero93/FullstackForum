@@ -62,8 +62,6 @@ const GenericBoard: React.FC = (): JSX.Element => {
 
     setTopics(topics.concat(createdTopic));
 
-    console.log('message %%%%%%%%', message);
-
     await PostService.postNewPost({
       message: message,
       topicId: createdTopic.id as string,

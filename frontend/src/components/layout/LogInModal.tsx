@@ -12,6 +12,9 @@ import {
 } from '@mui/material';
 import { modalStyle } from '../../utils/modalstyles';
 
+/** Utils */
+import UserService from '../../services/userServices';
+
 type Props = {
   showLogIn: boolean;
   setShowLogIn: Dispatch<SetStateAction<boolean>>;
@@ -24,9 +27,11 @@ const LogInModal: React.FC<Props> = ({
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleLogInClick = (): void =>
-    // eslint-disable-next-line no-console
-    console.log(`login ${username} ${password}`);
+  const handleLogInClick = (): void => {
+    UserService.loginUser(username, password).then((response) =>
+      console.log(response)
+    );
+  };
 
   return (
     <Modal

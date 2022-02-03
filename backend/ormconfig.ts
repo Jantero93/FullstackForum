@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
-const config = require('./src/utils/config').default;
+import config from './src/config/config';
 
-module.exports = {
+const typeORMConfig = {
   type: 'postgres',
   host: config.PG_HOST,
   port: config.PG_PORT,
@@ -20,3 +18,5 @@ module.exports = {
     subscribersDir: 'src/subscriber'
   }
 };
+
+export default typeORMConfig;

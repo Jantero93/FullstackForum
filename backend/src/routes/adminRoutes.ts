@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 
-import config from '../utils/config';
+import config from '../config/config';
 
 const router = Router();
 
