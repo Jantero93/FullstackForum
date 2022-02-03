@@ -41,5 +41,5 @@ export class Topic {
 
   /** User who has created topic */
   @ManyToOne(() => Topic, (topic) => topic.user)
-  user!: User | null;
+  user!: User;
 }
