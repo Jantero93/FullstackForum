@@ -1,11 +1,28 @@
 import { NextFunction, Request, Response } from 'express';
 
 /** Utils */
+import config from '../config/config';
+import jwt from 'jsonwebtoken';
 import logger from './logger';
 
-/**
- * Get authorization code from header and put it in request
- */
+export const authorization = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const token = req.cookies.access_token;
+
+  !token && res.sendStatus(403);
+  const data = jwt.verify(token, config.TOKEN_SECRET) as {
+    [key: string]: string;
+  };
+
+  //! data fails, error handling
+  req.userId = data.id;
+  next();
+};
+
+/** Get authorization code from header and put it in request  */
 export const tokenExtractor = (
   req: Request,
   _res: Response,

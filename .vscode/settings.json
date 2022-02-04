@@ -17,6 +17,7 @@
   "editor.formatOnSave": true,
   "eslint.workingDirectories": ["./backend", "./frontend"],
   "cSpell.words": [
+    "caonsole",
     "cpage",
     "forumitems",
     "oppari",

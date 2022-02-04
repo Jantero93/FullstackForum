@@ -31,13 +31,9 @@ const LogInModal: React.FC<Props> = ({
 
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
-      .then((response) => saveUserDataLocalStorage(response))
       .then(() => setShowLogIn(false))
       .catch(() => setShowError(true));
   };
-
-  const saveUserDataLocalStorage = (userData: User) =>
-    window.localStorage.setItem('userData', JSON.stringify(userData));
 
   return (
     <Modal

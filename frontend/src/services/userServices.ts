@@ -12,10 +12,14 @@ const loginUser = async (username: string, password: string): Promise<User> => {
 };
 
 const postUser = async (username: string, password: string): Promise<User> => {
-  const request = await axios.post(baseUrl, {
-    username,
-    password
-  });
+  const request = await axios.post(
+    baseUrl,
+    {
+      username,
+      password
+    },
+    { withCredentials: true }
+  );
   return request.data;
 };
 

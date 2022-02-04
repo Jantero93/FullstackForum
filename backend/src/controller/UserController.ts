@@ -19,14 +19,22 @@ export const login = async (req: Request, res: Response) => {
 
   const userFromDB = await UserService.findUser(username);
 
+  //! If user not verified throw error
   const isUserVerified = await UserService.verifyUser(userFromDB, password);
 
-  const token: string = isUserVerified
+  const token: string | null = isUserVerified
     ? await UserService.getToken(username, userFromDB.id)
-    : 'Login failed';
+    : null;
+
+  !token && res.sendStatus(401);
+
+  res.clearCookie('access_token');
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: true
+  });
 
   res.send({
-    username: userFromDB.username,
-    token: token
+    message: 'Logged in successfully'
   });
 };
