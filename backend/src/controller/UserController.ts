@@ -23,15 +23,15 @@ export const login = async (req: Request, res: Response) => {
   const isUserVerified = await UserService.verifyUser(userFromDB, password);
 
   const token: string | null = isUserVerified
-    ? await UserService.getToken(username, userFromDB.id)
+    ? await UserService.getToken(userFromDB.username, userFromDB.id)
     : null;
 
   !token && res.sendStatus(401);
 
-  res.clearCookie('access_token');
   res.cookie('access_token', token, {
     httpOnly: true,
-    secure: true
+    secure: true,
+    expires: new Date(Date.now() + 60 * 60 * 1000)
   });
 
   res.send({

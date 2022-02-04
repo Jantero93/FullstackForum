@@ -9,7 +9,7 @@ import routes from './routes/indexRoutes';
 /** Middleware */
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { tokenExtractor, requestLogger } from './utils/middleware';
+import { requestLogger } from './utils/middleware';
 
 /** Utils */
 import Config from './config/config';
@@ -28,7 +28,6 @@ createConnection()
     app.use(express.json());
 
     app.use(requestLogger);
-    app.use(tokenExtractor);
 
     /** All routes */
     app.use('/', routes);

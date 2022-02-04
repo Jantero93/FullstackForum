@@ -7,6 +7,7 @@ declare global {
     interface Request {
       token: string | null;
       userId: string;
+      username: string;
     }
   }
 }

@@ -19,21 +19,7 @@ export const authorization = (
 
   //! data fails, error handling
   req.userId = data.id;
-  next();
-};
-
-/** Get authorization code from header and put it in request  */
-export const tokenExtractor = (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-): void => {
-  const authorization = req.get('authorization');
-
-  req.token =
-    authorization && authorization.toLowerCase().startsWith('bearer')
-      ? authorization.substring(7)
-      : null;
+  req.username = data.username;
 
   next();
 };
