@@ -27,7 +27,7 @@ const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
         >
           <CardContent>
             <Typography color="text.secondary">
-              {post.userId + ' anon poster'}
+              {post.user?.username}
             </Typography>
             <Typography sx={{ mb: 0.5 }} color="text.secondary">
               {`${formatDate('DD.MM.YYYY', post.created)} klo ${formatDate(

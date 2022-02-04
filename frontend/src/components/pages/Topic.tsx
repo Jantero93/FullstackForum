@@ -29,13 +29,12 @@ const Topic: React.FC = (): JSX.Element => {
   const sendPostClicked = async (): Promise<void> => {
     const newPost: PostType = {
       message: message,
-      votes: 0,
-      topicId: topicId as string,
-      userId: '-1'
+      topicId: topicId as string
     };
 
-    const postFromServer: PostType = await PostService.postNewPost(newPost);
-    setPosts(posts.concat(postFromServer));
+    const savedPost: PostType = await PostService.postNewPost(newPost);
+    setPosts(posts.concat(savedPost));
+
     setMessage('');
   };
 

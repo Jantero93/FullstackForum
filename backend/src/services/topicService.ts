@@ -3,12 +3,12 @@ import { getCustomRepository } from 'typeorm';
 import { TopicRepository } from '../repositories/topicRepository';
 
 /** Entities */
-import { Post } from '../entity/Post';
 import { Topic } from '../entity/Topic';
 
 /** Services */
 import * as BoardService from '../services/boardService';
 import * as UserService from '../services/userService';
+import { Post } from '../entity/Post';
 
 /**
  * Remove topic from DB
@@ -54,9 +54,10 @@ export const findOne = async (topicId: string): Promise<Topic> => {
  * @param topicId id of topic
  * @returns Posts of given id topic
  */
-export const findPostsByTopicId = async (topicId: string): Promise<Topic[]> => {
+export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
   const topicRepository = getCustomRepository(TopicRepository);
-  return await topicRepository.findPostsAndUsersByTopicId(topicId);
+  const topicData = await topicRepository.findPostsAndUsersByTopicId(topicId);
+  return topicData.posts;
 };
 
 /**
@@ -75,13 +76,11 @@ export const saveOne = async (
 
   const parentBoard = await BoardService.findBoardByBoardName(boardName);
   const postedUser = await UserService.findOne(userId);
-  console.log('parentBoard', parentBoard);
-  console.log('postedUser', postedUser);
+
   const topic = new Topic();
   topic.board = parentBoard;
   topic.topicName = topicName;
   topic.user = postedUser;
-  console.log('topic', topic);
 
   return await topicRepository.save(topic);
 };

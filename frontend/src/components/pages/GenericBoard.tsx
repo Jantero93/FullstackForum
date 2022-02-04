@@ -57,16 +57,14 @@ const GenericBoard: React.FC = (): JSX.Element => {
     const createdTopic = await TopicService.postTopic({
       boardName: boardName as string,
       topicName: topicName,
-      userId: '-1'
+      posts: []
     });
 
     setTopics(topics.concat(createdTopic));
 
     await PostService.postNewPost({
       message: message,
-      topicId: createdTopic.id as string,
-      userId: '-1',
-      votes: 0
+      topicId: createdTopic.id as string
     });
   };
 

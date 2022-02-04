@@ -11,11 +11,11 @@ export type Board = {
  */
 export type Post = {
   id?: string;
-  created?: string;
   message: string;
+  created?: string;
   topicId: string;
-  votes: number;
-  userId: string;
+  votes?: number;
+  user?: User;
 };
 
 /**
@@ -28,11 +28,11 @@ export type Topic = {
   created?: string;
   topicName: string;
   boardName: string;
-  userId: string;
+  userId?: string;
+  posts: Post[];
 };
 
 export type User = {
   id?: string;
   username: string;
-  password: string;
 };

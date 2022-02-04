@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 /** Components */
 import AdminLogin from './components/pages/AdminLogin';
 import NavBar from './components/layout/NavBar';
-import Toast from './components/layout/Toast';
 import Topic from './components/pages/Topic';
+import Toast from './components/layout/Toast';
 
 /** Pages */
 import GenericBoard from './components/pages/GenericBoard';

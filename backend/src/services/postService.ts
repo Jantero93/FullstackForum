@@ -8,7 +8,6 @@ import { Post } from '../entity/Post';
 /** Services */
 import * as TopicService from '../services/topicService';
 import * as UserService from '../services/userService';
-import { Topic } from '../entity/Topic';
 
 /**
  * ! No error handling
@@ -16,7 +15,7 @@ import { Topic } from '../entity/Topic';
  * @param topicId id of Topic
  * @returns Posts related to topic id
  */
-export const getAllByTopicId = async (topicId: string): Promise<Topic[]> =>
+export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
   await TopicService.findPostsByTopicId(topicId);
 
 /**
@@ -34,7 +33,6 @@ export const saveOne = async (
   const postRepository = getCustomRepository(PostRepository);
 
   const parentTopic = await TopicService.findOne(topicId);
-
   const postedUser = await UserService.findOne(userId);
 
   const post = new Post();
