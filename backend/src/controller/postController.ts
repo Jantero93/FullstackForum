@@ -9,5 +9,7 @@ export const findAllByTopicId = async (req: Request, res: Response) =>
 
 export const saveOne = async (req: Request, res: Response) => {
   const { message, topicId } = req.body;
-  res.send(await PostService.saveOne(message, topicId));
+  const userId: string = req.userId;
+
+  res.send(await PostService.saveOne(message, topicId, userId));
 };

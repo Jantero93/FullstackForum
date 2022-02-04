@@ -10,14 +10,19 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 
+export const findOne = async (userId: string): Promise<User> => {
+  const userRepository = getCustomRepository(UserRepository);
+  return (await userRepository.findOne(userId)) as User;
+};
+
 /**
  * ! No error handling
  * @param username username to find from DB
  * @returns User Entity
  */
-export const findUser = async (username: string): Promise<User> => {
+export const findUserByUsername = async (username: string): Promise<User> => {
   const userRepository = getCustomRepository(UserRepository);
-  return await userRepository.findUserByUserName(username);
+  return await userRepository.findUserByUsername(username);
 };
 
 /**

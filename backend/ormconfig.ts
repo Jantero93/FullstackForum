@@ -8,7 +8,7 @@ const typeORMConfig = {
   password: config.PG_PASSWORD,
   database: config.PG_DATABASE,
   synchronize: true,
-  logging: true,
+  logging: false,
   entities: ['src/entity/**/*.ts'],
   migrations: ['src/migration/**/*.ts'],
   subscribers: ['src/subscriber/**/*.ts'],

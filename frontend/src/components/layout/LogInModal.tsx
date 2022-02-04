@@ -14,15 +14,16 @@ import { modalStyle } from '../../utils/modalstyles';
 
 /** Utils */
 import UserService from '../../services/userServices';
-import { User } from '../../types/forum';
 
 type Props = {
   showLogIn: boolean;
+  setIsLogged: Dispatch<SetStateAction<boolean>>;
   setShowLogIn: Dispatch<SetStateAction<boolean>>;
 };
 
 const LogInModal: React.FC<Props> = ({
   showLogIn,
+  setIsLogged,
   setShowLogIn
 }: Props): JSX.Element => {
   const [username, setUserName] = useState<string>('');
@@ -31,6 +32,7 @@ const LogInModal: React.FC<Props> = ({
 
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
+      .then(() => setIsLogged(true))
       .then(() => setShowLogIn(false))
       .catch(() => setShowError(true));
   };

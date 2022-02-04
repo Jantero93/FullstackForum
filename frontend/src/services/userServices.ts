@@ -11,20 +11,18 @@ const loginUser = async (username: string, password: string): Promise<User> => {
   return request.data;
 };
 
+const logOutUser = async (): Promise<void> =>
+  await axios.post(`${baseUrl}/logout`);
+
 const postUser = async (username: string, password: string): Promise<User> => {
-  const request = await axios.post(
-    baseUrl,
-    {
-      username,
-      password
-    },
-    { withCredentials: true }
-  );
+  const newUser = { username: username, password: password };
+  const request = await axios.post(baseUrl, newUser, { withCredentials: true });
   return request.data;
 };
 
 const UserService = {
   loginUser,
+  logOutUser,
   postUser
 };
 

@@ -38,7 +38,7 @@ export class Post {
   message!: string;
 
   /** Up and down votes on post */
-  @Column()
+  @Column({ type: 'integer', default: 0 })
   votes!: number;
 
   /** Topic where post belongs to */

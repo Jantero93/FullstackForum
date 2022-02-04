@@ -8,6 +8,7 @@ import { Topic } from '../entity/Topic';
 
 /** Services */
 import * as BoardService from '../services/boardService';
+import * as UserService from '../services/userService';
 
 /**
  * Remove topic from DB
@@ -49,13 +50,13 @@ export const findOne = async (topicId: string): Promise<Topic> => {
 
 /**
  * ! No error handling
- * Find posts related to topic
+ * Find posts and theirs users related to topic
  * @param topicId id of topic
  * @returns Posts of given id topic
  */
-export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
+export const findPostsByTopicId = async (topicId: string): Promise<Topic[]> => {
   const topicRepository = getCustomRepository(TopicRepository);
-  return await topicRepository.findPostsByTopicId(topicId);
+  return await topicRepository.findPostsAndUsersByTopicId(topicId);
 };
 
 /**
@@ -67,15 +68,20 @@ export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
  */
 export const saveOne = async (
   topicName: string,
-  boardName: string
+  boardName: string,
+  userId: string
 ): Promise<Topic> => {
   const topicRepository = getCustomRepository(TopicRepository);
 
-  const fatherBoard = await BoardService.findBoardByBoardName(boardName);
-
+  const parentBoard = await BoardService.findBoardByBoardName(boardName);
+  const postedUser = await UserService.findOne(userId);
+  console.log('parentBoard', parentBoard);
+  console.log('postedUser', postedUser);
   const topic = new Topic();
-  topic.board = fatherBoard;
+  topic.board = parentBoard;
   topic.topicName = topicName;
+  topic.user = postedUser;
+  console.log('topic', topic);
 
   return await topicRepository.save(topic);
 };

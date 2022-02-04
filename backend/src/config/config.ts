@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+export const cookieTokenName = 'access_token';
+
 export default {
   ADMIN_PANEL_PASSWORD: process.env.ADMIN_PANEL_PASSWORD as string,
   PG_USER: process.env.PG_USER,

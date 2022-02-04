@@ -12,7 +12,8 @@ export const getAll = async (_req: Request, res: Response) =>
 
 export const saveOne = async (req: Request, res: Response) => {
   const { topicName, boardName } = req.body;
-  res.send(await TopicService.saveOne(topicName, boardName));
+  const userId: string = req.userId;
+  res.send(await TopicService.saveOne(topicName, boardName, userId));
 };
 
 export const getAllByBoardName = async (req: Request, res: Response) =>

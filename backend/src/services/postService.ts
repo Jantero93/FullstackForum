@@ -7,14 +7,16 @@ import { Post } from '../entity/Post';
 
 /** Services */
 import * as TopicService from '../services/topicService';
+import * as UserService from '../services/userService';
+import { Topic } from '../entity/Topic';
 
 /**
  * ! No error handling
- * Get all posts related to topic id
+ * Get all posts and users related to topic id
  * @param topicId id of Topic
  * @returns Posts related to topic id
  */
-export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
+export const getAllByTopicId = async (topicId: string): Promise<Topic[]> =>
   await TopicService.findPostsByTopicId(topicId);
 
 /**
@@ -26,16 +28,19 @@ export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
  */
 export const saveOne = async (
   message: string,
-  topicId: string
+  topicId: string,
+  userId: string
 ): Promise<Post> => {
   const postRepository = getCustomRepository(PostRepository);
 
   const parentTopic = await TopicService.findOne(topicId);
 
+  const postedUser = await UserService.findOne(userId);
+
   const post = new Post();
   post.message = message;
-  post.votes = 0;
   post.topic = parentTopic;
+  post.user = postedUser;
 
   return await postRepository.save(post);
 };

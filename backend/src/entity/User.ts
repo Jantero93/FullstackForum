@@ -38,14 +38,14 @@ export class User {
   username!: string;
 
   /** Salted and hashed password */
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   passwordHash!: string;
 
   /** Posts user has created */
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })
-  posts!: Post[];
+  posts?: Post[];
 
   /** Topics user has created */
   @OneToMany(() => Topic, (topic) => topic.user, { onDelete: 'NO ACTION' })
-  topics!: Topic[];
+  topics?: Topic[];
 }

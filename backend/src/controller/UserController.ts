@@ -17,7 +17,7 @@ export const saveOne = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  const userFromDB = await UserService.findUser(username);
+  const userFromDB = await UserService.findUserByUsername(username);
 
   //! If user not verified throw error
   const isUserVerified = await UserService.verifyUser(userFromDB, password);
@@ -37,4 +37,9 @@ export const login = async (req: Request, res: Response) => {
   res.send({
     message: 'Logged in successfully'
   });
+};
+
+export const logout = async (_req: Request, res: Response) => {
+  res.clearCookie('access_token');
+  res.send('Logged out successfully');
 };

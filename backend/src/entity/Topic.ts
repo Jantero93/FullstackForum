@@ -40,6 +40,6 @@ export class Topic {
   posts!: Post[];
 
   /** User who has created topic */
-  @ManyToOne(() => Topic, (topic) => topic.user)
+  @ManyToOne(() => User, (user) => user.topics)
   user!: User;
 }
