@@ -45,7 +45,7 @@ export const failSafeHandler = (
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
-) => res.status(500).send('Something broken!');
+) => res.status(500).send('Something went broken!');
 
 /** Log incoming requests */
 export const requestLogger = (
@@ -64,4 +64,4 @@ export const requestLogger = (
 };
 
 export const unknownEndpoint = (_req: Request, res: Response) =>
-  res.status(404).send({ error: 'unknown endpoint' });
+  res.status(404).send({ error: 'Unknown endpoint' });

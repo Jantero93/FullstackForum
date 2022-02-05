@@ -9,7 +9,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     res.sendStatus(202);
   } else {
     //! IMPROVE ERROR HANDLING!
-    res.sendStatus(400);
+    res.sendStatus(401);
   }
 };
 
