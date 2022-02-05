@@ -1,5 +1,5 @@
 export type Board = {
-  boardId: string;
+  boardId?: string;
   board: string;
   adjective: string;
 };
@@ -10,13 +10,12 @@ export type Board = {
  * @type {userRef} parent User Id
  */
 export type Post = {
-  postId: string;
-  created: string;
+  id?: string;
   message: string;
-  topicRef: string;
-  votes: number;
-  boardRef: string;
-  userRef: string;
+  created?: string;
+  topicId: string;
+  votes?: number;
+  user?: User;
 };
 
 /**
@@ -25,15 +24,15 @@ export type Post = {
  * @type {userRef} parent User Id
  */
 export type Topic = {
-  topicId: string;
-  created: string;
-  topic: string;
-  boardRef: string;
-  userRef: string;
+  id?: string;
+  created?: string;
+  topicName: string;
+  boardName: string;
+  userId?: string;
+  posts: Post[];
 };
 
 export type User = {
-  userId: string;
-  user: string;
-  password: string;
+  id?: string;
+  username: string;
 };

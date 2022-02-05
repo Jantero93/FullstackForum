@@ -6,8 +6,23 @@
     // override if setted per-language
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "typescriptreact",
+    "typescript"
+  ],
   "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "eslint.workingDirectories": ["./backend", "./frontend"],
-  "cSpell.words": ["cpage", "forumitems", "oppari", "TTFB", "typeorm"]
+  "cSpell.words": [
+    "caonsole",
+    "cpage",
+    "forumitems",
+    "oppari",
+    "timestamptz",
+    "TTFB",
+    "typeorm"
+  ]
 }

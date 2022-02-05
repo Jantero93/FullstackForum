@@ -1,14 +1,19 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 /** UI, CSS */
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FormGroup,
+  Modal,
+  TextField,
+  Typography
+} from '@mui/material';
 import { modalStyle } from '../../utils/modalstyles';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import FormGroup from '@mui/material/FormGroup';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+
+/** Utils */
+import UserService from '../../services/userServices';
 
 type Props = {
   showSignUp: boolean;
@@ -21,10 +26,24 @@ const SignUpModal: React.FC<Props> = ({
 }: Props): JSX.Element => {
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const handleSignInClick = (): void =>
-    // eslint-disable-next-line no-console
-    console.log(`sign in ${username} ${password}`);
+  const handleSignInClick = (): void => {
+    if (username.length < 3 || password.length < 6) {
+      setShowError(true);
+      return;
+    }
+
+    UserService.postUser(username, password)
+      .then((response) => coolFunction)
+      .then(() => setShowSignUp(false))
+      .catch((e) => {
+        setShowError(true);
+        console.log(e);
+      });
+  };
+
+  const coolFunction = (response: unknown) => console.log('response', response);
 
   return (
     <Modal
@@ -41,19 +60,29 @@ const SignUpModal: React.FC<Props> = ({
           <TextField
             id="outlined-error"
             label="Username"
+            helperText="Minimum 3 characters"
+            error={showError}
+            inputProps={{ maxLength: 30 }}
+            required
             style={{ marginTop: '1em' }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUserName(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setUserName(e.target.value);
+              setShowError(false);
+            }}
           />
           <TextField
             id="outlined-error"
             label="Password"
+            helperText="Minimum 6 characters"
+            error={showError}
+            inputProps={{ maxLength: 50 }}
+            required
             type="password"
             style={{ marginTop: '1em' }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
+              setShowError(false);
+            }}
           />
           <ButtonGroup
             disableElevation
@@ -63,13 +92,19 @@ const SignUpModal: React.FC<Props> = ({
           >
             <Button
               style={{ margin: '1em' }}
-              onClick={() => handleSignInClick()}
+              onClick={() => {
+                setShowError(false);
+                handleSignInClick();
+              }}
             >
               Sign up
             </Button>
             <Button
               style={{ margin: '1em' }}
-              onClick={() => setShowSignUp(false)}
+              onClick={() => {
+                setShowSignUp(false);
+                setShowError(false);
+              }}
             >
               Cancel
             </Button>

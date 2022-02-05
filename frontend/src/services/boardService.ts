@@ -2,11 +2,11 @@ import axios from 'axios';
 
 import { Board } from '../types/forum';
 
-const baseUrl = '/boards';
+const baseUrl = '/api/board';
 
 const getAllBoards = async (): Promise<Board[]> => {
   const request = await axios.get(baseUrl);
-  return request.data.boards;
+  return request.data;
 };
 
 const BoardService = {

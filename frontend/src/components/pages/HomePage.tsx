@@ -2,17 +2,18 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** UI */
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Stack,
+  Typography
+} from '@mui/material';
 
 /** Types */
 import { Board as BoardType } from '../../types/forum';
 
 /** Utils */
-import { boardNameToUrlParameter } from '../../utils/routerUtils';
 import BoardService from '../../services/boardService';
 
 const HomePage: React.FC = (): JSX.Element => {
@@ -37,9 +38,7 @@ const HomePage: React.FC = (): JSX.Element => {
           key={board.board}
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
-          <CardActionArea
-            onClick={() => navigate(boardNameToUrlParameter(board.board))}
-          >
+          <CardActionArea onClick={() => navigate(board.board)}>
             <CardContent>
               <Typography
                 sx={{ mb: 1 }}

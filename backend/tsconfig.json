@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": ["es5", "es6"],
     "target": "es5",
+    "typeRoots": ["src/types", "./node_modules/@types"],
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
@@ -9,10 +10,10 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "strict": true,
-    "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true
   }
 }

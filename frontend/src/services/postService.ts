@@ -2,16 +2,23 @@ import axios from 'axios';
 
 import { Post } from '../types/forum';
 
-const baseUrl = '/posts';
+const baseUrl = '/api/post';
 
-const getPostsByBoardId = async (boardId: string): Promise<any> => {
-  // const request = await axios.get(`${baseUrl}/${boardId}`);
-  const request = await axios.get(baseUrl);
+const getPostsByTopicId = async (topicId: string): Promise<Post[]> => {
+  const request = await axios.get(`${baseUrl}/${topicId}`);
   return request.data;
-};
+}
+
+const postNewPost = async (post: Post): Promise<Post> => {
+  const request = await axios.post(`${baseUrl}/`, post);
+  return request.data;
+}
 
 const PostService = {
-  getPostsByBoardId
+  getPostsByTopicId,
+  postNewPost
 };
 
-export default PostService;
+export default PostService
+
+

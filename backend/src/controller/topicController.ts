@@ -1,33 +1,20 @@
-/** Repository */
-import { getCustomRepository } from 'typeorm';
-import { TopicRepository } from '../repositories/topicRepository';
+/** Services */
+import * as TopicService from '../services/topicService';
 
 /** Types */
 import { Response, Request } from 'express';
 
-import { Topic } from '../entity/Topic';
+export const deleteOne = async (req: Request, res: Response) =>
+  res.send(await TopicService.deleteOne(req.params.id));
 
-export const deleteOne = async (req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-  res.send(await topicRepository.delete(req.params.id));
-};
-
-export const getAll = async (_req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-  res.send(await topicRepository.find());
-};
+export const getAll = async (_req: Request, res: Response) =>
+  res.send(await TopicService.findAll());
 
 export const saveOne = async (req: Request, res: Response) => {
-  const topicRepository = getCustomRepository(TopicRepository);
-
-  const { created, topic } = req.body;
-
-  const newTopic = new Topic();
-
-  //TODO: Validation
-
-  newTopic.created = created;
-  newTopic.topic = topic;
-
-  res.send(await topicRepository.save(topic));
+  const { topicName, boardName } = req.body;
+  const userId: string = req.userId;
+  res.send(await TopicService.saveOne(topicName, boardName, userId));
 };
+
+export const getAllByBoardName = async (req: Request, res: Response) =>
+  res.send(await TopicService.findAllByBoardName(req.params.boardName));

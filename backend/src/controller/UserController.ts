@@ -1,52 +1,45 @@
-/** Repository */
-import { getCustomRepository } from 'typeorm';
-import { UserRepository } from '../repositories/userRepository';
-
-/** Entity */
-import { User } from '../entity/User';
+/** Services */
+import * as UserService from '../services/userService';
 
 /** Types */
 import { Response, Request } from 'express';
 
-export const deleteOne = async (req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-  res.send(await userRepository.delete(req.params.id));
-};
-
-export const getAll = async (_req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-  res.send(await userRepository.find());
-};
-
-export const replace = async (req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
-
-  //TODO: Check validation
-  const { age, firstName, lasName } = req.body;
-
-  const oldUser = await userRepository.findOne(req.params.id);
-
-  if (!oldUser) {
-    res.send('Error not found');
-    return;
-  }
-
-  oldUser.age = age;
-  oldUser.firstName = firstName;
-  oldUser.lastName = lasName;
-  res.send(await userRepository.save(oldUser as User));
-};
-
 export const saveOne = async (req: Request, res: Response) => {
-  const userRepository = getCustomRepository(UserRepository);
+  const { username, password } = req.body;
+  const savedUser = await UserService.saveUser(username, password);
 
-  const { age, firstName, lastName } = req.body;
+  res.send({
+    id: savedUser.id,
+    username: savedUser.username
+  });
+};
 
-  //TODO: Check validation
-  const user = new User();
-  user.age = age;
-  user.firstName = firstName;
-  user.lastName = lastName;
+export const login = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
 
-  res.send(await userRepository.save(user));
+  const userFromDB = await UserService.findUserByUsername(username);
+
+  //! If user not verified throw error
+  const isUserVerified = await UserService.verifyUser(userFromDB, password);
+
+  const token: string | null = isUserVerified
+    ? await UserService.getToken(userFromDB.username, userFromDB.id)
+    : null;
+
+  !token && res.sendStatus(401);
+
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: true,
+    expires: new Date(Date.now() + 60 * 60 * 1000)
+  });
+
+  res.send({
+    message: 'Logged in successfully'
+  });
+};
+
+export const logout = async (_req: Request, res: Response) => {
+  res.clearCookie('access_token');
+  res.send('Logged out successfully');
 };

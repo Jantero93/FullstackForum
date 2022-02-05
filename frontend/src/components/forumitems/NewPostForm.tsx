@@ -1,10 +1,7 @@
 import React, { SetStateAction } from 'react';
 
 /** UI */
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField/TextField';
-import Typography from '@mui/material/Typography';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
 /** Types */
 import CSS from 'csstype';
