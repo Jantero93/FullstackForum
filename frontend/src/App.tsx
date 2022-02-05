@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 /** Components */
 import AdminLogin from './components/pages/AdminLogin';
 import NavBar from './components/layout/NavBar';
-import Topic from './components/pages/Topic';
 import Toast from './components/layout/Toast';
 
 /** Pages */
-import GenericBoard from './components/pages/GenericBoard';
+import GenericBoardPage from './components/pages/GenericBoardPage';
 import HomePage from './components/pages/HomePage';
+import TopicPage from './components/pages/TopicPage';
 
 /** Context */
 import ToastProvider from './contexts/ToastContext';
@@ -23,8 +23,8 @@ const App: React.FC = (): JSX.Element => {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/:boardName" element={<GenericBoard />} />
-          <Route path="/:boardName/:topicId" element={<Topic />} />
+          <Route path="/:boardName" element={<GenericBoardPage />} />
+          <Route path="/:boardName/:topicId" element={<TopicPage />} />
         </Routes>
         <Toast />
       </ToastProvider>

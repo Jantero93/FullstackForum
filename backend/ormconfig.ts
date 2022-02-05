@@ -1,6 +1,6 @@
 import config from './src/config/config';
 
-const typeORMConfig = {
+export default {
   type: 'postgres',
   host: config.PG_HOST,
   port: config.PG_PORT,
@@ -18,5 +18,3 @@ const typeORMConfig = {
     subscribersDir: 'src/subscriber'
   }
 };
-
-export default typeORMConfig;

@@ -11,6 +11,6 @@ export default {
   PG_HOST: process.env.PG_HOST,
   PG_PORT: parseInt(process.env.PG_PORT as string),
   PG_DATABASE: process.env.PG_DATABASE,
-  PORT: parseInt(process.env.PORT as string),
+  SERVER_PORT: parseInt(process.env.SERVER_PORT as string),
   TOKEN_SECRET: process.env.TOKEN_SECRET as string
 };

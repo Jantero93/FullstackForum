@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
-import AnswerBox from '../forumItems/NewPostForm';
-import Post from '../forumItems/Post';
+import NewPostForm from '../forumitems/NewPostForm';
+import Post from '../forumitems/Post';
 
 /** Types */
 import { Post as PostType } from '../../types/forum';
@@ -46,7 +46,7 @@ const Topic: React.FC = (): JSX.Element => {
             <Post key={post.id} post={post} />
           ))}
 
-          <AnswerBox
+          <NewPostForm
             message={message}
             sendPostClicked={sendPostClicked}
             setMessage={setMessage}

@@ -32,8 +32,8 @@ createConnection()
     /** All routes */
     app.use('/', routes);
 
-    app.listen(Config.PORT);
+    app.listen(Config.SERVER_PORT);
 
-    logger.info(`Express server has started on port ${Config.PORT}`);
+    logger.info(`Express server has started on port ${Config.SERVER_PORT}`);
   })
   .catch((error) => logger.error(error));

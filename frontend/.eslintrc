@@ -6,11 +6,12 @@
   },
   "rules": {
     "eqeqeq": "warn",
-    "no-console": 1,
+    "no-console": "warn",
     "import/first": "error",
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-non-null-assertion": "warn"
   },
   "extends": [
     "react-app",

@@ -1,34 +1,27 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 /** Components */
-import NewTopicForm from '../forumItems/NewTopicForm';
+import NewTopicForm from '../forumitems/NewTopicForm';
+import Topic from '../forumitems/Topic';
 
 /** UI */
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 /** Utils */
-import { formatDate } from '../../utils/date';
 import PostService from '../../services/postService';
 import TopicService from '../../services/topicService';
 
 /** Types */
-import { Topic } from '../../types/forum';
+import { Topic as TopicType } from '../../types/forum';
 
 /**
  * This component forwards to /:boardName/:topicId via Router
  * Topic component is in /:boardName/Topic
  */
 const GenericBoard: React.FC = (): JSX.Element => {
-  const [topics, setTopics] = React.useState<Topic[]>([]);
+  const [topics, setTopics] = React.useState<TopicType[]>([]);
   const [toggleNewTopicForm, setToggleNewTopicForm] =
     React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -38,7 +31,6 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const [topicName, setTopicName] = React.useState<string>('');
 
   const { boardName } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     TopicService.getAllTopicsByBoardName(boardName as string).then(
@@ -64,35 +56,9 @@ const GenericBoard: React.FC = (): JSX.Element => {
 
     await PostService.postNewPost({
       message: message,
-      topicId: createdTopic.id as string
+      topicId: createdTopic.id!
     });
   };
-
-  const renderTopics = (): JSX.Element[] =>
-    topics.map((topic) => (
-      <Card
-        sx={{ minWidth: 275 }}
-        key={topic.id}
-        style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
-      >
-        <CardActionArea onClick={() => navigate(topic.id!.toString())}>
-          <CardContent>
-            <Typography variant={'h5'} sx={{ mb: 1.5 }}>
-              {topic.topicName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {topic.userId}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {`${formatDate('DD.MM.YYYY', topic.created)} klo ${formatDate(
-                'HH:mm',
-                topic.created
-              )}`}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    ));
 
   return (
     <div>
@@ -104,7 +70,9 @@ const GenericBoard: React.FC = (): JSX.Element => {
             alignItems="stretch"
             spacing={1}
           >
-            {renderTopics()}
+            {topics.map((topic) => (
+              <Topic topic={topic} key={topic.id} />
+            ))}
           </Stack>
 
           <Button
