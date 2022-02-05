@@ -2,7 +2,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const cookieTokenName = 'access_token';
+/** Cookies name where access token is set */
+export const accessTokenName = 'access_token';
+
+/** 6h */
+export const tokenExpirationTime = 60 * 60 * 6;
 
 export default {
   ADMIN_PANEL_PASSWORD: process.env.ADMIN_PANEL_PASSWORD as string,

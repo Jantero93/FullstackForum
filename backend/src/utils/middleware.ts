@@ -15,10 +15,8 @@ export const authorization = (
   //! Error handling
   if (!token) {
     res.sendStatus(403);
-    return;
   }
 
-  !token && res.sendStatus(403);
   const data = jwt.verify(token, config.TOKEN_SECRET) as {
     [key: string]: string;
   };

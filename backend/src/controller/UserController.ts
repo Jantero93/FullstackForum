@@ -4,6 +4,8 @@ import * as UserService from '../services/userService';
 /** Types */
 import { Response, Request } from 'express';
 
+import { accessTokenName } from '../config/config';
+
 export const saveOne = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   const savedUser = await UserService.saveUser(username, password);
@@ -26,9 +28,12 @@ export const login = async (req: Request, res: Response) => {
     ? await UserService.getToken(userFromDB.username, userFromDB.id)
     : null;
 
-  !token && res.sendStatus(401);
+  if (!token) {
+    res.sendStatus(403);
+    return;
+  }
 
-  res.cookie('access_token', token, {
+  res.cookie(accessTokenName, token, {
     httpOnly: true,
     secure: true,
     expires: new Date(Date.now() + 60 * 60 * 1000)
@@ -40,6 +45,6 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const logout = async (_req: Request, res: Response) => {
-  res.clearCookie('access_token');
+  res.clearCookie(accessTokenName);
   res.send('Logged out successfully');
 };

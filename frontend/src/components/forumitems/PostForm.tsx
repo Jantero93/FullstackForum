@@ -1,10 +1,12 @@
 import React, { SetStateAction } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /** UI */
 import { Button, Stack, TextField, Typography } from '@mui/material';
 
 /** Types */
 import CSS from 'csstype';
+import TopicService from '../../services/topicService';
 
 const textAreaMargin = '0.25em';
 const textAreaStyles: CSS.Properties = {
@@ -24,6 +26,14 @@ const AnswerBox: React.FC<Props> = ({
   sendPostClicked,
   setMessage
 }: Props): JSX.Element => {
+  const { boardName, topicId } = useParams();
+  const navigate = useNavigate();
+
+  const deleteTopicClicked = (): void => {
+    TopicService.deleteTopic(topicId!).then(() => navigate(`/${boardName}`))
+    
+  };
+
   return (
     <Stack
       alignItems="flex-start"
@@ -47,14 +57,29 @@ const AnswerBox: React.FC<Props> = ({
           setMessage(e.target.value)
         }
       />
-      <Button
-        size="large"
-        variant="contained"
-        style={{ marginLeft: textAreaMargin, marginTop: '1em' }}
-        onClick={() => sendPostClicked()}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="baseline"
+        spacing={3}
       >
-        Post
-      </Button>
+        <Button
+          size={'large'}
+          variant={'contained'}
+          style={{ marginLeft: textAreaMargin, marginTop: '1em' }}
+          onClick={() => sendPostClicked()}
+        >
+          Post
+        </Button>
+        <Button
+          size="large"
+          color={'error'}
+          variant={'contained'}
+          onClick={() => deleteTopicClicked()}
+        >
+          Delete topic
+        </Button>
+      </Stack>
     </Stack>
   );
 };

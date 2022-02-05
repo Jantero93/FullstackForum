@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
-import NewTopicForm from '../forumitems/NewTopicForm';
-import Topic from '../forumitems/Topic';
+import NewTopicForm from '../forumItems/NewTopicForm';
+import Topic from '../forumItems/Topic';
 
 /** UI */
 import { Button, Stack } from '@mui/material';

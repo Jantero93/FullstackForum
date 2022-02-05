@@ -1,5 +1,5 @@
 /** Repository */
-import { getCustomRepository } from 'typeorm';
+import { DeleteResult, getCustomRepository } from 'typeorm';
 import { TopicRepository } from '../repositories/topicRepository';
 
 /** Entities */
@@ -14,9 +14,16 @@ import { Post } from '../entity/Post';
  * Remove topic from DB
  * @param topicId id of topic to remove
  */
-export const deleteOne = async (topicId: string): Promise<void> => {
+export const deleteOne = async (
+  topicId: string,
+  userId: string
+): Promise<boolean> => {
   const topicRepository = getCustomRepository(TopicRepository);
-  await topicRepository.delete(topicId);
+  const topic = await topicRepository.findTopicWithUserByTopicId(topicId);
+
+  return topic.user.id === userId
+    ? ((await topicRepository.delete(topicId)) as unknown as true)
+    : false;
 };
 
 /**

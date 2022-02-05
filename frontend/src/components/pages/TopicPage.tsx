@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
-import NewPostForm from '../forumitems/NewPostForm';
-import Post from '../forumitems/Post';
+import Post from '../forumItems/Post';
+import PostForm from '../forumItems/PostForm';
 
 /** Types */
 import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
+import TopicService from '../../services/topicService';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -38,6 +39,10 @@ const Topic: React.FC = (): JSX.Element => {
     setMessage('');
   };
 
+  const deleteTopicClicked = async (): Promise<void> => {
+    await TopicService.deleteTopic(topicId as string);
+  };
+
   return (
     <div>
       {!isLoading && (
@@ -46,7 +51,7 @@ const Topic: React.FC = (): JSX.Element => {
             <Post key={post.id} post={post} />
           ))}
 
-          <NewPostForm
+          <PostForm
             message={message}
             sendPostClicked={sendPostClicked}
             setMessage={setMessage}

@@ -4,8 +4,14 @@ import * as TopicService from '../services/topicService';
 /** Types */
 import { Response, Request } from 'express';
 
-export const deleteOne = async (req: Request, res: Response) =>
-  res.send(await TopicService.deleteOne(req.params.id));
+export const deleteOne = async (req: Request, res: Response) => {
+  if (await TopicService.deleteOne(req.params.id, req.userId)) {
+    res.sendStatus(202);
+  } else {
+    //! IMPROVE ERROR HANDLING!
+    res.sendStatus(400);
+  }
+};
 
 export const getAll = async (_req: Request, res: Response) =>
   res.send(await TopicService.findAll());
