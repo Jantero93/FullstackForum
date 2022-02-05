@@ -12,7 +12,6 @@
     "no-console": "warn",
     "eqeqeq": "error",
     "prettier/prettier": "error",
-    "no-unused-vars": "warn",
     "@typescript-eslint/no-non-null-assertion": "warn"
   }
 }

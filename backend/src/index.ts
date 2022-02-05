@@ -9,8 +9,8 @@ import routes from './routes/indexRoutes';
 /** Middleware */
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { requestLogger } from './utils/middleware';
-
+import helmet from 'helmet';
+import * as middleware from './utils/middleware';
 /** Utils */
 import Config from './config/config';
 import logger from './utils/logger';
@@ -18,6 +18,7 @@ import logger from './utils/logger';
 createConnection()
   .then(async () => {
     const app = express();
+    app.use(helmet());
     app.use(cookieParser());
     app.use(cors());
     app.use(
@@ -27,13 +28,16 @@ createConnection()
     );
     app.use(express.json());
 
-    app.use(requestLogger);
+    app.use(middleware.requestLogger);
 
     /** All routes */
     app.use('/', routes);
+    app.use(middleware.unknownEndpoint);
+
+    app.use(middleware.errorLogger);
+    app.use(middleware.failSafeHandler);
 
     app.listen(Config.SERVER_PORT);
-
     logger.info(`Express server has started on port ${Config.SERVER_PORT}`);
   })
   .catch((error) => logger.error(error));

@@ -1,5 +1,5 @@
 /** Repository */
-import { DeleteResult, getCustomRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { TopicRepository } from '../repositories/topicRepository';
 
 /** Entities */
@@ -42,7 +42,7 @@ export const findAll = async (): Promise<Topic[]> => {
  * @returns Array of topics
  */
 export const findAllByBoardName = async (boardName: string): Promise<Topic[]> =>
-  await BoardService.findTopicsByBoardName(boardName);
+  (await BoardService.findTopicsByBoardName(boardName)) as Topic[];
 
 /**
  * ! No error handling

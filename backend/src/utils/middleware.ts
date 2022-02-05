@@ -28,14 +28,32 @@ export const authorization = (
   next();
 };
 
-/**
- * Logs incoming request
- */
+/** Log error */
+export const errorLogger = (
+  err: Error,
+  _req: Request,
+  _res: Response,
+  next: NextFunction
+): void => {
+  logger.error(err);
+  next(err);
+};
+
+export const failSafeHandler = (
+  err: Error,
+  _req: Request,
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction
+) => res.status(500).send('Something broken!');
+
+/** Log incoming requests */
 export const requestLogger = (
   request: Request,
   _response: Response,
   next: NextFunction
 ): void => {
+  logger.info('Timestamp: ', new Date().toLocaleTimeString('de-DE'));
   logger.info('Cookies: ', request.cookies?.access_token);
   logger.info('Method: ', request.method);
   logger.info('Path: ', request.path);
@@ -44,3 +62,6 @@ export const requestLogger = (
   logger.info('---');
   next();
 };
+
+export const unknownEndpoint = (_req: Request, res: Response) =>
+  res.status(404).send({ error: 'unknown endpoint' });
