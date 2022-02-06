@@ -33,10 +33,10 @@ export const getToken = (username: string, id: string): string => {
     username,
     id
   };
-  /** 60 s x 60 s = 1 h */
-  const expirationTime = { expiresIn: 60 * 60 };
 
-  return jwt.sign(userForToken, config.TOKEN_SECRET, expirationTime);
+  return jwt.sign(userForToken, config.TOKEN_SECRET, {
+    expiresIn: '9999 years'
+  });
 };
 
 /**

@@ -13,24 +13,41 @@ import TopicPage from './components/pages/TopicPage';
 
 /** Context */
 import ToastProvider from './contexts/ToastContext';
-import UserProvider from './contexts/UserContext';
+
+/** User hook */
+import { useUpdateUser } from './contexts/UserContext';
+
+/** Utils */
+import { getItemFromLocalStorage } from './utils/localStorage';
 
 const App: React.FC = (): JSX.Element => {
+  const [isRendered, setIsRendered] = React.useState<boolean>(false);
+  
+  const updateUser = useUpdateUser();
+
+  React.useEffect(() => {
+    const user = getItemFromLocalStorage('user');
+    user && updateUser({ username: user.username, loggedIn: true });
+    setIsRendered(true);
+  }, []);
+
   return (
     <Router>
       <ToastProvider>
-        <UserProvider>
-          <NavBar />
+        {isRendered && (
+          <>
+            <NavBar />
 
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="/admin" element={<AdminLogin />} />
-            <Route path="/:boardName" element={<GenericBoardPage />} />
-            <Route path="/:boardName/:topicId" element={<TopicPage />} />
-          </Routes>
+            <Routes>
+              <Route index element={<HomePage />} />
+              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/:boardName" element={<GenericBoardPage />} />
+              <Route path="/:boardName/:topicId" element={<TopicPage />} />
+            </Routes>
 
-          <Toast />
-        </UserProvider>
+            <Toast />
+          </>
+        )}
       </ToastProvider>
     </Router>
   );

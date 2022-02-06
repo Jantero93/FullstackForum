@@ -14,6 +14,7 @@ import { modalStyle } from '../../utils/modalstyles';
 
 /** Utils */
 import UserService from '../../services/userServices';
+import { saveToLocalStorage } from '../../utils/localStorage';
 import { useUpdateUser } from '../../contexts/UserContext';
 
 type Props = {
@@ -33,8 +34,11 @@ const LogInModal: React.FC<Props> = ({
 
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
-      .then((response) => updateUser({ loggedIn: true, username: username }))
-      .then((response) => setShowLogIn(false))
+      .then((response) => {
+        updateUser({ loggedIn: true, username: response.username });
+        saveToLocalStorage('user', response);
+        setShowLogIn(false);
+      })
       .catch(() => setShowError(true));
   };
 

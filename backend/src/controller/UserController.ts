@@ -21,7 +21,6 @@ export const login = async (req: Request, res: Response) => {
 
   const userFromDB = await UserService.findUserByUsername(username);
 
-  //! If user not verified throw error
   const isUserVerified = await UserService.verifyUser(userFromDB, password);
 
   const token: string | null = isUserVerified
@@ -34,15 +33,10 @@ export const login = async (req: Request, res: Response) => {
   }
 
   res.cookie(accessTokenName, token, {
-    httpOnly: true,
-    secure: true,
-    expires: new Date(Date.now() + 60 * 60 * 1000)
-  });
-
-  res.cookie(`public_${accessTokenName}`, 'public', {
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 50,
     httpOnly: false,
     secure: false,
-    expires: new Date(Date.now() + 60 * 60 * 1000)
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
   });
 
   userFromDB.passwordHash = '';

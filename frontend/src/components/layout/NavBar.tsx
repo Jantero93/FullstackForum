@@ -1,6 +1,6 @@
 /** React */
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 /** Components */
 import LogInModal from '../layout/LogInModal';
@@ -8,13 +8,7 @@ import NavbarBoard from './NavbarBoard';
 import SignUpModal from '../layout/SignUpModal';
 
 /** UI  */
-import {
-  AppBar,
-  Button,
-  Container,
-  Grid,
-  Toolbar,
-} from '@mui/material';
+import { AppBar, Button, Container, Grid, Toolbar } from '@mui/material';
 
 /** Services */
 import BoardService from '../../services/boardService';
@@ -35,6 +29,7 @@ const NavBar: React.FC = (): JSX.Element => {
   const user = useUser();
   const userUpdate = useUpdateUser();
   const showToast = useToastUpdate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     BoardService.getAllBoards().then((response) => setBoards(response));
@@ -46,9 +41,12 @@ const NavBar: React.FC = (): JSX.Element => {
     ));
 
   const handleLogOut = (): Promise<void> =>
-    UserService.logOutUser()
-      .then(() => userUpdate({ username: undefined, loggedIn: false }))
-      .then(() => showToast({ message: 'Logged out' }));
+    UserService.logOutUser().then(() => {
+      userUpdate({ username: undefined, loggedIn: false });
+      showToast({ message: 'Logged out' });
+      localStorage.clear()
+      navigate('/')
+    });
 
   const handleLogin = (): void => {
     if (!user.loggedIn) {
