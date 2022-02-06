@@ -39,8 +39,16 @@ export const login = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + 60 * 60 * 1000)
   });
 
+  res.cookie(`public_${accessTokenName}`, 'public', {
+    httpOnly: false,
+    secure: false,
+    expires: new Date(Date.now() + 60 * 60 * 1000)
+  });
+
+  userFromDB.passwordHash = '';
+
   res.send({
-    message: 'Logged in successfully'
+    userFromDB
   });
 };
 

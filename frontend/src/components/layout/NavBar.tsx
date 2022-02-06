@@ -14,7 +14,6 @@ import {
   Container,
   Grid,
   Toolbar,
-  Typography
 } from '@mui/material';
 
 /** Services */
@@ -52,7 +51,10 @@ const NavBar: React.FC = (): JSX.Element => {
       .then(() => showToast({ message: 'Logged out' }));
 
   const handleLogin = (): void => {
-    !user.loggedIn ? setShowLogIn(true) : handleLogOut();
+    if (!user.loggedIn) {
+      setShowLogIn(true);
+      localStorage.clear();
+    } else handleLogOut();
   };
 
   return (

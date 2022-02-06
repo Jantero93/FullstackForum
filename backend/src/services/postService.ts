@@ -8,6 +8,7 @@ import { Post } from '../entity/Post';
 /** Services */
 import * as TopicService from '../services/topicService';
 import * as UserService from '../services/userService';
+import ResponseError from '../utils/ApplicationError';
 
 /**
  * ! No error handling
@@ -18,15 +19,20 @@ import * as UserService from '../services/userService';
 export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
   await TopicService.findPostsByTopicId(topicId);
 
-export const removePost = async (postId: string): Promise<Post> => {
+export const removePost = async (
+  postId: string,
+  userId: string
+): Promise<Post> => {
   const postRepository = getCustomRepository(PostRepository);
 
   const post = (await postRepository.findOne(postId, {
     relations: ['user']
   })) as Post;
 
+  if (userId !== post.user.id)
+    throw new ResponseError('Forbidden', 403, 'FORBIDDEN');
+
   post.message = '(removed)';
-  post.user.username = '';
 
   return await postRepository.save(post);
 };

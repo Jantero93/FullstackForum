@@ -11,11 +11,11 @@ export const deletePost = async (
   next: NextFunction
 ) => {
   try {
-    res.status(202).send(await PostService.removePost(req.params.id));
+    res
+      .status(202)
+      .send(await PostService.removePost(req.params.id, req.userId));
   } catch (error) {
-    next(
-      new ResponseError('Failed to delete post', 404, 'FAILED_DELETE_ENTITY')
-    );
+    next(new ResponseError('Forbidden', 403, 'FORBIDDEN'));
   }
 };
 

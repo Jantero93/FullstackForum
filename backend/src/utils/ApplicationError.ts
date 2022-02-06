@@ -7,7 +7,8 @@ type ErrorType =
   | 'AUTHORIZATION_FAILED'
   | 'INTERNAL_SERVER_ERROR'
   | 'NOT_FOUND'
-  | 'FAILED_DELETE_ENTITY';
+  | 'FAILED_DELETE_ENTITY'
+  | 'FORBIDDEN';
 
 export default class ResponseError extends CustomError {
   public constructor(

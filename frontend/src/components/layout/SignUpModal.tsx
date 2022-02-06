@@ -35,15 +35,12 @@ const SignUpModal: React.FC<Props> = ({
     }
 
     UserService.postUser(username, password)
-      .then((response) => coolFunction)
       .then(() => setShowSignUp(false))
       .catch((e) => {
         setShowError(true);
-        console.log(e);
       });
   };
 
-  const coolFunction = (response: unknown) => console.log('response', response);
 
   return (
     <Modal

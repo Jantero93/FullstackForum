@@ -33,8 +33,8 @@ const LogInModal: React.FC<Props> = ({
 
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
-      .then(() => updateUser({ loggedIn: true, username: username }))
-      .then(() => setShowLogIn(false))
+      .then((response) => updateUser({ loggedIn: true, username: username }))
+      .then((response) => setShowLogIn(false))
       .catch(() => setShowError(true));
   };
 

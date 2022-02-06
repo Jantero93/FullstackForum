@@ -9,11 +9,10 @@ import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
-import { resolve } from 'url';
 
 export const authorization = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   const token = req.cookies.access_token;
@@ -28,7 +27,6 @@ export const authorization = (
     [key: string]: string;
   };
 
-  //! data fails, error handling
   req.userId = data.id;
   req.username = data.username;
 
@@ -65,6 +63,8 @@ export const errorResponser = (
       sendResponse(res, err);
 
     case 'INTERNAL_SERVER_ERROR':
+      sendResponse(res, err);
+    case 'FORBIDDEN':
       sendResponse(res, err);
 
     default:

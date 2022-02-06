@@ -10,15 +10,15 @@ import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
+import { useToastUpdate } from '../../contexts/ToastContext';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
   const [message, setMessage] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  console.log('posts', posts);
-
   const { topicId } = useParams();
+  const toastUpdate = useToastUpdate();
 
   /** Fetch all posts from topic */
   useEffect(() => {
@@ -41,16 +41,20 @@ const Topic: React.FC = (): JSX.Element => {
   };
 
   const deletePostClicked = (postId: string): void => {
-    PostService.deletePost(postId).then((response) => {
-      setPosts(
-        posts
-          .map((post) => (post.id! === response.id! ? response : post))
-          .sort(
-            (a, b) =>
-              new Date(a.created!).getTime() - new Date(b.created!).getTime()
-          )
-      );
-    });
+    PostService.deletePost(postId)
+      .then((response) => {
+        setPosts(
+          posts
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            .map((post) => (post.id! === response.id! ? response : post))
+            .sort(
+              (a, b) =>
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                new Date(a.created!).getTime() - new Date(b.created!).getTime()
+            )
+        );
+      })
+      .catch(() => toastUpdate({ error: true, message: 'Failed delete post' }));
   };
 
   return (

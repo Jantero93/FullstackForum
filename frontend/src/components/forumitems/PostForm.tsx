@@ -32,7 +32,6 @@ const AnswerBox: React.FC<Props> = ({
   const deleteTopicClicked = (): void => {
     TopicService.deleteTopic(topicId!)
       .then(() => navigate(`/${boardName}`))
-      .catch(() => console.error('failed deleting topic'));
   };
 
   return (

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import axios from 'axios';
 import { Stack, Typography, TextField, Button } from '@mui/material';
 
 import CSS from 'csstype';
@@ -14,12 +13,7 @@ const AdminLogin: React.FC = (): JSX.Element => {
   const [password, setPassword] = React.useState<string>('');
   const [showError, setShowError] = React.useState<boolean>(false);
 
-  const sendPassword = (): void => {
-    axios
-      .post('/api/admin', { password })
-      .then((response) => console.log('succeess!!!'))
-      .catch((error) => setShowError(true));
-  };
+
 
   return (
     <Stack
@@ -46,7 +40,6 @@ const AdminLogin: React.FC = (): JSX.Element => {
         size="large"
         variant="contained"
         style={{ marginTop: '1em' }}
-        onClick={() => sendPassword()}
       >
         Login
       </Button>
