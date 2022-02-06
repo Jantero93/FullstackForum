@@ -28,11 +28,11 @@ export type Topic = {
   created?: string;
   topicName: string;
   boardName: string;
-  userId?: string;
+  user?: User;
   posts: Post[];
 };
 
 export type User = {
   id?: string;
-  username: string;
+  username?: string;
 };

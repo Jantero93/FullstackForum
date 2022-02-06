@@ -25,6 +25,7 @@ export class BoardRepository extends Repository<Board> {
     return await this.createQueryBuilder('board')
       .where('board.board = :board', { board: param_boardName })
       .leftJoinAndSelect('board.topics', 'topic')
+      .leftJoinAndSelect('topic.user', 'user')
       .getOne()
       .then((board) => board!.topics);
   }

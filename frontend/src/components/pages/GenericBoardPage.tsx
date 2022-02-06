@@ -77,7 +77,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
             ))}
           </Stack>
 
-          { loggedIn &&
+          {loggedIn && (
             <Button
               size={'large'}
               variant={'contained'}
@@ -86,7 +86,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
             >
               {toggleNewTopicForm ? 'Hide' : 'New Topic'}
             </Button>
-          }
+          )}
           {toggleNewTopicForm && (
             <NewTopicForm
               message={message}

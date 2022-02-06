@@ -28,12 +28,8 @@ const Topic: React.FC<Props> = ({ topic }: Props): JSX.Element => {
           <Typography variant={'h4'} sx={{ mb: 1.5 }}>
             {topic.topicName}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {topic.userId}
-          </Typography>
-          {/*//TODO Add username to response from backend on topic */}
           <Typography variant="h6" color="text.primary">
-            {`username`}
+            {topic!.user!.username}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {`${formatDate('DD.MM.YYYY', topic.created)} klo ${formatDate(
