@@ -8,7 +8,14 @@ import NavbarBoard from './NavbarBoard';
 import SignUpModal from '../layout/SignUpModal';
 
 /** UI  */
-import { AppBar, Button, Container, Grid, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  Toolbar,
+  Typography
+} from '@mui/material';
 
 /** Services */
 import BoardService from '../../services/boardService';
@@ -17,11 +24,18 @@ import UserService from '../../services/userServices';
 /** Forum boards */
 import { Board } from '../../types/forum';
 
+/** Contexts */
+import { useUser, useUpdateUser } from '../../contexts/UserContext';
+import { useToastUpdate } from '../../contexts/ToastContext';
+
 const NavBar: React.FC = (): JSX.Element => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+
+  const user = useUser();
+  const userUpdate = useUpdateUser();
+  const showToast = useToastUpdate();
 
   useEffect(() => {
     BoardService.getAllBoards().then((response) => setBoards(response));
@@ -33,10 +47,12 @@ const NavBar: React.FC = (): JSX.Element => {
     ));
 
   const handleLogOut = (): Promise<void> =>
-    UserService.logOutUser().then(() => setIsLogged(false));
+    UserService.logOutUser()
+      .then(() => userUpdate({ username: undefined, loggedIn: false }))
+      .then(() => showToast({ message: 'Logged out' }));
 
   const handleLogin = (): void => {
-    !isLogged ? setShowLogIn(true) : handleLogOut();
+    !user.loggedIn ? setShowLogIn(true) : handleLogOut();
   };
 
   return (
@@ -59,20 +75,16 @@ const NavBar: React.FC = (): JSX.Element => {
           </Toolbar>
           <div>
             <Button onClick={handleLogin}>
-              {isLogged ? 'Logout' : 'Login'}
+              {user.loggedIn ? 'Logout' : 'Login'}
             </Button>
-            {!isLogged && (
+            {!user.loggedIn && (
               <Button onClick={() => setShowSignUp(true)}>Sign-up</Button>
             )}
           </div>
         </Grid>
       </Container>
       <SignUpModal showSignUp={showSignUp} setShowSignUp={setShowSignUp} />
-      <LogInModal
-        showLogIn={showLogIn}
-        setShowLogIn={setShowLogIn}
-        setIsLogged={setIsLogged}
-      />
+      <LogInModal showLogIn={showLogIn} setShowLogIn={setShowLogIn} />
     </AppBar>
   );
 };
