@@ -9,7 +9,7 @@ import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
-import { request } from 'http';
+import { resolve } from 'url';
 
 export const authorization = (
   req: Request,
@@ -18,9 +18,10 @@ export const authorization = (
 ): void => {
   const token = req.cookies.access_token;
 
-  //! Error handling
   if (!token) {
-    res.sendStatus(403);
+    next(
+      new ResponseError('Authorization failed', 403, 'AUTHORIZATION_FAILED')
+    );
   }
 
   const data = jwt.verify(token, config.TOKEN_SECRET) as {
@@ -50,12 +51,21 @@ export const errorResponser = (
   _req: Request,
   res: Response
 ) => {
+  const sendResponse = (res: Response, err: ResponseError) =>
+    res.status(err.statusCode).send({ error: err.message });
+
   switch (err.errorType) {
     case 'INVALID_ID':
-      res.status(err.statusCode).send({ error: err.message });
+      sendResponse(res, err);
 
     case 'UNKNOWN_ENDPOINT':
-      res.status(err.statusCode).send({ error: err.message });
+      sendResponse(res, err);
+
+    case 'AUTHORIZATION_FAILED':
+      sendResponse(res, err);
+
+    case 'INTERNAL_SERVER_ERROR':
+      sendResponse(res, err);
 
     default:
       res.sendStatus(500);
@@ -78,8 +88,12 @@ export const requestLogger = (
   next();
 };
 
-export const unknownEndpoint = (_req: Request, _res: Response) => {
-  throw new ApplicationError('Unknown endpoint', 404, 'UNKNOWN_ENDPOINT');
+export const unknownEndpoint = (
+  _req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  next(new ApplicationError('Unknown endpoint', 404, 'UNKNOWN_ENDPOINT'));
 };
 
 export const isUUIDValid = (
@@ -88,5 +102,5 @@ export const isUUIDValid = (
   next: NextFunction
 ) => {
   if (isUUID(req.params.id)) next();
-  else throw new ApplicationError('Invalid ID', 400, 'INVALID_ID');
+  else next(new ApplicationError('Invalid ID', 400, 'INVALID_ID'));
 };

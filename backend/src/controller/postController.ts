@@ -3,6 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 
 /** Services */
 import * as PostService from '../services/postService';
+import ResponseError from '../utils/ApplicationError';
 
 export const findAllByTopicId = async (
   req: Request,
@@ -12,7 +13,7 @@ export const findAllByTopicId = async (
   try {
     res.send(await PostService.getAllByTopicId(req.params.id));
   } catch (error) {
-    next(error);
+    next(new ResponseError('Topic not found by id', 404, 'ENTITY_NOT_FOUND'));
   }
 };
 
