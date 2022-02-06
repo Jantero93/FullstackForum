@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response) => {
     : null;
 
   if (!token) {
-    res.sendStatus(403);
+    res.status(401).send({ error: 'Login failed' });
     return;
   }
 

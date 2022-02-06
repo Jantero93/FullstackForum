@@ -18,6 +18,10 @@ import logger from './utils/logger';
 createConnection()
   .then(async () => {
     const app = express();
+
+    app.listen(Config.SERVER_PORT);
+    logger.info(`Express server has started on port ${Config.SERVER_PORT}`);
+
     app.use(helmet());
     app.use(cookieParser());
     app.use(cors());
@@ -35,9 +39,6 @@ createConnection()
     app.use(middleware.unknownEndpoint);
 
     app.use(middleware.errorLogger);
-    app.use(middleware.failSafeHandler);
-
-    app.listen(Config.SERVER_PORT);
-    logger.info(`Express server has started on port ${Config.SERVER_PORT}`);
+    app.use(middleware.errorResponser);
   })
   .catch((error) => logger.error(error));

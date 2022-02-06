@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 
+/** Custom Error */
+import ResponseError from './ApplicationError';
+
 /** Utils */
+import ApplicationError from './ApplicationError';
 import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
+import { request } from 'http';
 
 export const authorization = (
   req: Request,
@@ -31,7 +36,7 @@ export const authorization = (
 
 /** Log error */
 export const errorLogger = (
-  err: Error,
+  err: ResponseError,
   _req: Request,
   _res: Response,
   next: NextFunction
@@ -40,13 +45,22 @@ export const errorLogger = (
   next(err);
 };
 
-export const failSafeHandler = (
-  err: Error,
+export const errorResponser = (
+  err: ResponseError,
   _req: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _next: NextFunction
-) => res.status(500).send('Something went broken!');
+  res: Response
+) => {
+  switch (err.errorType) {
+    case 'INVALID_ID':
+      res.status(err.statusCode).send({ error: err.message });
+
+    case 'UNKNOWN_ENDPOINT':
+      res.status(err.statusCode).send({ error: err.message });
+
+    default:
+      res.sendStatus(500);
+  }
+};
 
 /** Log incoming requests */
 export const requestLogger = (
@@ -64,15 +78,15 @@ export const requestLogger = (
   next();
 };
 
-export const unknownEndpoint = (_req: Request, res: Response) =>
-  res.status(404).send({ error: 'Unknown endpoint' });
+export const unknownEndpoint = (_req: Request, _res: Response) => {
+  throw new ApplicationError('Unknown endpoint', 404, 'UNKNOWN_ENDPOINT');
+};
 
 export const isUUIDValid = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  isUUID(req.params.id)
-    ? next()
-    : res.status(400).send({ error: 'Not valid topic ID' });
+  if (isUUID(req.params.id)) next();
+  else throw new ApplicationError('Invalid ID', 400, 'INVALID_ID');
 };
