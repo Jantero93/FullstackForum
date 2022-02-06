@@ -6,7 +6,8 @@ type ErrorType =
   | 'UNKNOWN_ENDPOINT'
   | 'AUTHORIZATION_FAILED'
   | 'INTERNAL_SERVER_ERROR'
-  | 'NOT_FOUND';
+  | 'NOT_FOUND'
+  | 'FAILED_DELETE_ENTITY';
 
 export default class ResponseError extends CustomError {
   public constructor(

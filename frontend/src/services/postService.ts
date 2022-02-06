@@ -14,8 +14,10 @@ const postNewPost = async (post: Post): Promise<Post> => {
   return request.data;
 };
 
-const deletePost = async (postId: string): Promise<void> =>
-  await axios.delete(`${baseUrl}/${postId}`);
+const deletePost = async (postId: string): Promise<Post> => {
+  const request = await axios.delete(`${baseUrl}/${postId}`);
+  return request.data;
+};
 
 const PostService = {
   deletePost,

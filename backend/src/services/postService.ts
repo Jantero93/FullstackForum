@@ -18,6 +18,19 @@ import * as UserService from '../services/userService';
 export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
   await TopicService.findPostsByTopicId(topicId);
 
+export const removePost = async (postId: string): Promise<Post> => {
+  const postRepository = getCustomRepository(PostRepository);
+
+  const post = (await postRepository.findOne(postId, {
+    relations: ['user']
+  })) as Post;
+
+  post.message = '(removed)';
+  post.user.username = '';
+
+  return await postRepository.save(post);
+};
+
 /**
  * ! No error handling
  * Save post on specific topic

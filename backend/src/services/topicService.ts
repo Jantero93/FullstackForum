@@ -10,6 +10,9 @@ import * as BoardService from '../services/boardService';
 import * as UserService from '../services/userService';
 import { Post } from '../entity/Post';
 
+/** Utils */
+import moment from 'moment';
+
 /**
  * Remove topic from DB
  * @param topicId id of topic to remove
@@ -63,8 +66,13 @@ export const findOne = async (topicId: string): Promise<Topic> => {
  */
 export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
   const topicRepository = getCustomRepository(TopicRepository);
-  const topicData = await topicRepository.findPostsAndUsersByTopicId(topicId);
-  return topicData.posts;
+  const topics = await topicRepository.findOne(topicId, {
+    relations: ['posts', 'posts.user']
+  });
+
+  return topics!.posts.sort(
+    (a, b) => moment(a.created).unix() - moment(b.created).unix()
+  );
 };
 
 /**

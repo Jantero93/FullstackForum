@@ -98,7 +98,7 @@ export const unknownEndpoint = (
 
 export const isUUIDValid = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   if (isUUID(req.params.id)) next();
