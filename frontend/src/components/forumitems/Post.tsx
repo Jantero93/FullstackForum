@@ -7,11 +7,17 @@ import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { Post as PostType } from '../../types/forum';
 import { formatDate } from '../../utils/date';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+
 type Props = {
   post: PostType;
+  deletePostClicked: (id: string) => void;
 };
 
-const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
+const Post: React.FC<Props> = ({
+  post,
+  deletePostClicked
+}: Props): JSX.Element => {
   return (
     <div>
       <Stack
@@ -32,6 +38,11 @@ const Post: React.FC<Props> = ({ post }: Props): JSX.Element => {
                 post.created
               )} klo ${formatDate('HH:mm', post.created)}`}
             </Typography>
+            <DeleteIcon
+              fontSize={'large'}
+              style={{ float: 'right', cursor: 'pointer' }}
+              onClick={() => deletePostClicked(post.id!)}
+            />
             <Typography variant="h6" style={{ wordWrap: 'break-word' }}>
               {post.message}
             </Typography>

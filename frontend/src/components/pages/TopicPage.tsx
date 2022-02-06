@@ -10,7 +10,6 @@ import { Post as PostType } from '../../types/forum';
 
 /** Utils */
 import PostService from '../../services/postService';
-import TopicService from '../../services/topicService';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -39,8 +38,8 @@ const Topic: React.FC = (): JSX.Element => {
     setMessage('');
   };
 
-  const deleteTopicClicked = async (): Promise<void> => {
-    await TopicService.deleteTopic(topicId as string);
+  const deletePostClicked = (postId: string): void => {
+    PostService.deletePost(postId);
   };
 
   return (
@@ -48,7 +47,11 @@ const Topic: React.FC = (): JSX.Element => {
       {!isLoading && (
         <>
           {posts.map((post) => (
-            <Post key={post.id} post={post} />
+            <Post
+              key={post.id}
+              post={post}
+              deletePostClicked={deletePostClicked}
+            />
           ))}
 
           <PostForm

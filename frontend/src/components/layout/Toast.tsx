@@ -18,7 +18,7 @@ const Toast: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const toastInfo = () =>
-      toast.info(toastAttributes.message, {
+      toast.success(toastAttributes.message, {
         style: toastStyle
       });
     const toastError = () =>
