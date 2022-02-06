@@ -43,9 +43,9 @@ const NavBar: React.FC = (): JSX.Element => {
   const handleLogOut = (): Promise<void> =>
     UserService.logOutUser().then(() => {
       userUpdate({ username: undefined, loggedIn: false });
-      showToast({ message: 'Logged out' });
       localStorage.clear()
       navigate('/')
+      showToast({ message: 'Logged out' }); 
     });
 
   const handleLogin = (): void => {

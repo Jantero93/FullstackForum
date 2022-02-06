@@ -4,17 +4,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /** Toast hook & type */
-import {
-  useToast,
-  useToastUpdate,
-  ToastType
-} from '../../contexts/ToastContext';
+import { useToast, ToastType } from '../../contexts/ToastContext';
 
 const toastStyle = { border: '1px solid white' };
 
 const Toast: React.FC = (): JSX.Element => {
   const toastAttributes: ToastType = useToast();
-  const toastUpdate: ({ message }: ToastType) => void = useToastUpdate();
 
   useEffect(() => {
     const toastInfo = () =>
@@ -30,7 +25,7 @@ const Toast: React.FC = (): JSX.Element => {
       toastAttributes.error ? toastError() : toastInfo();
     };
     toastAttributes.message && showNotification();
-  }, [toastAttributes, toastUpdate]);
+  }, [toastAttributes]);
 
   return (
     <ToastContainer
