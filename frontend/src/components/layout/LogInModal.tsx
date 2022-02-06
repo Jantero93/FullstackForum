@@ -35,7 +35,7 @@ const LogInModal: React.FC<Props> = ({
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
       .then((response) => {
-        updateUser({ loggedIn: true, username: response.username });
+        updateUser({ loggedIn: true, username: response.username, id: response.id });
         saveToLocalStorage('user', response);
         setShowLogIn(false);
       })

@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
   userFromDB.passwordHash = '';
 
   res.send({
-    userFromDB
+    ...userFromDB
   });
 };
 

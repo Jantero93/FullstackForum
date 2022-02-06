@@ -11,6 +11,7 @@ import { Post as PostType } from '../../types/forum';
 /** Utils */
 import PostService from '../../services/postService';
 import { useToastUpdate } from '../../contexts/ToastContext';
+import { useUser } from '../../contexts/UserContext';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -18,6 +19,7 @@ const Topic: React.FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const { topicId } = useParams();
+  const { loggedIn } = useUser();
   const toastUpdate = useToastUpdate();
 
   /** Fetch all posts from topic */
@@ -68,12 +70,13 @@ const Topic: React.FC = (): JSX.Element => {
               deletePostClicked={deletePostClicked}
             />
           ))}
-
-          <PostForm
-            message={message}
-            sendPostClicked={sendPostClicked}
-            setMessage={setMessage}
-          />
+          {loggedIn && (
+            <PostForm
+              message={message}
+              sendPostClicked={sendPostClicked}
+              setMessage={setMessage}
+            />
+          )}
         </>
       )}
     </div>

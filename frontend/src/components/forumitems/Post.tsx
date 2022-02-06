@@ -8,6 +8,7 @@ import { Post as PostType } from '../../types/forum';
 import { formatDate } from '../../utils/date';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useUser } from '../../contexts/UserContext';
 
 type Props = {
   post: PostType;
@@ -18,6 +19,8 @@ const Post: React.FC<Props> = ({
   post,
   deletePostClicked
 }: Props): JSX.Element => {
+  const user = useUser();
+
   return (
     <div>
       <Stack
@@ -38,11 +41,14 @@ const Post: React.FC<Props> = ({
                 post.created
               )} klo ${formatDate('HH:mm', post.created)}`}
             </Typography>
-            <DeleteIcon
-              fontSize={'large'}
-              style={{ float: 'right', cursor: 'pointer' }}
-              onClick={() => deletePostClicked(post.id!)}
-            />
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+            {user.loggedIn && user.id === post.user!.id! && (
+              <DeleteIcon
+                fontSize={'large'}
+                style={{ float: 'right', cursor: 'pointer' }}
+                onClick={() => deletePostClicked(post.id!)}
+              />
+            )}
             <Typography variant="h6" style={{ wordWrap: 'break-word' }}>
               {post.message}
             </Typography>

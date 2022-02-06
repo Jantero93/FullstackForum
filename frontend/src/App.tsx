@@ -22,13 +22,19 @@ import { getItemFromLocalStorage } from './utils/localStorage';
 
 const App: React.FC = (): JSX.Element => {
   const [isRendered, setIsRendered] = React.useState<boolean>(false);
-  
+
   const updateUser = useUpdateUser();
 
   React.useEffect(() => {
     const user = getItemFromLocalStorage('user');
-    user && updateUser({ username: user.username, loggedIn: true });
-    setIsRendered(true);
+
+    user &&
+      updateUser({
+        username: user.username,
+        loggedIn: true,
+        id: user.id
+      });
+      setIsRendered(true)
   }, []);
 
   return (

@@ -15,6 +15,7 @@ import TopicService from '../../services/topicService';
 
 /** Types */
 import { Topic as TopicType } from '../../types/forum';
+import { useUser } from '../../contexts/UserContext';
 
 /**
  * This component forwards to /:boardName/:topicId via Router
@@ -31,6 +32,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const [topicName, setTopicName] = React.useState<string>('');
 
   const { boardName } = useParams();
+  const { loggedIn } = useUser();
 
   useEffect(() => {
     TopicService.getAllTopicsByBoardName(boardName as string).then(
@@ -75,14 +77,16 @@ const GenericBoard: React.FC = (): JSX.Element => {
             ))}
           </Stack>
 
-          <Button
-            size={'large'}
-            variant={'contained'}
-            style={{ margin: '1em' }}
-            onClick={() => setToggleNewTopicForm(!toggleNewTopicForm)}
-          >
-            {toggleNewTopicForm ? 'Hide' : 'New Topic'}
-          </Button>
+          { loggedIn &&
+            <Button
+              size={'large'}
+              variant={'contained'}
+              style={{ margin: '1em' }}
+              onClick={() => setToggleNewTopicForm(!toggleNewTopicForm)}
+            >
+              {toggleNewTopicForm ? 'Hide' : 'New Topic'}
+            </Button>
+          }
           {toggleNewTopicForm && (
             <NewTopicForm
               message={message}

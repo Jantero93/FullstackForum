@@ -1,6 +1,7 @@
 import React from 'react';
 
 export type User = {
+  id?: string;
   username?: string;
   loggedIn: boolean;
 };
