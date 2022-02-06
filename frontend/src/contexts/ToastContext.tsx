@@ -19,7 +19,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ToastProvider: React.FC<Props> = ({ children }: Props) => {
+const ToastProvider: React.FC<Props> = ({ children }: Props): JSX.Element => {
   const [toastAttributes, setToastAttributes] = useState<ToastType>({
     message: ''
   });
