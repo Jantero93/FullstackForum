@@ -10,7 +10,7 @@ export const findAllByTopicId = async (
   next: NextFunction
 ) => {
   try {
-    res.send(await PostService.getAllByTopicId(req.params.topicId));
+    res.send(await PostService.getAllByTopicId(req.params.id));
   } catch (error) {
     next(error);
   }

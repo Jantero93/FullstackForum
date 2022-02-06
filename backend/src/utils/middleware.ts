@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
+import isUUID from 'validator/lib/isUUID';
 
 export const authorization = (
   req: Request,
@@ -65,3 +66,13 @@ export const requestLogger = (
 
 export const unknownEndpoint = (_req: Request, res: Response) =>
   res.status(404).send({ error: 'Unknown endpoint' });
+
+export const isUUIDValid = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  isUUID(req.params.id)
+    ? next()
+    : res.status(400).send({ error: 'Not valid topic ID' });
+};
