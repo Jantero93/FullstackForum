@@ -4,13 +4,16 @@ import { getCustomRepository } from 'typeorm';
 
 /** Entity */
 import { Board } from '../entity/Board';
+import logger from '../utils/logger';
 
 /**
  * Get all boards from DB
  * @returns All boards as array
  */
-export const findAllBoards = async (): Promise<Board[]> =>
-  await getCustomRepository(BoardRepository).find();
+export const findAllBoards = async (): Promise<Board[]> => {
+  logger.printStack('Board Service', findAllBoards.name);
+  return await getCustomRepository(BoardRepository).find();
+};
 
 /**
  * ! No error handling
@@ -21,6 +24,7 @@ export const findAllBoards = async (): Promise<Board[]> =>
 export const findBoardByBoardName = async (
   boardName: string
 ): Promise<Board> => {
+  logger.printStack('Board Service', findBoardByBoardName.name);
   const boardRepository = getCustomRepository(BoardRepository);
   return (await boardRepository.findBoardByBoardName(boardName)) as Board;
 };
@@ -32,6 +36,7 @@ export const findBoardByBoardName = async (
  * @returns Array of topics based on board name
  */
 export const findTopicsByBoardName = async (boardName: string) => {
+  logger.printStack('Board Service', findTopicsByBoardName.name);
   const boardRepository = getCustomRepository(BoardRepository);
   return await boardRepository.findTopicsByBoardName(boardName);
 };

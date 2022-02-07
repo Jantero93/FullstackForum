@@ -9,20 +9,13 @@ import { Post } from '../entity/Post';
 import * as TopicService from '../services/topicService';
 import * as UserService from '../services/userService';
 import ResponseError from '../utils/ApplicationError';
-
-/**
- * ! No error handling
- * Get all posts and users related to topic id
- * @param topicId id of Topic
- * @returns Posts related to topic id
- */
-export const getAllByTopicId = async (topicId: string): Promise<Post[]> =>
-  await TopicService.findPostsByTopicId(topicId);
+import logger from '../utils/logger';
 
 export const removePost = async (
   postId: string,
   userId: string
 ): Promise<Post> => {
+  logger.printStack('Post Service', removePost.name);
   const postRepository = getCustomRepository(PostRepository);
 
   const post = (await postRepository.findOne(postId, {
@@ -49,6 +42,7 @@ export const saveOne = async (
   topicId: string,
   userId: string
 ): Promise<Post> => {
+  logger.printStack('Post Service', saveOne.name);
   const postRepository = getCustomRepository(PostRepository);
 
   const parentTopic = await TopicService.findOne(topicId);

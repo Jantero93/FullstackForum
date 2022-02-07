@@ -5,8 +5,10 @@ import * as UserService from '../services/userService';
 import { Response, Request } from 'express';
 
 import { accessTokenName } from '../config/config';
+import logger from '../utils/logger';
 
 export const saveOne = async (req: Request, res: Response) => {
+  logger.printStack('User Controller', saveOne.name);
   const { username, password } = req.body;
   const savedUser = await UserService.saveUser(username, password);
 
@@ -17,6 +19,7 @@ export const saveOne = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
+  logger.printStack('User Controller', login.name);
   const { username, password } = req.body;
 
   const userFromDB = await UserService.findUserByUsername(username);
@@ -47,6 +50,7 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const logout = async (_req: Request, res: Response) => {
+  logger.printStack('User Controller', logout.name);
   res.clearCookie(accessTokenName);
   res.send('Logged out successfully');
 };

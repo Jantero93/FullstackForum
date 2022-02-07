@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/colors": "^1.2.1",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.8",
@@ -17,6 +18,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
     "class-validator": "^0.13.2",
+    "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",

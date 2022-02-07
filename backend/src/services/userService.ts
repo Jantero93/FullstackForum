@@ -9,8 +9,10 @@ import { User } from '../entity/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
+import logger from '../utils/logger';
 
 export const findOne = async (userId: string): Promise<User> => {
+  logger.printStack('User Service', findOne.name);
   const userRepository = getCustomRepository(UserRepository);
   return (await userRepository.findOne(userId)) as User;
 };
@@ -21,6 +23,7 @@ export const findOne = async (userId: string): Promise<User> => {
  * @returns User Entity
  */
 export const findUserByUsername = async (username: string): Promise<User> => {
+  logger.printStack('User Service', findUserByUsername.name);
   const userRepository = getCustomRepository(UserRepository);
   return await userRepository.findUserByUsername(username);
 };
@@ -29,6 +32,7 @@ export const findUserByUsername = async (username: string): Promise<User> => {
  * Generates token
  */
 export const getToken = (username: string, id: string): string => {
+  logger.printStack('User Service', getToken.name);
   const userForToken = {
     username,
     id
@@ -49,6 +53,7 @@ export const saveUser = async (
   username: string,
   password: string
 ): Promise<User> => {
+  logger.printStack('User Service', saveUser.name);
   const userRepository = getCustomRepository(UserRepository);
 
   const saltRounds = 10;
@@ -71,6 +76,7 @@ export const verifyUser = async (
   userFromDB: User,
   password: string
 ): Promise<boolean> => {
+  logger.printStack('User Service', verifyUser.name);
   const passwordCorrect: boolean =
     userFromDB === undefined
       ? false

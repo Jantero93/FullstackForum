@@ -4,14 +4,15 @@ import { TopicRepository } from '../repositories/topicRepository';
 
 /** Entities */
 import { Topic } from '../entity/Topic';
+import { Post } from '../entity/Post';
 
 /** Services */
 import * as BoardService from '../services/boardService';
 import * as UserService from '../services/userService';
-import { Post } from '../entity/Post';
 
 /** Utils */
 import moment from 'moment';
+import logger from '../utils/logger';
 
 /**
  * Remove topic from DB
@@ -21,6 +22,7 @@ export const deleteOne = async (
   topicId: string,
   userId: string
 ): Promise<boolean> => {
+  logger.printStack('Topic Service', deleteOne.name);
   const topicRepository = getCustomRepository(TopicRepository);
   const topic = await topicRepository.findTopicWithUserByTopicId(topicId);
 
@@ -34,6 +36,7 @@ export const deleteOne = async (
  * @returns Array of topics
  */
 export const findAll = async (): Promise<Topic[]> => {
+  logger.printStack('Topic Service', findAll.name);
   const topicRepository = getCustomRepository(TopicRepository);
   return await topicRepository.find();
 };
@@ -44,8 +47,12 @@ export const findAll = async (): Promise<Topic[]> => {
  * @param boardName Name of board
  * @returns Array of topics
  */
-export const findAllByBoardName = async (boardName: string): Promise<Topic[]> =>
-  (await BoardService.findTopicsByBoardName(boardName)) as Topic[];
+export const findAllByBoardName = async (
+  boardName: string
+): Promise<Topic[]> => {
+  logger.printStack('Topic Service', findAllByBoardName.name);
+  return (await BoardService.findTopicsByBoardName(boardName)) as Topic[];
+};
 
 /**
  * ! No error handling
@@ -54,6 +61,7 @@ export const findAllByBoardName = async (boardName: string): Promise<Topic[]> =>
  * @returns Topic of given id
  */
 export const findOne = async (topicId: string): Promise<Topic> => {
+  logger.printStack('Topic Service', findOne.name);
   const topicRepository = getCustomRepository(TopicRepository);
   return (await topicRepository.findOne(topicId)) as Topic;
 };
@@ -65,6 +73,7 @@ export const findOne = async (topicId: string): Promise<Topic> => {
  * @returns Posts of given id topic
  */
 export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
+  logger.printStack('Topic Service', findPostsByTopicId.name);
   const topicRepository = getCustomRepository(TopicRepository);
   const topics = await topicRepository.findOne(topicId, {
     relations: ['posts', 'posts.user']
@@ -87,6 +96,7 @@ export const saveOne = async (
   boardName: string,
   userId: string
 ): Promise<Topic> => {
+  logger.printStack('Topic Service', saveOne.name);
   const topicRepository = getCustomRepository(TopicRepository);
 
   const parentBoard = await BoardService.findBoardByBoardName(boardName);

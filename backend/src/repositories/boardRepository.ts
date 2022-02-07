@@ -5,6 +5,8 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Board } from '../entity/Board';
 import { Topic } from '../entity/Topic';
 
+import logger from '../utils/logger';
+
 @EntityRepository(Board)
 export class BoardRepository extends Repository<Board> {
   /**
@@ -13,6 +15,8 @@ export class BoardRepository extends Repository<Board> {
    * @returns Board Entity
    */
   async findBoardByBoardName(param_boardName: string): Promise<Board> {
+    logger.printStack('Board Repository', 'findBoardByBoardName');
+
     return (await this.findOne({ where: { board: param_boardName } })) as Board;
   }
 
@@ -22,6 +26,8 @@ export class BoardRepository extends Repository<Board> {
    * @returns Topic entities related to board
    */
   async findTopicsByBoardName(param_boardName: string): Promise<Topic[]> {
+    logger.printStack('Board Repository', 'findTopicsByBoardName');
+
     return await this.createQueryBuilder('board')
       .where('board.board = :board', { board: param_boardName })
       .leftJoinAndSelect('board.topics', 'topic')

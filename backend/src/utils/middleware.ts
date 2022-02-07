@@ -15,6 +15,7 @@ export const authorization = (
   _res: Response,
   next: NextFunction
 ): void => {
+  logger.printStack('Middleware', authorization.name);
   const token = req.cookies.access_token;
 
   if (!token) {
@@ -40,7 +41,7 @@ export const errorLogger = (
   _res: Response,
   next: NextFunction
 ): void => {
-  logger.error(err);
+  logger.error(err.name);
   next(err);
 };
 
@@ -49,6 +50,8 @@ export const errorResponser = (
   _req: Request,
   res: Response
 ) => {
+  logger.printStack('Middleware', errorResponser.name);
+
   const sendResponse = (res: Response, err: ResponseError) =>
     res.status(err.statusCode).send({ error: err.message });
 
@@ -93,6 +96,7 @@ export const unknownEndpoint = (
   _res: Response,
   next: NextFunction
 ) => {
+  logger.printStack('Middleware', unknownEndpoint.name);
   next(new ApplicationError('Unknown endpoint', 404, 'UNKNOWN_ENDPOINT'));
 };
 
@@ -101,6 +105,8 @@ export const isUUIDValid = (
   _res: Response,
   next: NextFunction
 ) => {
+  logger.printStack('Middleware', isUUIDValid.name);
+
   if (isUUID(req.params.id)) next();
   else next(new ApplicationError('Invalid ID', 400, 'INVALID_ID'));
 };
