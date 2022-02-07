@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 /** Components */
-import AdminLogin from './components/pages/AdminLogin';
+import AdminLogin from './components/admin/AdminLogin';
 import NavBar from './components/layout/NavBar';
 import Toast from './components/layout/Toast';
 

@@ -1,5 +1,5 @@
 export type Board = {
-  boardId?: string;
+  id?: string;
   board: string;
   adjective: string;
 };

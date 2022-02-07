@@ -28,10 +28,8 @@ export const authorization = (
   const data = jwt.verify(token, config.TOKEN_SECRET) as {
     [key: string]: string;
   };
-
   req.userId = data.id;
   req.username = data.username;
-  req.admin = data.admin;
 
   next();
 };

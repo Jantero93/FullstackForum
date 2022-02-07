@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 /** Components */
-import LogInModal from '../layout/LogInModal';
+import LogInModal from './LogInModal';
 import NavbarBoard from './NavbarBoard';
-import SignUpModal from '../layout/SignUpModal';
+import SignUpModal from './SignUpModal';
 
 /** UI  */
 import {

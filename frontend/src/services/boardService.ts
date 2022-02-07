@@ -9,7 +9,11 @@ const getAllBoards = async (): Promise<Board[]> => {
   return request.data;
 };
 
+const deleteBoard = async (boardId: string): Promise<void> =>
+  await axios.delete(`${baseUrl}/${boardId}`);
+
 const BoardService = {
+  deleteBoard,
   getAllBoards
 };
 
