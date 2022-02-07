@@ -46,6 +46,7 @@ const Post: React.FC<Props> = ({
               <DeleteIcon
                 fontSize={'large'}
                 style={{ float: 'right', cursor: 'pointer' }}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 onClick={() => deletePostClicked(post.id!)}
               />
             )}

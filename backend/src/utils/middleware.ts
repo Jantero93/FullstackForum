@@ -9,6 +9,7 @@ import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
+import colors from 'colors';
 
 export const authorization = (
   req: Request,
@@ -41,7 +42,7 @@ export const errorLogger = (
   _res: Response,
   next: NextFunction
 ): void => {
-  logger.error(err.name);
+  logger.error(colors.red(err.name));
   next(err);
 };
 
@@ -56,18 +57,21 @@ export const errorResponser = (
     res.status(err.statusCode).send({ error: err.message });
 
   switch (err.errorType) {
-    case 'INVALID_ID':
-      sendResponse(res, err);
-
-    case 'UNKNOWN_ENDPOINT':
-      sendResponse(res, err);
-
     case 'AUTHORIZATION_FAILED':
       sendResponse(res, err);
-
-    case 'INTERNAL_SERVER_ERROR':
+    case 'ENTITY_NOT_FOUND':
+      sendResponse(res, err);
+    case 'FAILED_DELETE_ENTITY':
       sendResponse(res, err);
     case 'FORBIDDEN':
+      sendResponse(res, err);
+    case 'INTERNAL_SERVER_ERROR':
+      sendResponse(res, err);
+    case 'INVALID_ID':
+      sendResponse(res, err);
+    case 'NOT_FOUND':
+      sendResponse(res, err);
+    case 'UNKNOWN_ENDPOINT':
       sendResponse(res, err);
 
     default:

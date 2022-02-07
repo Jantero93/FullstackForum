@@ -4,6 +4,7 @@ import { getCustomRepository } from 'typeorm';
 
 /** Entity */
 import { Board } from '../entity/Board';
+
 import logger from '../utils/logger';
 
 /**

@@ -13,9 +13,12 @@ import { Button, Stack } from '@mui/material';
 import PostService from '../../services/postService';
 import TopicService from '../../services/topicService';
 
+/** Hooks */
+import { useUser } from '../../contexts/UserContext';
+import { useToastUpdate } from '../../contexts/ToastContext';
+
 /** Types */
 import { Topic as TopicType } from '../../types/forum';
-import { useUser } from '../../contexts/UserContext';
 
 /**
  * This component forwards to /:boardName/:topicId via Router
@@ -31,8 +34,10 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const [message, setMessage] = React.useState<string>('');
   const [topicName, setTopicName] = React.useState<string>('');
 
+  /** Hooks */
   const { boardName } = useParams();
   const { loggedIn } = useUser();
+  const showToast = useToastUpdate();
 
   useEffect(() => {
     TopicService.getAllTopicsByBoardName(boardName as string).then(
@@ -62,6 +67,20 @@ const GenericBoard: React.FC = (): JSX.Element => {
     });
   };
 
+  const deleteTopicClicked = (
+    e: React.MouseEvent<unknown>,
+    topicId: string
+  ): void => {
+    e.stopPropagation();
+    e.preventDefault();
+    TopicService.deleteTopic(topicId)
+      .then((response) => {
+        showToast({ message: 'Deleted topic successfully', error: false });
+        setTopics(topics.filter((topic) => topic.id! !== topicId));
+      })
+      .catch(() => showToast({ message: 'Failed delete topic', error: true }));
+  };
+
   return (
     <div>
       {!isLoading && (
@@ -73,7 +92,11 @@ const GenericBoard: React.FC = (): JSX.Element => {
             spacing={1}
           >
             {topics.map((topic) => (
-              <Topic topic={topic} key={topic.id} />
+              <Topic
+                topic={topic}
+                deleteTopicClicked={deleteTopicClicked}
+                key={topic.id}
+              />
             ))}
           </Stack>
 

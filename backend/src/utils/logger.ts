@@ -8,7 +8,7 @@ export const info = (...params: unknown[]): void => {
 };
 
 export const error = (...params: unknown[]): void => {
-  !NODE_ENV_IS_TEST && console.log('Error: ', ...params);
+  !NODE_ENV_IS_TEST && console.log(`${colors.red('Error:')}`, ...params);
 };
 
 export const printStack = (layer: string, funcName: string): void => {

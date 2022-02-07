@@ -3,6 +3,7 @@ import * as TopicService from '../services/topicService';
 
 /** Types */
 import { Response, Request } from 'express';
+
 import logger from '../utils/logger';
 
 export const deleteOne = async (req: Request, res: Response) => {
