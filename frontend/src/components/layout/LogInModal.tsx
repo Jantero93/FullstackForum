@@ -16,6 +16,7 @@ import { modalStyle } from '../../utils/modalstyles';
 import UserService from '../../services/userServices';
 import { saveToLocalStorage } from '../../utils/localStorage';
 import { useUpdateUser } from '../../contexts/UserContext';
+import { useToastUpdate } from '../../contexts/ToastContext';
 
 type Props = {
   showLogIn: boolean;
@@ -30,16 +31,25 @@ const LogInModal: React.FC<Props> = ({
   const [password, setPassword] = useState<string>('');
   const [showError, setShowError] = useState<boolean>(false);
 
+  /** Hooks */
   const updateUser = useUpdateUser();
+  const showToast = useToastUpdate();
 
   const handleLogInClick = (): void => {
     UserService.loginUser(username, password)
       .then((response) => {
-        updateUser({ loggedIn: true, username: response.username, id: response.id });
+        updateUser({
+          loggedIn: true,
+          username: response.username,
+          id: response.id
+        });
         saveToLocalStorage('user', response);
         setShowLogIn(false);
       })
-      .catch(() => setShowError(true));
+      .catch(() => {
+        setShowError(true);
+        showToast({message: 'Login failed', error: true})
+      });
   };
 
   return (

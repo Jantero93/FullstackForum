@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /** UI, CSS */
 import {
@@ -14,6 +15,9 @@ import { modalStyle } from '../../utils/modalstyles';
 
 /** Utils */
 import UserService from '../../services/userServices';
+import { useUpdateUser } from '../../contexts/UserContext';
+import { saveToLocalStorage } from '../../utils/localStorage';
+import { useToastUpdate } from '../../contexts/ToastContext';
 
 type Props = {
   showSignUp: boolean;
@@ -28,6 +32,11 @@ const SignUpModal: React.FC<Props> = ({
   const [password, setPassword] = useState<string>('');
   const [showError, setShowError] = useState<boolean>(false);
 
+  /** Hooks */
+  const navigate = useNavigate();
+  const updateUser = useUpdateUser();
+  const showToast = useToastUpdate();
+
   const handleSignInClick = (): void => {
     if (username.length < 3 || password.length < 6) {
       setShowError(true);
@@ -35,12 +44,23 @@ const SignUpModal: React.FC<Props> = ({
     }
 
     UserService.postUser(username, password)
-      .then(() => setShowSignUp(false))
+      .then(() => UserService.loginUser(username, password))
+      .then((response) => {
+        updateUser({
+          loggedIn: true,
+          username: response.username,
+          id: response.id
+        });
+        saveToLocalStorage('user', response);
+        setShowSignUp(false);
+        navigate('/');
+        showToast({ message: 'User created', error: false });
+      })
       .catch((e) => {
         setShowError(true);
+        showToast({message: 'Failed create user', error: true})
       });
   };
-
 
   return (
     <Modal
