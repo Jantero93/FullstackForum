@@ -31,6 +31,7 @@ export const authorization = (
 
   req.userId = data.id;
   req.username = data.username;
+  req.admin = data.admin;
 
   next();
 };

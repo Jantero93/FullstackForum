@@ -56,7 +56,7 @@ const SignUpModal: React.FC<Props> = ({
         navigate('/');
         showToast({ message: 'User created', error: false });
       })
-      .catch((e) => {
+      .catch(() => {
         setShowError(true);
         showToast({message: 'Failed create user', error: true})
       });

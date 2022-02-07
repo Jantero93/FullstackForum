@@ -37,9 +37,8 @@ export const login = async (req: Request, res: Response) => {
 
   res.cookie(accessTokenName, token, {
     maxAge: 1000 * 60 * 60 * 24 * 365 * 50,
-    httpOnly: false,
-    secure: false,
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    httpOnly: true,
+    secure: true
   });
 
   userFromDB.passwordHash = '';
