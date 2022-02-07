@@ -7,6 +7,7 @@ import { Button, Stack, TextField, Typography } from '@mui/material';
 /** Types */
 import CSS from 'csstype';
 import TopicService from '../../services/topicService';
+import { useUser } from '../../contexts/UserContext';
 
 const textAreaMargin = '0.25em';
 const textAreaStyles: CSS.Properties = {
@@ -17,22 +18,24 @@ const textAreaStyles: CSS.Properties = {
 
 type Props = {
   message: string;
+  topicUserId: string;
   sendPostClicked: () => void;
   setMessage: React.Dispatch<SetStateAction<string>>;
 };
 
-const AnswerBox: React.FC<Props> = ({
+const PostForm: React.FC<Props> = ({
   message,
+  topicUserId,
   sendPostClicked,
   setMessage
 }: Props): JSX.Element => {
   const { boardName, topicId } = useParams();
   const navigate = useNavigate();
+  const user = useUser();
 
   const deleteTopicClicked = (): void => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    TopicService.deleteTopic(topicId!)
-      .then(() => navigate(`/${boardName}`))
+    TopicService.deleteTopic(topicId!).then(() => navigate(`/${boardName}`));
   };
 
   return (
@@ -72,17 +75,21 @@ const AnswerBox: React.FC<Props> = ({
         >
           Post
         </Button>
-        <Button
-          size="large"
-          color={'error'}
-          variant={'contained'}
-          onClick={() => deleteTopicClicked()}
-        >
-          Delete topic
-        </Button>
+
+        {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+        {user.loggedIn && user.id! === topicUserId && (
+          <Button
+            size="large"
+            color={'error'}
+            variant={'contained'}
+            onClick={() => deleteTopicClicked()}
+          >
+            Delete topic
+          </Button>
+        )}
       </Stack>
     </Stack>
   );
 };
 
-export default AnswerBox;
+export default PostForm;

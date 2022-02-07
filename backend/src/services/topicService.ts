@@ -72,16 +72,18 @@ export const findOne = async (topicId: string): Promise<Topic> => {
  * @param topicId id of topic
  * @returns Posts of given id topic
  */
-export const findPostsByTopicId = async (topicId: string): Promise<Post[]> => {
+export const findPostsByTopicId = async (topicId: string): Promise<Topic> => {
   logger.printStack('Topic Service', findPostsByTopicId.name);
   const topicRepository = getCustomRepository(TopicRepository);
   const topics = await topicRepository.findOne(topicId, {
-    relations: ['posts', 'posts.user']
+    relations: ['user', 'posts', 'posts.user']
   });
 
-  return topics!.posts.sort(
+  topics!.posts.sort(
     (a, b) => moment(a.created).unix() - moment(b.created).unix()
   );
+
+  return topics as Topic;
 };
 
 /**

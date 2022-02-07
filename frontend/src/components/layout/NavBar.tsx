@@ -8,7 +8,14 @@ import NavbarBoard from './NavbarBoard';
 import SignUpModal from '../layout/SignUpModal';
 
 /** UI  */
-import { AppBar, Button, Container, Grid, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  Toolbar,
+  Typography
+} from '@mui/material';
 
 /** Services */
 import BoardService from '../../services/boardService';
@@ -25,14 +32,18 @@ const NavBar: React.FC = (): JSX.Element => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [showLogIn, setShowLogIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  /** Hooks */
   const user = useUser();
   const userUpdate = useUpdateUser();
   const showToast = useToastUpdate();
   const navigate = useNavigate();
 
   useEffect(() => {
-    BoardService.getAllBoards().then((response) => setBoards(response));
+    BoardService.getAllBoards()
+      .then((response) => setBoards(response))
+      .then(() => setIsLoading(true));
   }, []);
 
   const renderBoards = (): JSX.Element[] =>
@@ -43,9 +54,9 @@ const NavBar: React.FC = (): JSX.Element => {
   const handleLogOut = (): Promise<void> =>
     UserService.logOutUser().then(() => {
       userUpdate({ username: undefined, loggedIn: false });
-      localStorage.clear()
-      navigate('/')
-      showToast({ message: 'Logged out' }); 
+      localStorage.clear();
+      navigate('/');
+      showToast({ message: 'Logged out' });
     });
 
   const handleLogin = (): void => {
@@ -63,26 +74,47 @@ const NavBar: React.FC = (): JSX.Element => {
         marginBottom: '0.5em'
       }}
     >
-      <Container maxWidth="xl">
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="baseline"
-        >
-          <Toolbar disableGutters variant={'regular'}>
-            {renderBoards()}
-          </Toolbar>
-          <div>
-            <Button onClick={handleLogin}>
-              {user.loggedIn ? 'Logout' : 'Login'}
-            </Button>
-            {!user.loggedIn && (
-              <Button onClick={() => setShowSignUp(true)}>Sign-up</Button>
-            )}
-          </div>
-        </Grid>
-      </Container>
+      {isLoading && (
+        <Container maxWidth="xl">
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="baseline"
+          >
+            <Toolbar disableGutters variant={'regular'}>
+              {renderBoards()}
+            </Toolbar>
+            <div
+              style={{
+                justifyContent: 'space-around',
+                alignItems: 'baseline',
+                display: 'flex'
+              }}
+            >
+              {user.loggedIn && (
+                <Typography
+                  variant={'button'}
+                  style={{ paddingRight: '1em', color: '#1976d2' }}
+                >
+                  {`Logged-in as ${user.username}`}
+                </Typography>
+              )}
+              <Button variant={'contained'} style={{marginRight: '0.5em'}} onClick={handleLogin}>
+                {user.loggedIn ? 'Logout' : 'Login'}
+              </Button>
+              {!user.loggedIn && (
+                <Button
+                  variant={'outlined'}
+                  onClick={() => setShowSignUp(true)}
+                >
+                  Sign-up
+                </Button>
+              )}
+            </div>
+          </Grid>
+        </Container>
+      )}
       <SignUpModal showSignUp={showSignUp} setShowSignUp={setShowSignUp} />
       <LogInModal showLogIn={showLogIn} setShowLogIn={setShowLogIn} />
     </AppBar>

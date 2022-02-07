@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
+import ForumHeader from '../forumItems/ForumHeader';
 import NewTopicForm from '../forumItems/NewTopicForm';
 import Topic from '../forumItems/Topic';
 
 /** UI */
-import { Button, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 
 /** Utils */
 import PostService from '../../services/postService';
@@ -40,12 +41,9 @@ const GenericBoard: React.FC = (): JSX.Element => {
   const showToast = useToastUpdate();
 
   useEffect(() => {
-    TopicService.getAllTopicsByBoardName(boardName as string).then(
-      (response) => {
-        setTopics(response);
-        setIsLoading(false);
-      }
-    );
+    TopicService.getAllTopicsByBoardName(boardName as string)
+      .then((response) => setTopics(response))
+      .finally(() => setIsLoading(false));
   }, [boardName]);
 
   const postNewTopic = async (): Promise<void> => {
@@ -82,9 +80,10 @@ const GenericBoard: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <Container disableGutters maxWidth={'xl'}>
       {!isLoading && (
         <>
+        <ForumHeader header={boardName!} />
           <Stack
             direction="column"
             justifyContent="flex-start"
@@ -121,7 +120,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
           )}
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

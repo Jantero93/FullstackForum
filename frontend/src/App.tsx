@@ -1,5 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom';
 
 /** Components */
 import AdminLogin from './components/pages/AdminLogin';
@@ -34,7 +38,7 @@ const App: React.FC = (): JSX.Element => {
         loggedIn: true,
         id: user.id
       });
-      setIsRendered(true)
+    setIsRendered(true);
   }, []);
 
   return (
@@ -45,7 +49,7 @@ const App: React.FC = (): JSX.Element => {
             <NavBar />
 
             <Routes>
-              <Route index element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/:boardName" element={<GenericBoardPage />} />
               <Route path="/:boardName/:topicId" element={<TopicPage />} />
@@ -58,6 +62,5 @@ const App: React.FC = (): JSX.Element => {
     </Router>
   );
 };
-
 
 export default App;

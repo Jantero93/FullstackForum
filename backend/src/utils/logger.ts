@@ -22,9 +22,9 @@ export const printStack = (layer: string, funcName: string): void => {
 export const responseDB = (...params: unknown[]): void => {
   if (!NODE_ENV_IS_TEST) {
     console.log(`Response from DB:`);
-    console.log(params);
+    console.log(...params);
     console.log('---');
   }
 };
 
-export default { info, error, printStack };
+export default { info, error, printStack, responseDB };

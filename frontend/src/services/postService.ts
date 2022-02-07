@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { Post } from '../types/forum';
+import { Post, Topic } from '../types/forum';
 
 const baseUrl = '/api/post';
 
-const getPostsByTopicId = async (topicId: string): Promise<Post[]> => {
+const getTopicWithPostsAndUsers = async (topicId: string): Promise<Topic> => {
   const request = await axios.get(`${baseUrl}/${topicId}`);
   return request.data;
 };
@@ -21,7 +21,7 @@ const deletePost = async (postId: string): Promise<Post> => {
 
 const PostService = {
   deletePost,
-  getPostsByTopicId,
+  getTopicWithPostsAndUsers,
   postNewPost
 };
 

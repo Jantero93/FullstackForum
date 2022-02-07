@@ -2,21 +2,29 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 /** Components */
+import ForumHeader from '../forumItems/ForumHeader';
 import Post from '../forumItems/Post';
 import PostForm from '../forumItems/PostForm';
 
-/** Types */
-import { Post as PostType } from '../../types/forum';
+/** UI */
+import { Container } from '@mui/material';
 
 /** Utils */
 import PostService from '../../services/postService';
+
+/** Hooks */
 import { useToastUpdate } from '../../contexts/ToastContext';
 import { useUser } from '../../contexts/UserContext';
+
+/** Types */
+import { Post as PostType } from '../../types/forum';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
   const [message, setMessage] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [topicName, setTopicName] = React.useState<string>('');
+  const [topicUserId, setTopicUserId] = React.useState<string>('');
 
   const { topicId } = useParams();
   const { loggedIn } = useUser();
@@ -24,10 +32,15 @@ const Topic: React.FC = (): JSX.Element => {
 
   /** Fetch all posts from topic */
   useEffect(() => {
-    PostService.getPostsByTopicId(topicId as string).then((response) => {
-      setPosts(response);
-      setIsLoading(false);
-    });
+    PostService.getTopicWithPostsAndUsers(topicId as string)
+      .then((response) => {
+        setPosts(response.posts);
+        setTopicName(response.topicName);
+        setTopicUserId(response?.user?.id || '');
+        setIsLoading(false);
+      })
+      .catch(() => toastUpdate({ message: 'Topic not found' }))
+      .finally(() => setIsLoading(false));
   }, [topicId]);
 
   const sendPostClicked = async (): Promise<void> => {
@@ -60,9 +73,10 @@ const Topic: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <Container disableGutters maxWidth={'xl'}>
       {!isLoading && (
         <>
+          <ForumHeader header={topicName} />
           {posts.map((post) => (
             <Post
               key={post.id}
@@ -73,13 +87,14 @@ const Topic: React.FC = (): JSX.Element => {
           {loggedIn && (
             <PostForm
               message={message}
+              topicUserId={topicUserId}
               sendPostClicked={sendPostClicked}
               setMessage={setMessage}
             />
           )}
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

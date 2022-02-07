@@ -35,11 +35,8 @@ const Post: React.FC<Props> = ({
           style={{ backgroundColor: 'whitesmoke', margin: '0.5em' }}
         >
           <CardContent>
-            <Typography color="text.secondary">
-              {`${post.user?.username} ${formatDate(
-                'DD.MM.YYYY',
-                post.created
-              )} klo ${formatDate('HH:mm', post.created)}`}
+            <Typography variant="h6" style={{ wordWrap: 'break-word' }}>
+              {post.message}
             </Typography>
             {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
             {user.loggedIn && user.id === post.user!.id! && (
@@ -50,8 +47,11 @@ const Post: React.FC<Props> = ({
                 onClick={() => deletePostClicked(post.id!)}
               />
             )}
-            <Typography variant="h6" style={{ wordWrap: 'break-word' }}>
-              {post.message}
+            <Typography color="text.secondary">
+              {`${post.user?.username} ${formatDate(
+                'DD.MM.YYYY',
+                post.created
+              )} klo ${formatDate('HH:mm', post.created)}`}
             </Typography>
           </CardContent>
         </Card>
