@@ -8,6 +8,10 @@ import { Stack, Typography, TextField, Button } from '@mui/material';
 
 /** Utils */
 import UserService from '../../services/userServices';
+import {
+  useShowLogin,
+  useSetShowAdminLogin
+} from '../../contexts/AdminLoginContext';
 
 /** Types */
 import CSS from 'csstype';
@@ -20,16 +24,18 @@ const textAreaStyles: CSS.Properties = {
 const AdminLogin: React.FC = (): JSX.Element => {
   const [password, setPassword] = React.useState<string>('');
   const [showError, setShowError] = React.useState<boolean>(false);
-  const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
+
+  const showLogin = useShowLogin();
+  const setShowLogin = useSetShowAdminLogin();
 
   const adminLoginClicked = (): Promise<void> =>
     UserService.loginAdmin(password)
-      .then(() => setShowAdminPanel(true))
+      .then(() => setShowLogin(false))
       .catch(() => setShowError(true));
 
   return (
     <React.Fragment>
-      {showAdminPanel ? (
+      {!showLogin ? (
         <AdminPanel />
       ) : (
         <Stack
@@ -44,7 +50,6 @@ const AdminLogin: React.FC = (): JSX.Element => {
           </Typography>
           <TextField
             error={showError}
-            placeholder="Message..."
             value={password}
             style={textAreaStyles}
             type="password"

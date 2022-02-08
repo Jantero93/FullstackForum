@@ -30,9 +30,9 @@ const AdminPanel: React.FC = (): JSX.Element => {
         textColor={'inherit'}
         style={{ color: 'whitesmoke' }}
       >
-        <Tab label="Boards" tabIndex={0} />
-        <Tab label="Topics" tabIndex={1} />
-        <Tab label="Users" tabIndex={2} />
+        <Tab label="Board management" tabIndex={0} />
+        <Tab label="Create Board" tabIndex={1} />
+        <Tab label="User management" tabIndex={2} />
       </Tabs>
       {renderTab()}
     </Box>

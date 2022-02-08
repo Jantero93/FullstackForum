@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 /** Components */
 import AdminLogin from './components/admin/AdminLogin';
@@ -17,6 +13,7 @@ import TopicPage from './components/pages/TopicPage';
 
 /** Context */
 import ToastProvider from './contexts/ToastContext';
+import AdminLoginProvider from './contexts/AdminLoginContext';
 
 /** User hook */
 import { useUpdateUser } from './contexts/UserContext';
@@ -49,12 +46,14 @@ const App: React.FC = (): JSX.Element => {
           <>
             <NavBar />
 
+              <AdminLoginProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLogin />} />
               <Route path="/:boardName" element={<GenericBoardPage />} />
               <Route path="/:boardName/:topicId" element={<TopicPage />} />
             </Routes>
+              </AdminLoginProvider>
 
             <Toast />
           </>
