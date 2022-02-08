@@ -11,10 +11,23 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import logger from '../utils/logger';
 
+export const deleteOne = async (userId: string): Promise<void> => {
+  logger.printStack('User Service', deleteOne.name);
+  await getCustomRepository(UserRepository).delete(userId);
+};
+
 export const findOne = async (userId: string): Promise<User> => {
   logger.printStack('User Service', findOne.name);
   const userRepository = getCustomRepository(UserRepository);
   return (await userRepository.findOne(userId)) as User;
+};
+
+export const findAll = async (): Promise<User[]> => {
+  logger.printStack('User Service', findAll.name);
+  const userRepository = getCustomRepository(UserRepository);
+  const data = await userRepository.find();
+  logger.responseDB(data);
+  return data;
 };
 
 /**

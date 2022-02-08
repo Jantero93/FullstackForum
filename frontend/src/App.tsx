@@ -44,9 +44,8 @@ const App: React.FC = (): JSX.Element => {
       <ToastProvider>
         {isRendered && (
           <>
-            <NavBar />
-
             <AdminLoginProvider>
+              <NavBar />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/admin" element={<AdminLogin />} />
