@@ -28,21 +28,24 @@ const ManageBoards: React.FC = (): JSX.Element => {
   );
 
   const showToast = useToastUpdate();
-  const setShowAdminLogin = useSetShowAdminLogin()
+  const setShowAdminLogin = useSetShowAdminLogin();
 
   React.useEffect(() => {
     BoardService.getAllBoards().then((response) => setBoards(response));
   }, []);
 
-  const deleteBoardClicked = (id: string, boardName: string): void => {
+  const deleteBoardClicked = (e: React.MouseEvent<unknown>, id: string, boardName: string): void => {
+    e.stopPropagation();
+    e.preventDefault();
     window.confirm(`Are you sure you want to delete ${boardName}`) &&
       BoardService.deleteBoard(id)
-        .then(() =>
-          showToast({ message: 'Deleted successfully', error: false })
-        )
+        .then(() => {
+          setBoards(boards.filter((board) => board.id !== id));
+          showToast({ message: 'Deleted successfully', error: false });
+        })
         .catch(() => {
           showToast({ message: 'Token expired, login again', error: true });
-          setShowAdminLogin(true)
+          setShowAdminLogin(true);
         });
   };
 
@@ -66,7 +69,7 @@ const ManageBoards: React.FC = (): JSX.Element => {
                   edge="end"
                   aria-label="delete"
                   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  onClick={() => deleteBoardClicked(board.id!, board.board)}
+                  onClick={(e: React.MouseEvent<unknown>) => deleteBoardClicked(e, board.id!, board.board)}
                 >
                   <Delete fontSize={'large'} htmlColor={'#000000'} />
                 </IconButton>

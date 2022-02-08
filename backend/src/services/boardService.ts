@@ -53,3 +53,9 @@ export const findTopicsByBoardName = async (boardName: string) => {
   const boardRepository = getCustomRepository(BoardRepository);
   return await boardRepository.findTopicsByBoardName(boardName);
 };
+
+export const saveOne = async (board: Board) => {
+  logger.printStack('Board Service', saveOne.name);
+  const boardRepository = getCustomRepository(BoardRepository);
+  return await boardRepository.save(board);
+};

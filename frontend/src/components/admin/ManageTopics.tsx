@@ -49,7 +49,12 @@ const ManageTopics: React.FC<Props> = ({
       });
   }, [boardName]);
 
-  const deleteTopicClicked = (topicId: string) => {
+  const deleteTopicClicked = (
+    e: React.MouseEvent<unknown>,
+    topicId: string
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
     TopicService.deleteTopic(topicId)
       .then(() => setTopics(topics.filter((topic) => topicId !== topic.id!)))
       .catch(() => {
@@ -85,7 +90,9 @@ const ManageTopics: React.FC<Props> = ({
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteTopicClicked(topic.id!)}
+                  onClick={(e: React.MouseEvent<unknown>) =>
+                    deleteTopicClicked(e, topic.id!)
+                  }
                 >
                   <Delete fontSize={'large'} htmlColor={'#000000'} />
                 </IconButton>

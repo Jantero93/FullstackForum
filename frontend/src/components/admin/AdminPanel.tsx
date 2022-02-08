@@ -1,6 +1,7 @@
 import React from 'react';
 
 /** Components */
+import AddBoardForm from './AddBoardForm';
 import ManageBoards from './ManageBoards';
 
 /** UI */
@@ -13,6 +14,8 @@ const AdminPanel: React.FC = (): JSX.Element => {
     switch (tabIndex) {
       case 0:
         return <ManageBoards />;
+        case 1:
+          return <AddBoardForm setTabIndex={setTabIndex}/> 
 
       default:
         return <div>KIKKELI</div>;

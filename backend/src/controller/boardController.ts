@@ -17,7 +17,7 @@ export const deleteBoard = async (
   try {
     res
       .status(202)
-      .send(BoardService.deleteBoardById(req.params.boardId, req.admin));
+      .send(BoardService.deleteBoardById(req.params.id, req.admin));
   } catch (error) {
     next(error);
   }
@@ -35,5 +35,20 @@ export const getAll = async (
     next(
       new ResponseError(`Could not fetch boards`, 500, 'INTERNAL_SERVER_ERROR')
     );
+  }
+};
+
+export const postBoard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.printStack('Board Controller', postBoard.name);
+  try {
+    req.admin
+      ? res.status(200).send(await BoardService.saveOne(req.body))
+      : res.sendStatus(401);
+  } catch (error) {
+    next(error);
   }
 };
