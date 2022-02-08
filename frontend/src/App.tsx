@@ -36,7 +36,8 @@ const App: React.FC = (): JSX.Element => {
       updateUser({
         username: user.username,
         loggedIn: true,
-        id: user.id
+        id: user.id,
+        role: user.role
       });
     setIsRendered(true);
   }, []);

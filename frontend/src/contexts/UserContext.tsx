@@ -1,14 +1,18 @@
 import React from 'react';
 
+import { UserRole } from '../types/forum';
+
 export type User = {
   id?: string;
   username?: string;
   loggedIn: boolean;
+  role: UserRole;
 };
 
 /** Default values */
 const UserContext = React.createContext({
-  loggedIn: false
+  loggedIn: false,
+  role: 'normal' as UserRole
 });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -23,7 +27,10 @@ type Props = {
 };
 
 const UserProvider: React.FC<Props> = ({ children }: Props): JSX.Element => {
-  const [user, setUser] = React.useState<User>({ loggedIn: false });
+  const [user, setUser] = React.useState<User>({
+    loggedIn: false,
+    role: 'normal'
+  });
 
   const updateUser = (user: User): void => setUser(user);
 

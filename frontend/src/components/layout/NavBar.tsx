@@ -53,7 +53,7 @@ const NavBar: React.FC = (): JSX.Element => {
 
   const handleLogOut = (): Promise<void> =>
     UserService.logOutUser().then(() => {
-      userUpdate({ username: undefined, loggedIn: false });
+      userUpdate({ username: undefined, loggedIn: false, role: '' });
       localStorage.clear();
       navigate('/');
       showToast({ message: 'Logged out' });
@@ -100,7 +100,11 @@ const NavBar: React.FC = (): JSX.Element => {
                   {`Logged-in as ${user.username}`}
                 </Typography>
               )}
-              <Button variant={'contained'} style={{marginRight: '0.5em'}} onClick={handleLogin}>
+              <Button
+                variant={'contained'}
+                style={{ marginRight: '0.5em' }}
+                onClick={handleLogin}
+              >
                 {user.loggedIn ? 'Logout' : 'Login'}
               </Button>
               {!user.loggedIn && (

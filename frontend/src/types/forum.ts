@@ -35,4 +35,7 @@ export type Topic = {
 export type User = {
   id?: string;
   username?: string;
+  role: UserRole;
 };
+
+export type UserRole = 'admin' | 'banned' | 'normal' | '';

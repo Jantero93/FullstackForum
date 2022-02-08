@@ -41,7 +41,8 @@ const LogInModal: React.FC<Props> = ({
         updateUser({
           loggedIn: true,
           username: response.username,
-          id: response.id
+          id: response.id,
+          role: response.role
         });
         saveToLocalStorage('user', response);
         setShowLogIn(false);

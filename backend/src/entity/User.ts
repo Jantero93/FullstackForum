@@ -15,6 +15,12 @@ import { Topic } from './Topic';
 /** Class validation */
 import { Length } from 'class-validator';
 
+export enum UserRole {
+  ADMIN = 'admin',
+  NORMAL = 'normal',
+  BANNED = 'banned'
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -41,11 +47,19 @@ export class User {
   @Column({ nullable: false, select: false })
   passwordHash!: string;
 
+  /** Role */
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.NORMAL
+  })
+  role!: UserRole;
+
   /** Posts user has created */
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })
-  posts?: Post[];
+  posts!: Post[];
 
   /** Topics user has created */
   @OneToMany(() => Topic, (topic) => topic.user, { onDelete: 'NO ACTION' })
-  topics?: Topic[];
+  topics!: Topic[];
 }
