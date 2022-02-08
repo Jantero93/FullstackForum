@@ -17,7 +17,7 @@ export const deletePost = async (
   try {
     res
       .status(202)
-      .send(await PostService.removePost(req.params.id, req.userId));
+      .send(await PostService.removePost(req.params.id, req.userId, req.admin));
   } catch (error) {
     next(new ResponseError('Forbidden', 403, 'FORBIDDEN'));
   }

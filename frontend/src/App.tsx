@@ -46,14 +46,14 @@ const App: React.FC = (): JSX.Element => {
           <>
             <NavBar />
 
-              <AdminLoginProvider>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
+            <AdminLoginProvider>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/:boardName" element={<GenericBoardPage />} />
-              <Route path="/:boardName/:topicId" element={<TopicPage />} />
-            </Routes>
-              </AdminLoginProvider>
+                <Route path="/:boardName" element={<GenericBoardPage />} />
+                <Route path="/:boardName/:topicId" element={<TopicPage />} />
+              </Routes>
+            </AdminLoginProvider>
 
             <Toast />
           </>

@@ -8,6 +8,21 @@ import { Response, Request, NextFunction } from 'express';
 import ResponseError from '../utils/ApplicationError';
 import logger from '../utils/logger';
 
+export const deleteBoard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.printStack('Board Controller', deleteBoard.name);
+  try {
+    res
+      .status(202)
+      .send(BoardService.deleteBoardById(req.params.boardId, req.admin));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getAll = async (
   _req: Request,
   res: Response,

@@ -4,7 +4,6 @@ import { TopicRepository } from '../repositories/topicRepository';
 
 /** Entities */
 import { Topic } from '../entity/Topic';
-import { Post } from '../entity/Post';
 
 /** Services */
 import * as BoardService from '../services/boardService';
@@ -20,13 +19,14 @@ import logger from '../utils/logger';
  */
 export const deleteOne = async (
   topicId: string,
-  userId: string
+  userId: string,
+  admin?: boolean
 ): Promise<boolean> => {
   logger.printStack('Topic Service', deleteOne.name);
   const topicRepository = getCustomRepository(TopicRepository);
   const topic = await topicRepository.findTopicWithUserByTopicId(topicId);
 
-  return topic.user.id === userId
+  return topic.user.id === userId || admin
     ? ((await topicRepository.delete(topicId)) as unknown as true)
     : false;
 };
@@ -79,6 +79,7 @@ export const findPostsByTopicId = async (topicId: string): Promise<Topic> => {
     relations: ['user', 'posts', 'posts.user']
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   topics!.posts.sort(
     (a, b) => moment(a.created).unix() - moment(b.created).unix()
   );

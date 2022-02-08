@@ -14,7 +14,8 @@ import logger from '../utils/logger';
 
 export const removePost = async (
   postId: string,
-  userId: string
+  userId: string,
+  admin?: boolean
 ): Promise<Post> => {
   logger.printStack('Post Service', removePost.name);
   const postRepository = getCustomRepository(PostRepository);
@@ -23,7 +24,7 @@ export const removePost = async (
     relations: ['user']
   })) as Post;
 
-  if (userId !== post.user.id)
+  if (userId !== post.user.id && !admin)
     throw new ResponseError('Forbidden', 403, 'FORBIDDEN');
 
   post.message = '(removed)';

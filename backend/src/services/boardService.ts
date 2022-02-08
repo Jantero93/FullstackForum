@@ -7,6 +7,18 @@ import { Board } from '../entity/Board';
 
 import logger from '../utils/logger';
 
+export const deleteBoardById = async (
+  id: string,
+  admin: boolean
+): Promise<boolean> => {
+  logger.printStack('Board Service', deleteBoardById.name);
+  if (admin)
+    return (await getCustomRepository(BoardRepository).delete(
+      id
+    )) as unknown as true;
+  else return false;
+};
+
 /**
  * Get all boards from DB
  * @returns All boards as array

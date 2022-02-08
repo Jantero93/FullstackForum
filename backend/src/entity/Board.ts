@@ -1,5 +1,5 @@
 /** TypeORM */
-import { Entity } from 'typeorm';
+import { Entity, JoinTable } from 'typeorm';
 import { Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 /** Entities */
@@ -27,5 +27,6 @@ export class Board {
 
   /** Topics in specific board */
   @OneToMany(() => Topic, (topic) => topic.board)
+  @JoinTable()
   topics!: Topic[];
 }

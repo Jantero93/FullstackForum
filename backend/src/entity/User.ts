@@ -1,5 +1,5 @@
 /** TypeORM */
-import { Entity } from 'typeorm';
+import { Entity, JoinTable } from 'typeorm';
 import {
   Column,
   CreateDateColumn,
@@ -57,9 +57,11 @@ export class User {
 
   /** Posts user has created */
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })
+  @JoinTable()
   posts!: Post[];
 
   /** Topics user has created */
   @OneToMany(() => Topic, (topic) => topic.user, { onDelete: 'NO ACTION' })
+  @JoinTable()
   topics!: Topic[];
 }

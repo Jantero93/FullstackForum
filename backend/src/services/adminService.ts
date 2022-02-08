@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export const getAdminToken = (password: string): string => {
   logger.printStack('Admin Service', getAdminToken.name);
 
-  return jwt.sign({ admin: password }, config.TOKEN_SECRET, {
+  return jwt.sign({ adminPassword: password }, config.TOKEN_SECRET, {
     expiresIn: 60 * 20
   });
 };

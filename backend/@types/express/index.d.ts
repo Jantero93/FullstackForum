@@ -8,7 +8,7 @@ declare global {
       token: string | null;
       userId: string;
       username: string;
-      admin: string;
+      admin: boolean;
     }
   }
 }

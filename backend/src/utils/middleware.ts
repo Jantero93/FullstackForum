@@ -30,6 +30,7 @@ export const authorization = (
   };
   req.userId = data.id;
   req.username = data.username;
+  req.admin = data.adminPassword === config.ADMIN_PANEL_PASSWORD;
 
   next();
 };

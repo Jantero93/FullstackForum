@@ -8,7 +8,7 @@ import logger from '../utils/logger';
 
 export const deleteOne = async (req: Request, res: Response) => {
   logger.printStack('Topic Controller', deleteOne.name);
-  if (await TopicService.deleteOne(req.params.id, req.userId)) {
+  if (await TopicService.deleteOne(req.params.id, req.userId, req.admin)) {
     res.sendStatus(202);
   } else {
     //! IMPROVE ERROR HANDLING!
