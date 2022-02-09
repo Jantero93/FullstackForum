@@ -32,9 +32,7 @@ export const getAll = async (
   try {
     res.send(await BoardService.findAllBoards());
   } catch (error) {
-    next(
-      new ResponseError(`Could not fetch boards`, 500, 'INTERNAL_SERVER_ERROR')
-    );
+    next(error);
   }
 };
 

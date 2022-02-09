@@ -56,12 +56,10 @@ export class User {
   role!: UserRole;
 
   /** Posts user has created */
-  @OneToMany(() => Post, (post) => post.user, { onDelete: 'NO ACTION' })
-  @JoinTable()
+  @OneToMany(() => Post, (post) => post.user)
   posts!: Post[];
 
   /** Topics user has created */
-  @OneToMany(() => Topic, (topic) => topic.user, { onDelete: 'NO ACTION' })
-  @JoinTable()
+  @OneToMany(() => Topic, (topic) => topic.user)
   topics!: Topic[];
 }

@@ -4,6 +4,7 @@ import { EntityRepository, Repository } from 'typeorm';
 /** Entity */
 import { Board } from '../entity/Board';
 import { Topic } from '../entity/Topic';
+import ResponseError from '../utils/ApplicationError';
 
 import logger from '../utils/logger';
 
@@ -28,11 +29,19 @@ export class BoardRepository extends Repository<Board> {
   async findTopicsByBoardName(param_boardName: string): Promise<Topic[]> {
     logger.printStack('Board Repository', 'findTopicsByBoardName');
 
-    return await this.createQueryBuilder('board')
+    const response = await this.createQueryBuilder('board')
       .where('board.board = :board', { board: param_boardName })
       .leftJoinAndSelect('board.topics', 'topic')
       .leftJoinAndSelect('topic.user', 'user')
-      .getOne()
-      .then((board) => board!.topics);
+      .getOne();
+
+    if (!response?.topics)
+      throw new ResponseError(
+        'No topics found on this board',
+        404,
+        'NOT_FOUND'
+      );
+
+    return response.topics;
   }
 }

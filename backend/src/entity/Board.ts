@@ -26,7 +26,6 @@ export class Board {
   adjective!: string;
 
   /** Topics in specific board */
-  @OneToMany(() => Topic, (topic) => topic.board)
-  @JoinTable()
-  topics!: Topic[];
+  @OneToMany(() => Topic, (topic) => topic.board, { nullable: true })
+  topics?: Topic[];
 }

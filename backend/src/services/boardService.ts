@@ -6,6 +6,7 @@ import { getCustomRepository } from 'typeorm';
 import { Board } from '../entity/Board';
 
 import logger from '../utils/logger';
+import ResponseError from '../utils/ApplicationError';
 
 export const deleteBoardById = async (
   id: string,
@@ -25,7 +26,11 @@ export const deleteBoardById = async (
  */
 export const findAllBoards = async (): Promise<Board[]> => {
   logger.printStack('Board Service', findAllBoards.name);
-  return await getCustomRepository(BoardRepository).find();
+  try {
+    return await getCustomRepository(BoardRepository).find();
+  } catch (error) {
+    throw new ResponseError('Not topics found', 404, 'NOT_FOUND');
+  }
 };
 
 /**

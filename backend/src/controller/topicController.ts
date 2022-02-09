@@ -2,7 +2,7 @@
 import * as TopicService from '../services/topicService';
 
 /** Types */
-import { Response, Request } from 'express';
+import { Response, Request, NextFunction } from 'express';
 
 import logger from '../utils/logger';
 
@@ -16,9 +16,17 @@ export const deleteOne = async (req: Request, res: Response) => {
   }
 };
 
-export const getAll = async (_req: Request, res: Response) => {
+export const getAll = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('Topic Controller', getAll.name);
-  res.send(await TopicService.findAll());
+  try {
+    res.send(await TopicService.findAll());
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const saveOne = async (req: Request, res: Response) => {

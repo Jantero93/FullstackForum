@@ -46,6 +46,6 @@ export class Post {
   topic!: Topic;
 
   /** User who has written post */
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user!: User;
 }
