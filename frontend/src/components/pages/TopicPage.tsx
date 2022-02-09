@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /** Components */
 import ForumHeader from '../forumItems/ForumHeader';
@@ -14,10 +15,11 @@ import PostService from '../../services/postService';
 
 /** Hooks */
 import { useToastUpdate } from '../../contexts/ToastContext';
-import { useUser } from '../../contexts/UserContext';
+import { useUpdateUser, useUser } from '../../contexts/UserContext';
 
 /** Types */
 import { Post as PostType } from '../../types/forum';
+import { AxiosError } from 'axios';
 
 const Topic: React.FC = (): JSX.Element => {
   const [posts, setPosts] = React.useState<PostType[]>([]);
@@ -28,7 +30,9 @@ const Topic: React.FC = (): JSX.Element => {
 
   const { topicId } = useParams();
   const { loggedIn } = useUser();
-  const toastUpdate = useToastUpdate();
+  const updateUser = useUpdateUser();
+  const showToast = useToastUpdate();
+  const navigate = useNavigate();
 
   /** Fetch all posts from topic */
   useEffect(() => {
@@ -39,7 +43,9 @@ const Topic: React.FC = (): JSX.Element => {
         setTopicUserId(response?.user?.id || '');
         setIsLoading(false);
       })
-      .catch(() => toastUpdate({ message: 'Topic not found' }))
+      .catch((e) =>
+        showToast({ message: (e as AxiosError).response!.data, error: true })
+      )
       .finally(() => setIsLoading(false));
   }, [topicId]);
 
@@ -49,8 +55,16 @@ const Topic: React.FC = (): JSX.Element => {
       topicId: topicId as string
     };
 
-    const savedPost: PostType = await PostService.postNewPost(newPost);
-    setPosts(posts.concat(savedPost));
+    try {
+      const savedPost: PostType = await PostService.postNewPost(newPost);
+      setPosts(posts.concat(savedPost));
+    } catch (error) {
+      showToast({ message: (error as AxiosError).response!.data, error: true });
+      if ((error as AxiosError).response!.status === 401) {
+        updateUser({ loggedIn: false, id: undefined, role: 'normal' });
+        navigate('/')
+      }
+    }
 
     setMessage('');
   };
@@ -69,7 +83,9 @@ const Topic: React.FC = (): JSX.Element => {
             )
         );
       })
-      .catch(() => toastUpdate({ error: true, message: 'Failed delete post' }));
+      .catch((e) =>
+        showToast({ error: true, message: (e as AxiosError).response!.data })
+      );
   };
 
   return (

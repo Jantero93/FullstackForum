@@ -15,9 +15,12 @@ import { modalStyle } from '../../utils/modalstyles';
 
 /** Utils */
 import UserService from '../../services/userServices';
-import { useUpdateUser } from '../../contexts/UserContext';
 import { saveToLocalStorage } from '../../utils/localStorage';
+
+/** Hooks */
 import { useToastUpdate } from '../../contexts/ToastContext';
+import { useUpdateUser } from '../../contexts/UserContext';
+import { AxiosError } from 'axios';
 
 type Props = {
   showSignUp: boolean;
@@ -57,9 +60,10 @@ const SignUpModal: React.FC<Props> = ({
         navigate('/');
         showToast({ message: 'User created', error: false });
       })
-      .catch(() => {
+      .catch((e) => {
         setShowError(true);
-        showToast({message: 'Failed create user', error: true})
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        showToast({ message: (e as AxiosError).response!.data, error: true });
       });
   };
 

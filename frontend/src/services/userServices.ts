@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { User } from '../types/forum';
+import axios from 'axios';
 
 const baseUrl = '/api/user';
 const adminUrl = '/api/admin';

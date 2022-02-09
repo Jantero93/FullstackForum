@@ -19,7 +19,7 @@ export const adminLogin = async (
 
   try {
     if (password !== config.ADMIN_PANEL_PASSWORD) {
-      res.sendStatus(403);
+      res.sendStatus(401);
     }
 
     const adminToken: string | null = AdminService.getAdminToken(password);

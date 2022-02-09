@@ -31,7 +31,7 @@ export const deleteOne = async (
   const topic = await topicRepository.findTopicWithUserByTopicId(topicId);
 
   if (topic.user.id !== userId || !admin)
-    throw new ResponseError('Forbidden', 'FORBIDDEN');
+    throw new ResponseError('Authorization failed', 'AUTHORIZATION_FAILED');
 
   await topicRepository.delete(topicId);
 };

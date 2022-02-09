@@ -37,7 +37,7 @@ export const removePost = async (
 
   /** Request user id must meet DB ID or be admin */
   if (userId !== post.user.id && !admin)
-    throw new ResponseError('Forbidden', 'FORBIDDEN');
+    throw new ResponseError('Authorization', 'AUTHORIZATION_FAILED');
 
   post.message = '(removed)';
 

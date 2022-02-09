@@ -69,7 +69,7 @@ export const errorResponser = (
   const sendResponse = (res: Response, message: string, statusCode: number) => {
     logger.info('Sended status code and response');
     logger.info('---');
-    res.status(statusCode).send({ error: message });
+    res.status(statusCode).send(message);
   };
 
   switch (err.errorType) {

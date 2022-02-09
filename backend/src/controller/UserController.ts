@@ -17,7 +17,7 @@ export const deleteUser = async (
   logger.printStack('User Controller', deleteUser.name);
 
   try {
-    if (!req.admin) res.sendStatus(403);
+    if (!req.admin) res.sendStatus(401);
 
     UserService.deleteOne(req.params.id);
     res.sendStatus(202);
@@ -34,7 +34,11 @@ export const getAllUsers = async (
   logger.printStack('User Controller', getAllUsers.name);
 
   try {
-    if (!req.admin) throw new ResponseError('Forbidden', 'FORBIDDEN');
+    if (!req.admin)
+      throw new ResponseError(
+        'Authorization failed, login again',
+        'AUTHORIZATION_FAILED'
+      );
     else res.status(200).send(await UserService.findAll());
   } catch (error) {
     next(error);

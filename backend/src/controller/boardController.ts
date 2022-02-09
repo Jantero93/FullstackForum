@@ -15,7 +15,8 @@ export const deleteBoard = async (
 ) => {
   logger.printStack('Board Controller', deleteBoard.name);
 
-  if (!req.admin) throw new ResponseError('Not admin, forbidden', 'FORBIDDEN');
+  if (!req.admin)
+    throw new ResponseError('Login again', 'AUTHORIZATION_FAILED');
 
   try {
     res.status(202).send(BoardService.deleteBoardById(req.params.id));

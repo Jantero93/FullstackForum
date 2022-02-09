@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /** Components */
 import ForumHeader from '../forumItems/ForumHeader';
@@ -15,11 +15,12 @@ import PostService from '../../services/postService';
 import TopicService from '../../services/topicService';
 
 /** Hooks */
-import { useUser } from '../../contexts/UserContext';
+import { useUpdateUser, useUser } from '../../contexts/UserContext';
 import { useToastUpdate } from '../../contexts/ToastContext';
 
 /** Types */
 import { Topic as TopicType } from '../../types/forum';
+import { AxiosError } from 'axios';
 
 /**
  * This component forwards to /:boardName/:topicId via Router
@@ -38,31 +39,42 @@ const GenericBoard: React.FC = (): JSX.Element => {
   /** Hooks */
   const { boardName } = useParams();
   const { loggedIn } = useUser();
+  const updateUser = useUpdateUser();
   const showToast = useToastUpdate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     TopicService.getAllTopicsByBoardName(boardName as string)
       .then((response) => setTopics(response))
+      .catch((e) =>
+        showToast({ error: true, message: (e as AxiosError).response!.data })
+      )
       .finally(() => setIsLoading(false));
   }, [boardName]);
 
   const postNewTopic = async (): Promise<void> => {
-    setTopicName('');
-    setMessage('');
-    setToggleNewTopicForm(false);
-
-    const createdTopic = await TopicService.postTopic({
+    TopicService.postTopic({
       boardName: boardName as string,
       topicName: topicName,
       posts: []
-    });
-
-    setTopics(topics.concat(createdTopic));
-
-    await PostService.postNewPost({
-      message: message,
-      topicId: createdTopic.id!
-    });
+    })
+      .then((createdTopic) => {
+        setTopics(topics.concat(createdTopic));
+        PostService.postNewPost({
+          message: message,
+          topicId: createdTopic.id!
+        });
+        setTopicName('');
+        setMessage('');
+        setToggleNewTopicForm(false);
+      })
+      .catch((e) => {
+        showToast({ message: (e as AxiosError).response?.data, error: true });
+        if ((e as AxiosError).response?.status === 401) {
+          updateUser({ loggedIn: false, id: undefined, role: 'normal' });
+          navigate('/');
+        }
+      });
   };
 
   const deleteTopicClicked = (
@@ -76,14 +88,16 @@ const GenericBoard: React.FC = (): JSX.Element => {
         showToast({ message: 'Deleted topic successfully', error: false });
         setTopics(topics.filter((topic) => topic.id! !== topicId));
       })
-      .catch(() => showToast({ message: 'Failed delete topic', error: true }));
+      .catch((e) =>
+        showToast({ message: (e as AxiosError).response!.data, error: true })
+      );
   };
 
   return (
     <Container disableGutters maxWidth={'xl'}>
       {!isLoading && (
         <>
-        <ForumHeader header={boardName!} />
+          <ForumHeader header={boardName!} />
           <Stack
             direction="column"
             justifyContent="flex-start"

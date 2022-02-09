@@ -46,8 +46,9 @@ const LogInModal: React.FC<Props> = ({
         });
         saveToLocalStorage('user', response);
         setShowLogIn(false);
+        showToast({message: 'Logged in'})
       })
-      .catch(() => {
+      .catch((e) => {
         setShowError(true);
         showToast({message: 'Login failed', error: true})
       });

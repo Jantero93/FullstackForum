@@ -1,7 +1,11 @@
-import { Link } from '@mui/material';
 import React from 'react';
 import { LinkProps } from 'react-router-dom';
+
+/** Types */
 import { Board } from '../../types/forum';
+
+/** UI */
+import { Link } from '@mui/material';
 
 type Props = {
   board: Board;

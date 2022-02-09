@@ -25,8 +25,9 @@ const HomePage: React.FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   useEffect(() => {
-    BoardService.getAllBoards().then((response) => setBoards(response))
-    .then(() => setIsLoading(true))
+    BoardService.getAllBoards()
+      .then((response) => setBoards(response))
+      .then(() => setIsLoading(true));
   }, []);
 
   const navigate = useNavigate();
@@ -59,11 +60,6 @@ const HomePage: React.FC = (): JSX.Element => {
                     </Typography>
                     <Typography sx={{ mb: 0.5 }} color="text.secondary">
                       {board.adjective}
-                    </Typography>
-                    <Typography variant="body2">
-                      {
-                        'Jotain dataa vaikka topicien/viestin joskus kun on tietokanta'
-                      }
                     </Typography>
                   </CardContent>
                 </CardActionArea>
