@@ -12,7 +12,7 @@ import ResponseError from '../utils/ApplicationError';
 @EntityRepository(Board)
 export class BoardRepository extends Repository<Board> {
   /**
-   * ! No error handling
+   * Throws error if not found
    * @param param_boardName Name of board
    * @returns Board Entity
    */
@@ -28,7 +28,7 @@ export class BoardRepository extends Repository<Board> {
   }
 
   /**
-   * ! No error handling
+   * Throws error if not found
    * @param param_boardName Name of board
    * @returns Topic entities related to board
    */
@@ -41,8 +41,9 @@ export class BoardRepository extends Repository<Board> {
       .leftJoinAndSelect('topic.user', 'user')
       .getOne();
 
-    if (!response?.topics)
+    if (!response?.topics) {
       throw new ResponseError('No topics found on this board', 'NOT_FOUND');
+    }
 
     return response.topics;
   }

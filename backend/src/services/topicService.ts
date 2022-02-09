@@ -13,8 +13,10 @@ import * as UserService from '../services/userService';
 import moment from 'moment';
 import logger from '../utils/logger';
 import ResponseError from '../utils/ApplicationError';
+import { validate } from 'class-validator';
 
 /**
+ * Throw error if not authorized to delete
  * Remove topic from DB
  * @param topicId id of topic to remove
  */
@@ -22,14 +24,16 @@ export const deleteOne = async (
   topicId: string,
   userId: string,
   admin?: boolean
-): Promise<boolean> => {
+): Promise<void> => {
   logger.printStack('Topic Service', deleteOne.name);
+
   const topicRepository = getCustomRepository(TopicRepository);
   const topic = await topicRepository.findTopicWithUserByTopicId(topicId);
 
-  return topic.user.id === userId || admin
-    ? ((await topicRepository.delete(topicId)) as unknown as true)
-    : false;
+  if (topic.user.id !== userId || !admin)
+    throw new ResponseError('Forbidden', 'FORBIDDEN');
+
+  await topicRepository.delete(topicId);
 };
 
 /**
@@ -43,7 +47,7 @@ export const findAll = async (): Promise<Topic[]> => {
 };
 
 /**
- * ! No error handling
+ * Throws error if not topics not found by board name
  * Finds topics of given board name
  * @param boardName Name of board
  * @returns Array of topics
@@ -52,11 +56,11 @@ export const findAllByBoardName = async (
   boardName: string
 ): Promise<Topic[]> => {
   logger.printStack('Topic Service', findAllByBoardName.name);
-  return (await BoardService.findTopicsByBoardName(boardName)) as Topic[];
+  return await BoardService.findTopicsByBoardName(boardName);
 };
 
 /**
- * Throw error if entity not found
+ * Throws error if entity not found
  * @param topicId id of topic
  * @returns Topic of given id
  */
@@ -71,7 +75,7 @@ export const findOne = async (topicId: string): Promise<Topic> => {
 };
 
 /**
- * ! No error handling
+ * Throws error if posts not found by given topic
  * Find posts and theirs users related to topic
  * @param topicId id of topic
  * @returns Posts of given id topic
@@ -83,16 +87,19 @@ export const findPostsByTopicId = async (topicId: string): Promise<Topic> => {
     relations: ['user', 'posts', 'posts.user']
   });
 
+  if (!topics?.posts)
+    throw new ResponseError('No posts found by given id', 'ENTITY_NOT_FOUND');
+
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   topics!.posts.sort(
     (a, b) => moment(a.created).unix() - moment(b.created).unix()
   );
 
-  return topics as Topic;
+  return topics;
 };
 
 /**
- * ! No error handling
+ * Throws error if save fails
  * Saves Topic to DB
  * @param topicName Name of topic
  * @param boardName Name of parent board
@@ -114,5 +121,12 @@ export const saveOne = async (
   topic.topicName = topicName;
   topic.user = postedUser;
 
-  return await topicRepository.save(topic);
+  const errors = await validate(topic);
+
+  if (errors.length)
+    throw new ResponseError(
+      'Topic does not meet requirements',
+      'INVALID_REQUEST_BODY'
+    );
+  else return await topicRepository.save(topic);
 };

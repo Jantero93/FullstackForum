@@ -7,6 +7,7 @@ import { Board } from '../entity/Board';
 
 import logger from '../utils/logger';
 import ResponseError from '../utils/ApplicationError';
+import { validate } from 'class-validator';
 
 export const deleteBoardById = async (id: string): Promise<void> => {
   logger.printStack('Board Service', deleteBoardById.name);
@@ -24,7 +25,7 @@ export const findAllBoards = async (): Promise<Board[]> => {
 };
 
 /**
- * ! No error handling
+ * Throws error if not found
  * Find Board entity by name of Board
  * @param boardName Name of the board
  * @returns Board Entity
@@ -34,11 +35,11 @@ export const findBoardByBoardName = async (
 ): Promise<Board> => {
   logger.printStack('Board Service', findBoardByBoardName.name);
   const boardRepository = getCustomRepository(BoardRepository);
-  return (await boardRepository.findBoardByBoardName(boardName)) as Board;
+  return await boardRepository.findBoardByBoardName(boardName);
 };
 
 /**
- * ! No error handling
+ * Throws error if not found
  * Get all topics from DB by specific board name
  * @param boardName Name of the board
  * @returns Array of topics based on board name
@@ -49,17 +50,34 @@ export const findTopicsByBoardName = async (boardName: string) => {
   return await boardRepository.findTopicsByBoardName(boardName);
 };
 
-export const saveOne = async (newBoard: Board) => {
+/**
+ * Throws error if not found
+ * Save new board
+ * @param newBoard
+ * @returns created Board Entity
+ */
+export const saveOne = async (paramBoard: string, paramAdjective: string) => {
   logger.printStack('Board Service', saveOne.name);
   const boardRepository = getCustomRepository(BoardRepository);
 
-  const boardFromDB = await boardRepository.find({
-    where: { board: newBoard.board }
+  const boardFromDB = await boardRepository.findOne({
+    where: { board: paramBoard }
   });
 
   if (boardFromDB) {
     throw new ResponseError('Board exists already', 'ENTITY_EXISTS_ALREADY');
   }
 
-  return await boardRepository.save(newBoard);
+  const board = new Board();
+  board.board = paramBoard;
+  board.adjective = paramAdjective;
+
+  const errors = await validate(board);
+
+  if (errors.length)
+    throw new ResponseError(
+      'Request body does not meet requirements',
+      'INVALID_REQUEST_BODY'
+    );
+  else return await boardRepository.save(board);
 };

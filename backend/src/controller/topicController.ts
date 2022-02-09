@@ -6,13 +6,20 @@ import { Response, Request, NextFunction } from 'express';
 
 import logger from '../utils/logger';
 
-export const deleteOne = async (req: Request, res: Response) => {
+export const deleteOne = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('Topic Controller', deleteOne.name);
-  if (await TopicService.deleteOne(req.params.id, req.userId, req.admin)) {
-    res.sendStatus(202);
-  } else {
-    //! IMPROVE ERROR HANDLING!
-    res.sendStatus(401);
+
+  try {
+    const { userId, admin } = req;
+
+    await TopicService.deleteOne(req.params.id, userId, admin);
+    res.status(202).send('Deleted success');
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -22,6 +29,7 @@ export const getAll = async (
   next: NextFunction
 ) => {
   logger.printStack('Topic Controller', getAll.name);
+
   try {
     res.send(await TopicService.findAll());
   } catch (error) {
@@ -29,14 +37,32 @@ export const getAll = async (
   }
 };
 
-export const saveOne = async (req: Request, res: Response) => {
+export const saveOne = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('Topic Controller', saveOne.name);
-  const { topicName, boardName } = req.body;
-  const userId: string = req.userId;
-  res.send(await TopicService.saveOne(topicName, boardName, userId));
+
+  try {
+    const { topicName, boardName } = req.body;
+
+    res.send(await TopicService.saveOne(topicName, boardName, req.userId));
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const getAllByBoardName = async (req: Request, res: Response) => {
+export const getAllByBoardName = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('Topic Controller', getAllByBoardName.name);
-  res.send(await TopicService.findAllByBoardName(req.params.boardName));
+
+  try {
+    res.send(await TopicService.findAllByBoardName(req.params.boardName));
+  } catch (error) {
+    next(error);
+  }
 };

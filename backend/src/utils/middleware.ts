@@ -9,7 +9,6 @@ import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
-import colors from 'colors';
 
 export const authorization = (
   req: Request,
@@ -41,8 +40,9 @@ export const errorLogger = (
   next: NextFunction
 ): void => {
   logger.printStack('Middleware', errorLogger.name);
-  logger.error(`Message ${err.name}`);
-  logger.error(`Error type ${err.errorType}`);
+  logger.error(`Message: ${err.name}`);
+  logger.error(`Error type: ${err.errorType}`);
+  logger.info('---');
   next(err);
 };
 
@@ -56,6 +56,8 @@ export const errorResponser = (
   logger.printStack('Middleware', errorResponser.name);
 
   const sendResponse = (res: Response, message: string, statusCode: number) => {
+    logger.info('Sended status code and response');
+    logger.info('---');
     res.status(statusCode).send({ error: message });
   };
 

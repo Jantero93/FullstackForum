@@ -44,8 +44,11 @@ export const postBoard = async (
 ) => {
   logger.printStack('Board Controller', postBoard.name);
   try {
+    const { board, adjective } = req.body;
+
+    // Throw error if not admin
     req.admin
-      ? res.status(200).send(await BoardService.saveOne(req.body))
+      ? res.status(200).send(await BoardService.saveOne(board, adjective))
       : res.sendStatus(403);
   } catch (error) {
     next(error);
