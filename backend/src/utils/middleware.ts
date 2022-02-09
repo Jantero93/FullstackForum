@@ -40,44 +40,60 @@ export const errorLogger = (
   _res: Response,
   next: NextFunction
 ): void => {
-  logger.error(colors.red(err.name));
+  logger.printStack('Middleware', errorLogger.name);
+  logger.error(`Message ${err.name}`);
+  logger.error(`Error type ${err.errorType}`);
   next(err);
 };
 
 export const errorResponser = (
   err: ResponseError,
   _req: Request,
-  res: Response
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction
 ) => {
   logger.printStack('Middleware', errorResponser.name);
 
-  const sendResponse = (res: Response, message: string, statusCode: number) =>
+  const sendResponse = (res: Response, message: string, statusCode: number) => {
     res.status(statusCode).send({ error: message });
+  };
 
   switch (err.errorType) {
     case 'AUTHORIZATION_FAILED':
       sendResponse(res, err.message, 401);
+      break;
     case 'ENTITY_NOT_FOUND':
       sendResponse(res, err.message, 404);
+      break;
     case 'FAILED_DELETE_ENTITY':
       sendResponse(res, err.message, 404);
+      break;
     case 'FORBIDDEN':
       sendResponse(res, err.message, 403);
+      break;
     case 'INVALID_ID':
       sendResponse(res, err.message, 422);
+      break;
     case 'NOT_FOUND':
       sendResponse(res, err.message, 404);
+      break;
     case 'UNKNOWN_ENDPOINT':
       sendResponse(res, err.message, 404);
+      break;
     case 'LOGIN_FAILED':
       sendResponse(res, err.message, 401);
+      break;
     case 'CONFLICT':
       sendResponse(res, err.message, 409);
+      break;
     case 'INVALID_REQUEST_BODY':
       sendResponse(res, err.message, 422);
+      break;
 
     default:
       res.sendStatus(500);
+      break;
   }
 };
 

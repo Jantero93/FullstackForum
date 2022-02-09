@@ -12,6 +12,7 @@ import * as UserService from '../services/userService';
 /** Utils */
 import moment from 'moment';
 import logger from '../utils/logger';
+import ResponseError from '../utils/ApplicationError';
 
 /**
  * Remove topic from DB
@@ -55,15 +56,18 @@ export const findAllByBoardName = async (
 };
 
 /**
- * ! No error handling
- * Finds topic by its ID
+ * Throw error if entity not found
  * @param topicId id of topic
  * @returns Topic of given id
  */
 export const findOne = async (topicId: string): Promise<Topic> => {
   logger.printStack('Topic Service', findOne.name);
   const topicRepository = getCustomRepository(TopicRepository);
-  return (await topicRepository.findOne(topicId)) as Topic;
+
+  const topic = await topicRepository.findOne(topicId);
+
+  if (!topic) throw new ResponseError('No topic found', 'ENTITY_NOT_FOUND');
+  else return topic;
 };
 
 /**

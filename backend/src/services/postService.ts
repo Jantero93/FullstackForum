@@ -11,7 +11,15 @@ import * as UserService from '../services/userService';
 
 import ResponseError from '../utils/ApplicationError';
 import logger from '../utils/logger';
+import { validate } from 'class-validator';
 
+/**
+ * Throw error if not authorized
+ * @param postId Request id
+ * @param userId Request id
+ * @param admin Admin made request
+ * @returns Modified post
+ */
 export const removePost = async (
   postId: string,
   userId: string,
@@ -20,10 +28,14 @@ export const removePost = async (
   logger.printStack('Post Service', removePost.name);
   const postRepository = getCustomRepository(PostRepository);
 
-  const post = (await postRepository.findOne(postId, {
+  const post = await postRepository.findOne(postId, {
     relations: ['user']
-  })) as Post;
+  });
 
+  if (!post?.user)
+    throw new ResponseError('Post/User not found', 'ENTITY_NOT_FOUND');
+
+  /** Request user id must meet DB ID or be admin */
   if (userId !== post.user.id && !admin)
     throw new ResponseError('Forbidden', 'FORBIDDEN');
 
@@ -33,7 +45,7 @@ export const removePost = async (
 };
 
 /**
- * ! No error handling
+ * Throw error if save fails
  * Save post on specific topic
  * @param message Post message
  * @param topicId id of topic
@@ -55,5 +67,12 @@ export const saveOne = async (
   post.topic = parentTopic;
   post.user = postedUser;
 
-  return await postRepository.save(post);
+  const errors = await validate(post);
+
+  if (errors.length)
+    throw new ResponseError(
+      'Post does not meet requirements',
+      'INVALID_REQUEST_BODY'
+    );
+  else return await postRepository.save(post);
 };

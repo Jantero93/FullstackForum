@@ -5,7 +5,6 @@ import { Response, Request, NextFunction } from 'express';
 import * as PostService from '../services/postService';
 import { findPostsByTopicId } from '../services/topicService';
 
-import ResponseError from '../utils/ApplicationError';
 import logger from '../utils/logger';
 
 export const deletePost = async (
@@ -14,12 +13,13 @@ export const deletePost = async (
   next: NextFunction
 ) => {
   logger.printStack('Post Controller', deletePost.name);
+
   try {
     res
       .status(202)
       .send(await PostService.removePost(req.params.id, req.userId, req.admin));
   } catch (error) {
-    next(new ResponseError('Forbidden', 'FORBIDDEN'));
+    next(error);
   }
 };
 
@@ -33,15 +33,23 @@ export const findAllByTopicId = async (
   try {
     res.send(await findPostsByTopicId(req.params.id));
   } catch (error) {
-    next(new ResponseError('Topic not found by id', 'ENTITY_NOT_FOUND'));
+    next(error);
   }
 };
 
-export const saveOne = async (req: Request, res: Response) => {
+export const saveOne = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('Post Controller', saveOne.name);
 
-  const { message, topicId } = req.body;
-  const userId: string = req.userId;
+  try {
+    const { message, topicId } = req.body;
+    const userId: string = req.userId;
 
-  res.send(await PostService.saveOne(message, topicId, userId));
+    res.send(await PostService.saveOne(message, topicId, userId));
+  } catch (error) {
+    next(error);
+  }
 };

@@ -18,6 +18,11 @@ export const deleteOne = async (userId: string): Promise<void> => {
   await getCustomRepository(UserRepository).delete(userId);
 };
 
+/**
+ * Throw error if entity not found
+ * @param userId
+ * @returns User Entity
+ */
 export const findOne = async (userId: string): Promise<User> => {
   logger.printStack('User Service', findOne.name);
   const userRepository = getCustomRepository(UserRepository);
