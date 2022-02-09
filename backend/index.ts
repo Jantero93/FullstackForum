@@ -18,6 +18,7 @@ import logger from './utils/logger';
 createConnection()
   .then(async () => {
     const app = express();
+    app.use(express.static('../frontend/build'));
 
     app.listen(Config.SERVER_PORT);
     logger.info(`Express server has started on port ${Config.SERVER_PORT}`);

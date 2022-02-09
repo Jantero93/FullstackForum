@@ -4,7 +4,8 @@
   "description": "",
   "main": "backend/dist/index.js",
   "scripts": {
-    "dev": "concurrently --kill-others -c cyan,yellow -n CLIENT,SERVER \"npm --prefix frontend/ start\" \"npm --prefix backend/ run dev\""
+    "dev": "concurrently --kill-others -c cyan,yellow -n CLIENT,SERVER \"npm --prefix frontend/ start\" \"npm --prefix backend/ run dev\"",
+    "build:front": "cd ./frontend && npm run build"
   },
   "repository": {
     "type": "git",
