@@ -18,7 +18,12 @@ export class BoardRepository extends Repository<Board> {
   async findBoardByBoardName(param_boardName: string): Promise<Board> {
     logger.printStack('Board Repository', 'findBoardByBoardName');
 
-    return (await this.findOne({ where: { board: param_boardName } })) as Board;
+    const response = await this.findOne({ where: { board: param_boardName } });
+
+    if (!response)
+      throw new ResponseError('Board not found', 404, 'ENTITY_NOT_FOUND');
+
+    return response;
   }
 
   /**

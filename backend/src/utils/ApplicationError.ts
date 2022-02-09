@@ -8,7 +8,8 @@ type ErrorType =
   | 'INTERNAL_SERVER_ERROR'
   | 'NOT_FOUND'
   | 'FAILED_DELETE_ENTITY'
-  | 'FORBIDDEN';
+  | 'FORBIDDEN'
+  | 'ENTITY_EXISTS_ALREADY';
 
 export default class ResponseError extends CustomError {
   public constructor(

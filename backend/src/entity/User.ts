@@ -1,5 +1,5 @@
 /** TypeORM */
-import { Entity, JoinTable } from 'typeorm';
+import { Entity } from 'typeorm';
 import {
   Column,
   CreateDateColumn,

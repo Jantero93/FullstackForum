@@ -8,16 +8,10 @@ import { Board } from '../entity/Board';
 import logger from '../utils/logger';
 import ResponseError from '../utils/ApplicationError';
 
-export const deleteBoardById = async (
-  id: string,
-  admin: boolean
-): Promise<boolean> => {
+export const deleteBoardById = async (id: string): Promise<void> => {
   logger.printStack('Board Service', deleteBoardById.name);
-  if (admin)
-    return (await getCustomRepository(BoardRepository).delete(
-      id
-    )) as unknown as true;
-  else return false;
+  const boardRepository = getCustomRepository(BoardRepository);
+  return (await boardRepository.delete(id)) as unknown as void;
 };
 
 /**
@@ -26,11 +20,7 @@ export const deleteBoardById = async (
  */
 export const findAllBoards = async (): Promise<Board[]> => {
   logger.printStack('Board Service', findAllBoards.name);
-  try {
-    return await getCustomRepository(BoardRepository).find();
-  } catch (error) {
-    throw new ResponseError('Not topics found', 404, 'NOT_FOUND');
-  }
+  return await getCustomRepository(BoardRepository).find();
 };
 
 /**
@@ -59,8 +49,21 @@ export const findTopicsByBoardName = async (boardName: string) => {
   return await boardRepository.findTopicsByBoardName(boardName);
 };
 
-export const saveOne = async (board: Board) => {
+export const saveOne = async (newBoard: Board) => {
   logger.printStack('Board Service', saveOne.name);
   const boardRepository = getCustomRepository(BoardRepository);
-  return await boardRepository.save(board);
+
+  const boardFromDB = await boardRepository.find({
+    where: { board: newBoard.board }
+  });
+
+  if (boardFromDB) {
+    throw new ResponseError(
+      'Board exists already',
+      409,
+      'ENTITY_EXISTS_ALREADY'
+    );
+  }
+
+  return await boardRepository.save(newBoard);
 };
