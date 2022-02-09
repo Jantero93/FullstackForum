@@ -37,7 +37,7 @@ export class Topic {
 
   /** Posts which are related to topic */
   @OneToMany(() => Post, (post) => post.topic)
-  posts!: Post[];
+  posts?: Post[];
 
   /** User who has created topic */
   @ManyToOne(() => User, (user) => user.topics, { onDelete: 'CASCADE' })

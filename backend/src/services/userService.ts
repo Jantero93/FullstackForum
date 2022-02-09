@@ -36,12 +36,11 @@ export const findOne = async (userId: string): Promise<User> => {
 export const findAll = async (): Promise<User[]> => {
   logger.printStack('User Service', findAll.name);
   const userRepository = getCustomRepository(UserRepository);
-  const data = await userRepository.find();
-  logger.responseDB(data);
-  return data;
+  return await userRepository.find();
 };
 
 /**
+ * Throws error if not found
  * @param username username to find from DB
  * @returns User Entity
  */
@@ -67,7 +66,7 @@ export const getToken = (username: string, id: string): string => {
 };
 
 /**
- * Save user in DB
+ * Throws error if save fails
  * @param username Username to save
  * @param password Password to save
  * @returns Saved User Entity

@@ -90,8 +90,7 @@ export const findPostsByTopicId = async (topicId: string): Promise<Topic> => {
   if (!topics?.posts)
     throw new ResponseError('No posts found by given id', 'ENTITY_NOT_FOUND');
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  topics!.posts.sort(
+  topics.posts.sort(
     (a, b) => moment(a.created).unix() - moment(b.created).unix()
   );
 

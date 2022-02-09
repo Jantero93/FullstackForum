@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
+/** Services */
+import { findOne as findUserFromDB } from '../services/userService';
+
 /** Custom Error */
 import ResponseError from './ApplicationError';
 
@@ -10,11 +13,11 @@ import jwt from 'jsonwebtoken';
 import logger from './logger';
 import isUUID from 'validator/lib/isUUID';
 
-export const authorization = (
+export const authorization = async (
   req: Request,
   _res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   logger.printStack('Middleware', authorization.name);
   const token = req.cookies.access_token;
 
@@ -25,9 +28,17 @@ export const authorization = (
   const data = jwt.verify(token, config.TOKEN_SECRET) as {
     [key: string]: string;
   };
+
   req.userId = data.id;
   req.username = data.username;
   req.admin = data.adminPassword === config.ADMIN_PANEL_PASSWORD;
+
+  /** Check user actually exists in DB */
+  try {
+    await findUserFromDB(req.userId);
+  } catch (error) {
+    next(new ResponseError('Authorization failed', 'AUTHORIZATION_FAILED'));
+  }
 
   next();
 };

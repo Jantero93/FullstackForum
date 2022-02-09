@@ -5,8 +5,9 @@ import { getCustomRepository } from 'typeorm';
 /** Entity */
 import { Board } from '../entity/Board';
 
-import logger from '../utils/logger';
 import ResponseError from '../utils/ApplicationError';
+
+import logger from '../utils/logger';
 import { validate } from 'class-validator';
 
 export const deleteBoardById = async (id: string): Promise<void> => {
