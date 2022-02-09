@@ -5,7 +5,9 @@
   "main": "backend/dist/index.js",
   "scripts": {
     "start": "npm --prefix ./backend start",
-    "dev": "concurrently --kill-others -c cyan,yellow -n CLIENT,SERVER \"npm --prefix frontend/ start\" \"npm --prefix backend/ run dev\""
+    "dev": "concurrently --kill-others -c cyan,yellow -n CLIENT,SERVER \"npm --prefix frontend/ start\" \"npm --prefix backend/ run dev\"",
+    "preinstall": "cd frontend/ && npm i && npm run build",
+    "postinstall": "cd backend/ && npm i && npm run compile"
   },
   "repository": {
     "type": "git",
