@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 /** Components */
-import ForumHeader from '../forumItems/ForumHeader';
-import Post from '../forumItems/Post';
-import PostForm from '../forumItems/PostForm';
+import ForumHeader from '../forumitems/ForumHeader';
+import Post from '../forumitems/Post';
+import PostForm from '../forumitems/PostForm';
 
 /** UI */
 import { Container } from '@mui/material';
@@ -62,7 +62,7 @@ const Topic: React.FC = (): JSX.Element => {
       showToast({ message: (error as AxiosError).response!.data, error: true });
       if ((error as AxiosError).response!.status === 401) {
         updateUser({ loggedIn: false, id: undefined, role: 'normal' });
-        navigate('/')
+        navigate('/');
       }
     }
 
