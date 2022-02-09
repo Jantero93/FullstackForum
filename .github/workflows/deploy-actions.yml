@@ -1,0 +1,32 @@
+name: Deploy Heroku
+
+env:
+  CI: false
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  pull_request:
+    branches: 'master'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      # Client related runs
+      - name: Install & build front
+        run: cd frontend/ && npm install && npm run build
+
+      # Server related runs
+      - name: Install backend & compile backend
+        run: cd backend/ && npm install && npm run compile

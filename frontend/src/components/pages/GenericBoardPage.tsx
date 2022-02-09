@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 /** Components */
-import ForumHeader from '../forumItems/ForumHeader';
-import NewTopicForm from '../forumItems/NewTopicForm';
-import Topic from '../forumItems/Topic';
+import ForumHeader from '../forumitems/ForumHeader';
+import NewTopicForm from '../forumitems/NewTopicForm';
+import Topic from '../forumitems/Topic';
 
 /** UI */
 import { Button, Container, Stack } from '@mui/material';
