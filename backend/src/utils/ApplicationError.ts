@@ -9,14 +9,13 @@ type ErrorType =
   | 'NOT_FOUND'
   | 'FAILED_DELETE_ENTITY'
   | 'FORBIDDEN'
-  | 'ENTITY_EXISTS_ALREADY';
+  | 'ENTITY_EXISTS_ALREADY'
+  | 'LOGIN_FAILED'
+  | 'CONFLICT'
+  | 'INVALID_REQUEST_BODY';
 
 export default class ResponseError extends CustomError {
-  public constructor(
-    message: string,
-    public statusCode: number,
-    public errorType: ErrorType
-  ) {
+  public constructor(message: string, public errorType: ErrorType) {
     super(message);
   }
 }

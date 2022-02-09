@@ -34,58 +34,81 @@ export const getAllUsers = async (
   logger.printStack('User Controller', getAllUsers.name);
 
   try {
-    if (!req.admin) res.sendStatus(403);
-    res.status(200).send(await UserService.findAll());
+    if (!req.admin) throw new ResponseError('Forbidden', 'FORBIDDEN');
+    else res.status(200).send(await UserService.findAll());
   } catch (error) {
-    next(
-      new ResponseError('Internal Server Error', 500, 'INTERNAL_SERVER_ERROR')
-    );
+    next(error);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('User Controller', login.name);
-  const { username, password } = req.body;
 
-  const userFromDB = await UserService.findUserByUsername(username);
+  try {
+    const { username, password } = req.body;
 
-  const isUserVerified = await UserService.verifyUser(userFromDB, password);
+    const userFromDB = await UserService.findUserByUsername(username);
+    const isUserVerified = await UserService.verifyUser(userFromDB, password);
 
-  const token: string | null = isUserVerified
-    ? await UserService.getToken(userFromDB.username, userFromDB.id)
-    : null;
+    const token: string | null = isUserVerified
+      ? UserService.getToken(userFromDB.username, userFromDB.id)
+      : null;
 
-  if (!token) {
-    res.status(401).send({ error: 'Login failed' });
-    return;
+    if (!token) {
+      throw new ResponseError('Login failed', 'LOGIN_FAILED');
+    }
+
+    res.cookie(accessTokenName, token, {
+      maxAge: 1000 * 60 * 60 * 24 * 365 * 50,
+      httpOnly: true,
+      secure: true
+    });
+
+    userFromDB.passwordHash = '';
+    res.status(200).send({
+      ...userFromDB
+    });
+  } catch (error) {
+    next(error);
   }
-
-  res.cookie(accessTokenName, token, {
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 50,
-    httpOnly: true,
-    secure: true
-  });
-
-  userFromDB.passwordHash = '';
-
-  res.send({
-    ...userFromDB
-  });
 };
 
-export const logout = async (_req: Request, res: Response) => {
+export const logout = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('User Controller', logout.name);
-  res.clearCookie(accessTokenName);
-  res.send('Logged out successfully');
+
+  try {
+    res.clearCookie(accessTokenName);
+    res.send('Logged out successfully');
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const saveOne = async (req: Request, res: Response) => {
+export const saveOne = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   logger.printStack('User Controller', saveOne.name);
-  const { username, password } = req.body;
-  const savedUser = await UserService.saveUser(username, password);
 
-  res.send({
-    id: savedUser.id,
-    username: savedUser.username
-  });
+  try {
+    const { username, password } = req.body;
+
+    const savedUser = await UserService.saveUser(username, password);
+
+    res.send({
+      id: savedUser.id,
+      username: savedUser.username
+    });
+  } catch (error) {
+    next(error);
+  }
 };

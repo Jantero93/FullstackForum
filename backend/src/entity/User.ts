@@ -57,9 +57,9 @@ export class User {
 
   /** Posts user has created */
   @OneToMany(() => Post, (post) => post.user)
-  posts!: Post[];
+  posts?: Post[];
 
   /** Topics user has created */
   @OneToMany(() => Topic, (topic) => topic.user)
-  topics!: Topic[];
+  topics?: Topic[];
 }

@@ -20,9 +20,7 @@ export const authorization = (
   const token = req.cookies.access_token;
 
   if (!token) {
-    next(
-      new ResponseError('Authorization failed', 403, 'AUTHORIZATION_FAILED')
-    );
+    next(new ResponseError('Authorization failed', 'AUTHORIZATION_FAILED'));
   }
 
   const data = jwt.verify(token, config.TOKEN_SECRET) as {
@@ -53,26 +51,30 @@ export const errorResponser = (
 ) => {
   logger.printStack('Middleware', errorResponser.name);
 
-  const sendResponse = (res: Response, err: ResponseError) =>
-    res.status(err.statusCode).send({ error: err.message });
+  const sendResponse = (res: Response, message: string, statusCode: number) =>
+    res.status(statusCode).send({ error: message });
 
   switch (err.errorType) {
     case 'AUTHORIZATION_FAILED':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 401);
     case 'ENTITY_NOT_FOUND':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 404);
     case 'FAILED_DELETE_ENTITY':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 404);
     case 'FORBIDDEN':
-      sendResponse(res, err);
-    case 'INTERNAL_SERVER_ERROR':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 403);
     case 'INVALID_ID':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 422);
     case 'NOT_FOUND':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 404);
     case 'UNKNOWN_ENDPOINT':
-      sendResponse(res, err);
+      sendResponse(res, err.message, 404);
+    case 'LOGIN_FAILED':
+      sendResponse(res, err.message, 401);
+    case 'CONFLICT':
+      sendResponse(res, err.message, 409);
+    case 'INVALID_REQUEST_BODY':
+      sendResponse(res, err.message, 422);
 
     default:
       res.sendStatus(500);
@@ -101,7 +103,7 @@ export const unknownEndpoint = (
   next: NextFunction
 ) => {
   logger.printStack('Middleware', unknownEndpoint.name);
-  next(new ApplicationError('Unknown endpoint', 404, 'UNKNOWN_ENDPOINT'));
+  next(new ApplicationError('Unknown endpoint', 'UNKNOWN_ENDPOINT'));
 };
 
 export const isUUIDValid = (
@@ -112,5 +114,5 @@ export const isUUIDValid = (
   logger.printStack('Middleware', isUUIDValid.name);
 
   if (isUUID(req.params.id)) next();
-  else next(new ApplicationError('Invalid ID', 400, 'INVALID_ID'));
+  else next(new ApplicationError('Invalid ID', 'INVALID_ID'));
 };

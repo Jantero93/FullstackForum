@@ -32,6 +32,6 @@ export const adminLogin = async (
 
     res.sendStatus(200);
   } catch (error) {
-    next(new ResponseError('Failed admin login', 401, 'AUTHORIZATION_FAILED'));
+    next(new ResponseError('Failed admin login', 'AUTHORIZATION_FAILED'));
   }
 };

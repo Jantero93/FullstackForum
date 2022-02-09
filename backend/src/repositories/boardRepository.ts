@@ -4,9 +4,10 @@ import { EntityRepository, Repository } from 'typeorm';
 /** Entity */
 import { Board } from '../entity/Board';
 import { Topic } from '../entity/Topic';
-import ResponseError from '../utils/ApplicationError';
 
+/** Utils */
 import logger from '../utils/logger';
+import ResponseError from '../utils/ApplicationError';
 
 @EntityRepository(Board)
 export class BoardRepository extends Repository<Board> {
@@ -21,7 +22,7 @@ export class BoardRepository extends Repository<Board> {
     const response = await this.findOne({ where: { board: param_boardName } });
 
     if (!response)
-      throw new ResponseError('Board not found', 404, 'ENTITY_NOT_FOUND');
+      throw new ResponseError('Board not found', 'ENTITY_NOT_FOUND');
 
     return response;
   }
@@ -41,11 +42,7 @@ export class BoardRepository extends Repository<Board> {
       .getOne();
 
     if (!response?.topics)
-      throw new ResponseError(
-        'No topics found on this board',
-        404,
-        'NOT_FOUND'
-      );
+      throw new ResponseError('No topics found on this board', 'NOT_FOUND');
 
     return response.topics;
   }

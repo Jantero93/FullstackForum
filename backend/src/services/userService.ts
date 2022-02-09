@@ -10,6 +10,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import logger from '../utils/logger';
+import ResponseError from '../utils/ApplicationError';
+import { validate } from 'class-validator';
 
 export const deleteOne = async (userId: string): Promise<void> => {
   logger.printStack('User Service', deleteOne.name);
@@ -19,7 +21,11 @@ export const deleteOne = async (userId: string): Promise<void> => {
 export const findOne = async (userId: string): Promise<User> => {
   logger.printStack('User Service', findOne.name);
   const userRepository = getCustomRepository(UserRepository);
-  return (await userRepository.findOne(userId)) as User;
+
+  const user = await userRepository.findOne(userId);
+
+  if (!user) throw new ResponseError('No user found', 'ENTITY_NOT_FOUND');
+  else return user;
 };
 
 export const findAll = async (): Promise<User[]> => {
@@ -31,7 +37,6 @@ export const findAll = async (): Promise<User[]> => {
 };
 
 /**
- * ! No error handling
  * @param username username to find from DB
  * @returns User Entity
  */
@@ -63,20 +68,36 @@ export const getToken = (username: string, id: string): string => {
  * @returns Saved User Entity
  */
 export const saveUser = async (
-  username: string,
-  password: string
+  paramUsername: string,
+  paramPassword: string
 ): Promise<User> => {
   logger.printStack('User Service', saveUser.name);
+
   const userRepository = getCustomRepository(UserRepository);
 
+  const userFromDB = await userRepository.findOne({
+    where: { username: paramUsername }
+  });
+
+  if (userFromDB) {
+    throw new ResponseError('Username already taken', 'CONFLICT');
+  }
+
   const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
+  const passwordHash = await bcrypt.hash(paramPassword, saltRounds);
 
   const user = new User();
-  user.username = username;
+  user.username = paramUsername;
   user.passwordHash = passwordHash;
 
-  return await userRepository.save(user);
+  const errors = await validate(user);
+
+  if (errors.length)
+    throw new ResponseError(
+      'Username and/or password do not meet requirements',
+      'INVALID_REQUEST_BODY'
+    );
+  else return await userRepository.save(user);
 };
 
 /**
@@ -90,11 +111,6 @@ export const verifyUser = async (
   password: string
 ): Promise<boolean> => {
   logger.printStack('User Service', verifyUser.name);
-  const passwordCorrect: boolean =
-    userFromDB === undefined
-      ? false
-      : await bcrypt.compare(password, userFromDB.passwordHash);
 
-  /** True if user exists and password is correct */
-  return userFromDB && passwordCorrect;
+  return await bcrypt.compare(password, userFromDB.passwordHash);
 };

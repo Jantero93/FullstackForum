@@ -1,6 +1,5 @@
 /** TypeORM */
-import { AfterLoad, Entity, JoinTable } from 'typeorm';
-import { Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 /** Entities */
 import { Topic } from './Topic';

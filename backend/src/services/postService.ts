@@ -25,7 +25,7 @@ export const removePost = async (
   })) as Post;
 
   if (userId !== post.user.id && !admin)
-    throw new ResponseError('Forbidden', 403, 'FORBIDDEN');
+    throw new ResponseError('Forbidden', 'FORBIDDEN');
 
   post.message = '(removed)';
 

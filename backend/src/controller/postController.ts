@@ -19,7 +19,7 @@ export const deletePost = async (
       .status(202)
       .send(await PostService.removePost(req.params.id, req.userId, req.admin));
   } catch (error) {
-    next(new ResponseError('Forbidden', 403, 'FORBIDDEN'));
+    next(new ResponseError('Forbidden', 'FORBIDDEN'));
   }
 };
 
@@ -33,7 +33,7 @@ export const findAllByTopicId = async (
   try {
     res.send(await findPostsByTopicId(req.params.id));
   } catch (error) {
-    next(new ResponseError('Topic not found by id', 404, 'ENTITY_NOT_FOUND'));
+    next(new ResponseError('Topic not found by id', 'ENTITY_NOT_FOUND'));
   }
 };
 

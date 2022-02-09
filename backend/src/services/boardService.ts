@@ -58,11 +58,7 @@ export const saveOne = async (newBoard: Board) => {
   });
 
   if (boardFromDB) {
-    throw new ResponseError(
-      'Board exists already',
-      409,
-      'ENTITY_EXISTS_ALREADY'
-    );
+    throw new ResponseError('Board exists already', 'ENTITY_EXISTS_ALREADY');
   }
 
   return await boardRepository.save(newBoard);
