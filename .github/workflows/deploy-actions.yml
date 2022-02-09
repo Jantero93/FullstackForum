@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-
+      # Client related runs
       - name: Install & build front
         run: cd frontend/ && npm install && npm run build
 
       # Server related runs
-      - name: Install server & compile server
-        run: cd server/ && npm install && npm run compile
+      - name: Install backend & compile backend
+        run: cd backend/ && npm install && npm run compile

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** Components */
-import ForumHeader from '../forumItems/ForumHeader';
+import ForumHeader from '../forumitems/ForumHeader';
 
 /** UI */
 import {
