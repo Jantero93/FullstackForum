@@ -10,17 +10,24 @@ import routes from './routes/indexRoutes';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
-import * as middleware from './utils/middleware';
-/** Utils */
-import Config from './config/config';
-import logger from './utils/logger';
 
-createConnection()
+import {
+  errorLogger,
+  errorResponser,
+  requestLogger,
+  unknownEndpoint
+} from './utils/middleware';
+
+/** Utils */
+import config from './config/config';
+import logger from './utils/logger';
+import { DB_CONNECTION_SETTINGS } from './config/typeorm';
+
+createConnection(DB_CONNECTION_SETTINGS)
   .then(async () => {
     const app = express();
-
-    app.listen(Config.SERVER_PORT);
-    logger.info(`Express server has started on port ${Config.SERVER_PORT}`);
+    app.listen(config.SERVER_PORT);
+    app.use(express.static('../frontend/build'));
 
     app.use(helmet());
     app.use(cookieParser());
@@ -32,13 +39,15 @@ createConnection()
     );
     app.use(express.json());
 
-    app.use(middleware.requestLogger);
+    app.use(requestLogger);
 
     /** All routes */
     app.use('/', routes);
-    app.use(middleware.unknownEndpoint);
+    app.use(unknownEndpoint);
 
-    app.use(middleware.errorLogger);
-    app.use(middleware.errorResponser);
+    app.use(errorLogger);
+    app.use(errorResponser);
+
+    logger.info(`Express server has started on port ${config.SERVER_PORT}`);
   })
   .catch((error) => logger.error(error));
