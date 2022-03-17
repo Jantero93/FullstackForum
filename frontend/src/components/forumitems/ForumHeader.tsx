@@ -7,9 +7,13 @@ type Props = {
 };
 
 /** Alternative ok color for header #66b2ff */
-
 const ForumHeader: React.FC<Props> = ({ header }: Props): JSX.Element => (
-  <Typography align="center" variant={'h3'} style={{ color: 'whitesmoke' }}>
+  <Typography
+    id="main-page-header"
+    align="center"
+    variant={'h3'}
+    style={{ color: 'whitesmoke' }}
+  >
     {header}
   </Typography>
 );

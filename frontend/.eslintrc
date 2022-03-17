@@ -22,7 +22,7 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "ignorePatterns": ["build/*"],
+  "ignorePatterns": ["build/*", "cypress/*"],
   "parser": "@typescript-eslint/parser",
   "root": true,
   "plugins": ["react", "@typescript-eslint", "prettier"],
@@ -31,7 +31,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": "./tsconfig.json"
+    "project": ["./tsconfig.json"]
   },
   "settings": {
     "react": {

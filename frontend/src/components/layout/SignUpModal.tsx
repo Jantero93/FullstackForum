@@ -80,6 +80,7 @@ const SignUpModal: React.FC<Props> = ({
             Sign-in
           </Typography>
           <TextField
+            data-cy="username-input"
             id="outlined-error"
             label="Username"
             helperText="Minimum 3 characters"
@@ -93,6 +94,7 @@ const SignUpModal: React.FC<Props> = ({
             }}
           />
           <TextField
+            data-cy="password-input"
             id="outlined-error"
             label="Password"
             helperText="Minimum 6 characters"
@@ -113,6 +115,7 @@ const SignUpModal: React.FC<Props> = ({
             style={{ marginTop: '2em' }}
           >
             <Button
+              data-cy="sign-up-button"
               style={{ margin: '1em' }}
               onClick={() => {
                 setShowError(false);

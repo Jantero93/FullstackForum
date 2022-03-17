@@ -94,6 +94,7 @@ const NavBar: React.FC = (): JSX.Element => {
             >
               {user.loggedIn && (
                 <Typography
+                  data-cy="logged-in-as"
                   variant={'button'}
                   style={{ paddingRight: '1em', color: '#1976d2' }}
                 >
@@ -101,6 +102,7 @@ const NavBar: React.FC = (): JSX.Element => {
                 </Typography>
               )}
               <Button
+                data-cy="login-logout-button"
                 variant={'contained'}
                 style={{ marginRight: '0.5em' }}
                 onClick={handleLogin}
@@ -109,6 +111,7 @@ const NavBar: React.FC = (): JSX.Element => {
               </Button>
               {!user.loggedIn && (
                 <Button
+                  data-cy="sign-up-button-navbar"
                   variant={'outlined'}
                   onClick={() => setShowSignUp(true)}
                 >

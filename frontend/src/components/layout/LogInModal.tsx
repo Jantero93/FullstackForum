@@ -46,11 +46,11 @@ const LogInModal: React.FC<Props> = ({
         });
         saveToLocalStorage('user', response);
         setShowLogIn(false);
-        showToast({message: 'Logged in'})
+        showToast({ message: 'Logged in' });
       })
       .catch((e) => {
         setShowError(true);
-        showToast({message: 'Login failed', error: true})
+        showToast({ message: 'Login failed', error: true });
       });
   };
 
@@ -67,6 +67,7 @@ const LogInModal: React.FC<Props> = ({
             Login
           </Typography>
           <TextField
+            data-cy="login-input-username"
             id="outlined-error"
             error={showError}
             label="Username"
@@ -78,6 +79,7 @@ const LogInModal: React.FC<Props> = ({
             }}
           />
           <TextField
+            data-cy="login-input-password"
             id="outlined-error"
             error={showError}
             label="Password"
@@ -96,6 +98,7 @@ const LogInModal: React.FC<Props> = ({
             style={{ marginTop: '2em' }}
           >
             <Button
+              data-cy="login-button"
               style={{ margin: '1em' }}
               onClick={() => {
                 setShowError(false);
