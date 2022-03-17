@@ -115,6 +115,7 @@ const GenericBoard: React.FC = (): JSX.Element => {
 
           {loggedIn && (
             <Button
+              data-cy="hide-new-topic-button"
               size={'large'}
               variant={'contained'}
               style={{ margin: '1em' }}

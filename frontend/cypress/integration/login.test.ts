@@ -1,7 +1,7 @@
-const testUsername = 'test';
-const testPassword = 'testtest';
-
 describe('Login & signup', () => {
+  const testUsername = 'test';
+  const testPassword = 'testtest';
+
   beforeEach(() => cy.visit('/'));
 
   it('Log in', () => {

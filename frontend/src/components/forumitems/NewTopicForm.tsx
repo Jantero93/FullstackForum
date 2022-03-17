@@ -40,6 +40,7 @@ const NewTopicForm: React.FC<Props> = ({
         Topic
       </Typography>
       <TextField
+        data-cy="new-topic-name-input"
         fullWidth
         maxRows={1}
         minRows={1}
@@ -55,6 +56,7 @@ const NewTopicForm: React.FC<Props> = ({
         Send a post
       </Typography>
       <TextField
+        data-cy="new-topic-post-input"
         fullWidth
         maxRows={100}
         minRows={4}
