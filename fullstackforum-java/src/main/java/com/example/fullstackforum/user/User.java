@@ -1,5 +1,6 @@
-package com.example.fullstackforum.board;
+package com.example.fullstackforum.user;
 
+import com.example.fullstackforum.post.Post;
 import com.example.fullstackforum.topic.Topic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,21 +11,20 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Board {
+@AllArgsConstructor
+@Table(name = "application_user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 255)
-    private String board;
+    private String passwordHash;
 
-    @Column(length = 1023)
-    private String adjective;
+    @OneToMany
+    private List<Post> posts;
 
     @OneToMany
     private List<Topic> topics;
-
 }
