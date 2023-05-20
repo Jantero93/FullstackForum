@@ -22,9 +22,9 @@ public class User {
 
     private String passwordHash;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Topic> topics;
 }

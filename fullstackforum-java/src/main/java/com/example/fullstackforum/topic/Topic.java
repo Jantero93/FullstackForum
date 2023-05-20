@@ -26,13 +26,15 @@ public class Topic {
 
     private String topicName;
 
-    @OneToMany
+    @OneToMany(mappedBy = "topic")
     private List<Post> posts;
 
     @ManyToOne
+    @JoinColumn
     private Board board;
 
     @ManyToOne
+    @JoinColumn
     private User user;
 
 }

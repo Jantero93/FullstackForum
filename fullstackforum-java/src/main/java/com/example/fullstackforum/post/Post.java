@@ -27,8 +27,10 @@ public class Post {
     private Integer votes;
 
     @ManyToOne
+    @JoinColumn
     private User user;
 
     @ManyToOne
+    @JoinColumn
     private Topic topic;
 }

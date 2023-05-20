@@ -24,7 +24,7 @@ public class Board {
     @Column(length = 1023)
     private String adjective;
 
-    @OneToMany
+    @OneToMany(mappedBy = "board")
     private List<Topic> topics;
 
 }
